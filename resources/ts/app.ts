@@ -1,14 +1,14 @@
 /// <reference path="../../node_modules/@types/leaflet/index.d.ts" />
-
 import * as L from "leaflet";
+/// <reference path="../../node_modules/leaflet-sidebar-v2/index.d.ts" />
 import 'leaflet-sidebar-v2';
+/// <reference path="../types/leaflet_velocity.ts" />
+import 'leaflet-velocity-ts-scoped';
+
+import { Bedrijven } from "./views/bedrijven";
+import { Ligplaats } from "./views/ligplaats";
 const { arcgisToGeoJSON } = require('@esri/arcgis-to-geojson-utils');
-let ligplaatsen = require('../northSeaPortGeoJson/ligplaatsen_northsp.json');
-let bedrijven = require('../northSeaPortGeoJson/bedrijven_northsp.json');
 let windmolens = require('../northSeaPortGeoJson/windmolens_northsp.json');
-let reddingsboeien = require('../northSeaPortGeoJson/reddingsboeien_northsp.json');
-let beheersgebied = require('../northSeaPortGeoJson/beheergebied_northsp.json');
-let bolders = require('../northSeaPortGeoJson/bolders_northsp.json');
 let steigers = require('../northSeaPortGeoJson/steigers_northsp.json');
 let kaainrs = require('../northSeaPortGeoJson/kaainrs_northsp_be.json');
 let kaarverdeling = require('../northSeaPortGeoJson/kaaiverdeling_northsp_be.json');
@@ -58,17 +58,36 @@ function onEachFeature(feature: any, layer: L.Layer) {
     layer.bindPopup(popupContent);
 }
 
-let bedrijvenLayer = L.geoJSON(arcgisToGeoJSON(bedrijven), {
-    onEachFeature: onEachFeature,
-    style: {
-        "color": "#ff7800",
-        "weight": 0,
-        "opacity": 0.65
-    }
-});
 
-let beheersgebiedLayer = L.geoJSON(arcgisToGeoJSON(beheersgebied));
-let boldersLayer = L.geoJSON(arcgisToGeoJSON(bolders));
+// const request = new Request('http://10.0.0.20:7000/latest', {
+//     method: 'GET',
+// });
+
+// request.json().then(function(data) {
+//     let tes = L.velocityLayer({
+
+//     	displayValues: true,
+//     	displayOptions: {
+//     		velocityType: 'Global Wind',
+//     		position: 'bottomleft',//REQUIRED !
+//     		emptyString: 'No velocity data',//REQUIRED !
+//     		angleConvention: 'bearingCW',//REQUIRED !
+//     		displayPosition: 'bottomleft',
+//     		displayEmptyString: 'No velocity data',
+//     		speedUnit: 'm/s'
+//     	},
+//     	data: data,            // see demo/*.json, or wind-js-server for example data service
+
+//     	// OPTIONAL
+//     	/*minVelocity: 0,      // used to align color scale
+//     	maxVelocity: 10,       // used to align color scale*/
+//     	velocityScale: 0.005,  // modifier for particle animations, arbitrarily defaults to 0.005
+//     	colorScale: []         // define your own array of hex/rgb colors
+//     }).addTo(map);
+// });
+
+
+
 let fietspadenLayer = L.geoJSON(arcgisToGeoJSON(fietspaden));
 let gebouwenLayer = L.geoJSON(arcgisToGeoJSON(gebouwen));
 let haven_dokkenLayer = L.geoJSON(arcgisToGeoJSON(haven_dokken));
@@ -85,24 +104,6 @@ let kaainrsLayer = L.geoJSON(arcgisToGeoJSON(kaainrs), {
 });
 let kaarverdelingLayer = L.geoJSON(arcgisToGeoJSON(kaarverdeling));
 
-
-let ligplaatsenNummers = L.layerGroup();
-let ligplaatsenLayer = L.geoJSON(ligplaatsen, {
-    onEachFeature: (feature, layer) => {
-        if (layer instanceof L.Polygon) {
-            L.marker(layer.getBounds().getCenter(), {
-                icon: L.divIcon({
-                  className: 'label',
-                  html: feature.properties.ligplaatsNr,
-                  iconSize: [30, 40]
-                })
-            }).addTo(ligplaatsenNummers);
-        }
-    }
-});
-let ligplaatsenInfo = L.layerGroup([ligplaatsenLayer, ligplaatsenNummers]);
-
-let reddingsboeienLayer = L.geoJSON(arcgisToGeoJSON(reddingsboeien));
 let scheepvaartsignalisatieLayer = L.geoJSON(arcgisToGeoJSON(scheepvaartsignalisatie));
 let spoorasLayer = L.geoJSON(arcgisToGeoJSON(spooras));
 let steigersLayer = L.geoJSON(arcgisToGeoJSON(steigers));
@@ -119,18 +120,18 @@ let windmolensLayer = L.geoJSON(arcgisToGeoJSON(windmolens), {
     }
 });
 
+let ligplaats = new Ligplaats
+let bedrijven = new Bedrijven
+
 // let baseMaps = {
 //     "Default": main,
 //     "Licht": Thunderforest_Transport,
 //     "Donker": Thunderforest_TransportDark
 // }
 let overlays = {
-    "Bedrijven": bedrijvenLayer,
-    "Beheersgebied": beheersgebiedLayer,
-    "Ligplaatsen": ligplaatsenInfo,
+    "Bedrijven": bedrijven.bedrijvenGroup,
+    "Ligplaatsen": ligplaats.ligplaatsenLayer,
     "Windmolens": windmolensLayer,
-    "Reddingsboeien": reddingsboeienLayer,
-    "Bolders": boldersLayer,
     "Steigers": steigersLayer,
     "Kaai nummers": kaainrsLayer,
     "Kaaiverdeling": kaarverdelingLayer,
@@ -144,10 +145,12 @@ let overlays = {
     "Open sea maps": OpenSeaMap
 };
 
-L.control.layers(overlays).addTo(map);
+L.control.layers(overlays, {}, {
+    sortLayers: true
+}).addTo(map);
 
 
-var sidebar = L.control.sidebar({
+let sidebar = L.control.sidebar({
     autopan: false,       // whether to maintain the centered map point when opening the sidebar
     closeButton: true,    // whether t add a close button to the panes
     container: 'sidebar', // the DOM container or #ID of a predefined sidebar container that should be used
@@ -163,14 +166,17 @@ function onMapClick() {
 
 map.on('click', onMapClick);
 
-map.on('zoomend', e => {
-    if (map.getZoom() < 16) {
-        if (map.hasLayer(ligplaatsenLayer)) {
-            map.removeLayer(ligplaatsenNummers)
-        }
-    } else {
-        if (map.hasLayer(ligplaatsenLayer)) {
-            map.addLayer(ligplaatsenNummers)
-        }
-    }
+map.on('zoomend', () => {
+    ligplaats.checkZoom(map)
+    bedrijven.checkZoom(map)
+})
+
+map.on('baselayerchange', () => {
+    ligplaats.checkLayer(map)
+    bedrijven.checkLayer(map)
+})
+
+
+map.on('overlayadd', e => {
+    console.log(e)
 })

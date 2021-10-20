@@ -28,6 +28,7 @@
         "@types/leaflet": "^1.7.5",
         "bootstrap": "^5.1.3",
         "leaflet": "^1.7.1",
-        "leaflet-sidebar-v2": "^3.2.3"
+        "leaflet-sidebar-v2": "^3.2.3",
+        "leaflet-velocity-ts-scoped": "0.0.6"
     }
 }
