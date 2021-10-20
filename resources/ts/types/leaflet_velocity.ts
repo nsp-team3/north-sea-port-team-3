@@ -3,13 +3,5 @@
 import * as L from 'leaflet';
 
 declare module 'leaflet' {
-
-    export class VelocityLayer {
-        constructor(options?: any);
-
-        addTo(map: L.Map): this;
-        removeFrom(map: L.Map): this;
-    }
-
-    export function velocityLayer(options?: any): VelocityLayer;
+    export function velocityLayer(options?: any): L.LayerGroup;
 }

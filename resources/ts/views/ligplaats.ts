@@ -1,4 +1,4 @@
-import L = require("leaflet");
+import * as L from "leaflet";
 
 let ligplaatsen = require('../../northSeaPortGeoJson/ligplaatsen_northsp.json');
 let bolders = require('../../northSeaPortGeoJson/bolders_northsp.json');

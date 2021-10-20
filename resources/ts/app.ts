@@ -1,12 +1,12 @@
 /// <reference path="../../node_modules/@types/leaflet/index.d.ts" />
+/// <reference path="./types/leaflet_velocity.ts" />
 import * as L from "leaflet";
-/// <reference path="../../node_modules/leaflet-sidebar-v2/index.d.ts" />
 import 'leaflet-sidebar-v2';
-/// <reference path="../types/leaflet_velocity.ts" />
-import 'leaflet-velocity-ts-scoped';
+import 'leaflet-velocity';
 
 import { Bedrijven } from "./views/bedrijven";
 import { Ligplaats } from "./views/ligplaats";
+import { Windsnelheid } from "./views/windsnelheid";
 const { arcgisToGeoJSON } = require('@esri/arcgis-to-geojson-utils');
 let windmolens = require('../northSeaPortGeoJson/windmolens_northsp.json');
 let steigers = require('../northSeaPortGeoJson/steigers_northsp.json');
@@ -34,7 +34,7 @@ let main = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 // });
 
 var OpenSeaMap = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
-	attribution: 'Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors'
+    attribution: 'Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors'
 });
 
 let map: L.Map = L.map('map', {
@@ -44,50 +44,6 @@ let map: L.Map = L.map('map', {
 });
 L.control.scale().addTo(map);
 
-function onEachFeature(feature: any, layer: L.Layer) {
-    var popupContent = `<table>
-        <tr>
-          <th>Bedrijf</th>
-          <th>Haven</th>
-        </tr>
-        <tr>
-          <td>${feature.properties.bedrijf}</td>
-          <td>${feature.properties.havenNummer}</td>
-        </tr>
-    </table>`;
-    layer.bindPopup(popupContent);
-}
-
-
-// const request = new Request('http://10.0.0.20:7000/latest', {
-//     method: 'GET',
-// });
-
-// request.json().then(function(data) {
-//     let tes = L.velocityLayer({
-
-//     	displayValues: true,
-//     	displayOptions: {
-//     		velocityType: 'Global Wind',
-//     		position: 'bottomleft',//REQUIRED !
-//     		emptyString: 'No velocity data',//REQUIRED !
-//     		angleConvention: 'bearingCW',//REQUIRED !
-//     		displayPosition: 'bottomleft',
-//     		displayEmptyString: 'No velocity data',
-//     		speedUnit: 'm/s'
-//     	},
-//     	data: data,            // see demo/*.json, or wind-js-server for example data service
-
-//     	// OPTIONAL
-//     	/*minVelocity: 0,      // used to align color scale
-//     	maxVelocity: 10,       // used to align color scale*/
-//     	velocityScale: 0.005,  // modifier for particle animations, arbitrarily defaults to 0.005
-//     	colorScale: []         // define your own array of hex/rgb colors
-//     }).addTo(map);
-// });
-
-
-
 let fietspadenLayer = L.geoJSON(arcgisToGeoJSON(fietspaden));
 let gebouwenLayer = L.geoJSON(arcgisToGeoJSON(gebouwen));
 let haven_dokkenLayer = L.geoJSON(arcgisToGeoJSON(haven_dokken));
@@ -96,8 +52,8 @@ let kaainrsLayer = L.geoJSON(arcgisToGeoJSON(kaainrs), {
     onEachFeature: (feature, layer) => {
         if (layer instanceof L.Marker) {
             layer.setIcon(new L.DivIcon({
-                    html: feature.properties.kaainummer,
-                    iconSize: [0, 0]
+                html: feature.properties.kaainummer,
+                iconSize: [0, 0]
             }))
         }
     }
@@ -116,18 +72,14 @@ let windmolensLayer = L.geoJSON(arcgisToGeoJSON(windmolens), {
                 iconSize: [28, 28],
                 iconAnchor: [14, 28]
             }))
-          }
+        }
     }
 });
 
 let ligplaats = new Ligplaats
 let bedrijven = new Bedrijven
+let windsnelheid = new Windsnelheid
 
-// let baseMaps = {
-//     "Default": main,
-//     "Licht": Thunderforest_Transport,
-//     "Donker": Thunderforest_TransportDark
-// }
 let overlays = {
     "Bedrijven": bedrijven.bedrijvenGroup,
     "Ligplaatsen": ligplaats.ligplaatsenLayer,
@@ -144,8 +96,11 @@ let overlays = {
     "Wegen": wegenLayer,
     "Open sea maps": OpenSeaMap
 };
+let optionalOverlays = {
+    "Windsnelheid": windsnelheid.main,
+};
 
-L.control.layers(overlays, {}, {
+L.control.layers(overlays, optionalOverlays, {
     sortLayers: true
 }).addTo(map);
 
