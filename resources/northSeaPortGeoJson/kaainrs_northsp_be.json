@@ -1,0 +1,6391 @@
+{
+  "displayFieldName" : "",
+  "fieldAliases" : {
+    "OBJECTID" : "OBJECTID",
+    "kaainummer" : "kaainummer",
+    "labelrotatie" : "labelrotatie"
+  },
+  "geometryType" : "esriGeometryPoint",
+  "spatialReference" : {
+    "wkid" : 4326,
+    "latestWkid" : 4326
+  },
+  "fields" : [
+    {
+      "name" : "OBJECTID",
+      "type" : "esriFieldTypeOID",
+      "alias" : "OBJECTID"
+    },
+    {
+      "name" : "kaainummer",
+      "type" : "esriFieldTypeString",
+      "alias" : "kaainummer",
+      "length" : 9
+    },
+    {
+      "name" : "labelrotatie",
+      "type" : "esriFieldTypeDouble",
+      "alias" : "labelrotatie"
+    }
+  ],
+  "features" : [
+    {
+      "attributes" : {
+        "OBJECTID" : 1,
+        "kaainummer" : "0270",
+        "labelrotatie" : 5.7000000000000002
+      },
+      "geometry" : {
+        "x" : 3.7319756040000698,
+        "y" : 51.094030022000027
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 2,
+        "kaainummer" : "0280",
+        "labelrotatie" : 275.49000000000001
+      },
+      "geometry" : {
+        "x" : 3.7333938570000669,
+        "y" : 51.090814429000034
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 3,
+        "kaainummer" : "0285",
+        "labelrotatie" : 275.49000000000001
+      },
+      "geometry" : {
+        "x" : 3.7336714790000656,
+        "y" : 51.089282087000072
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 4,
+        "kaainummer" : "0290",
+        "labelrotatie" : 275.49000000000001
+      },
+      "geometry" : {
+        "x" : 3.7339105440000253,
+        "y" : 51.087785749000034
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 5,
+        "kaainummer" : "0300",
+        "labelrotatie" : 275.49000000000001
+      },
+      "geometry" : {
+        "x" : 3.7341587910000271,
+        "y" : 51.086312824000061
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 6,
+        "kaainummer" : "0310",
+        "labelrotatie" : 275.49000000000001
+      },
+      "geometry" : {
+        "x" : 3.7344382050000604,
+        "y" : 51.084644295000032
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 7,
+        "kaainummer" : "0320",
+        "labelrotatie" : 275.49000000000001
+      },
+      "geometry" : {
+        "x" : 3.7346776140000202,
+        "y" : 51.083119530000033
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 8,
+        "kaainummer" : "0330",
+        "labelrotatie" : 275.49000000000001
+      },
+      "geometry" : {
+        "x" : 3.7349131990000615,
+        "y" : 51.081875498000045
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 9,
+        "kaainummer" : "0335",
+        "labelrotatie" : 275.49000000000001
+      },
+      "geometry" : {
+        "x" : 3.7351102410000294,
+        "y" : 51.080667816000073
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 10,
+        "kaainummer" : "0340",
+        "labelrotatie" : 275.49000000000001
+      },
+      "geometry" : {
+        "x" : 3.7352973810000663,
+        "y" : 51.079488505000029
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 11,
+        "kaainummer" : "0345",
+        "labelrotatie" : 275.49000000000001
+      },
+      "geometry" : {
+        "x" : 3.7354636890000279,
+        "y" : 51.078442596000059
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 12,
+        "kaainummer" : "0830",
+        "labelrotatie" : 315
+      },
+      "geometry" : {
+        "x" : 3.7393210880000538,
+        "y" : 51.104797357000052
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 13,
+        "kaainummer" : "0840",
+        "labelrotatie" : 315
+      },
+      "geometry" : {
+        "x" : 3.7405701880000493,
+        "y" : 51.103996836000078
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 14,
+        "kaainummer" : "1060",
+        "labelrotatie" : 82
+      },
+      "geometry" : {
+        "x" : 3.7426753190000568,
+        "y" : 51.107934132000082
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 15,
+        "kaainummer" : "1070",
+        "labelrotatie" : 55
+      },
+      "geometry" : {
+        "x" : 3.7443881610000744,
+        "y" : 51.109786907000057
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 16,
+        "kaainummer" : "1065",
+        "labelrotatie" : 55
+      },
+      "geometry" : {
+        "x" : 3.7434675100000732,
+        "y" : 51.108913020000045
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 17,
+        "kaainummer" : "2380",
+        "labelrotatie" : 53
+      },
+      "geometry" : {
+        "x" : 3.7711390440000514,
+        "y" : 51.130650883000044
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 18,
+        "kaainummer" : "4300",
+        "labelrotatie" : 10
+      },
+      "geometry" : {
+        "x" : 3.8013368010000477,
+        "y" : 51.135472657000037
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 19,
+        "kaainummer" : "4600",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.778058432000023,
+        "y" : 51.141152507000072
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 20,
+        "kaainummer" : "4410",
+        "labelrotatie" : 192
+      },
+      "geometry" : {
+        "x" : 3.8018367950000425,
+        "y" : 51.135913834000064
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 21,
+        "kaainummer" : "4650",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7809115580000707,
+        "y" : 51.145557496000038
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 22,
+        "kaainummer" : "6660",
+        "labelrotatie" : 237
+      },
+      "geometry" : {
+        "x" : 3.8007047160000411,
+        "y" : 51.18583175200007
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 23,
+        "kaainummer" : "6800",
+        "labelrotatie" : 240
+      },
+      "geometry" : {
+        "x" : 3.7964402680000262,
+        "y" : 51.180083194000076
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 24,
+        "kaainummer" : "6960",
+        "labelrotatie" : 255
+      },
+      "geometry" : {
+        "x" : 3.7938613550000468,
+        "y" : 51.173011428000052
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 25,
+        "kaainummer" : "6980",
+        "labelrotatie" : 255
+      },
+      "geometry" : {
+        "x" : 3.7935076340000364,
+        "y" : 51.172187790000066
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 26,
+        "kaainummer" : "7060",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7901084010000545,
+        "y" : 51.167638244000045
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 27,
+        "kaainummer" : "7120",
+        "labelrotatie" : 192
+      },
+      "geometry" : {
+        "x" : 3.7836944320000612,
+        "y" : 51.164757657000052
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 28,
+        "kaainummer" : "7130",
+        "labelrotatie" : 192
+      },
+      "geometry" : {
+        "x" : 3.7823642990000508,
+        "y" : 51.16455439300006
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 29,
+        "kaainummer" : "7140",
+        "labelrotatie" : 192
+      },
+      "geometry" : {
+        "x" : 3.7809506780000675,
+        "y" : 51.164361797000026
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 30,
+        "kaainummer" : "7170",
+        "labelrotatie" : 192
+      },
+      "geometry" : {
+        "x" : 3.7767306890000327,
+        "y" : 51.163747413000067
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 31,
+        "kaainummer" : "7180",
+        "labelrotatie" : 192
+      },
+      "geometry" : {
+        "x" : 3.7753343570000197,
+        "y" : 51.163547436000044
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 32,
+        "kaainummer" : "7190",
+        "labelrotatie" : 192
+      },
+      "geometry" : {
+        "x" : 3.7739437470000325,
+        "y" : 51.163348259000031
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 33,
+        "kaainummer" : "7200",
+        "labelrotatie" : 192
+      },
+      "geometry" : {
+        "x" : 3.7725457950000418,
+        "y" : 51.163148011000033
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 34,
+        "kaainummer" : "7210",
+        "labelrotatie" : 192
+      },
+      "geometry" : {
+        "x" : 3.7711554620000243,
+        "y" : 51.162948837000044
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 35,
+        "kaainummer" : "7850",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.778934070000048,
+        "y" : 51.150460666000072
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 36,
+        "kaainummer" : "7985",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.770249351000075,
+        "y" : 51.133412603000068
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 37,
+        "kaainummer" : "7885",
+        "labelrotatie" : 340
+      },
+      "geometry" : {
+        "x" : 3.7791045630000326,
+        "y" : 51.150103424000065
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 38,
+        "kaainummer" : "7995",
+        "labelrotatie" : 240
+      },
+      "geometry" : {
+        "x" : 3.7689502840000273,
+        "y" : 51.131768631000057
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 39,
+        "kaainummer" : "8050",
+        "labelrotatie" : 235
+      },
+      "geometry" : {
+        "x" : 3.7649450450000472,
+        "y" : 51.128200003000075
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 40,
+        "kaainummer" : "8070",
+        "labelrotatie" : 235
+      },
+      "geometry" : {
+        "x" : 3.7631963290000385,
+        "y" : 51.126735541000073
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 41,
+        "kaainummer" : "8030",
+        "labelrotatie" : 235
+      },
+      "geometry" : {
+        "x" : 3.7668145170000571,
+        "y" : 51.129757264000034
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 42,
+        "kaainummer" : "8020",
+        "labelrotatie" : 235
+      },
+      "geometry" : {
+        "x" : 3.7675302060000604,
+        "y" : 51.130367559000035
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 43,
+        "kaainummer" : "8060",
+        "labelrotatie" : 235
+      },
+      "geometry" : {
+        "x" : 3.7640210750000733,
+        "y" : 51.12743000100005
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 44,
+        "kaainummer" : "8090",
+        "labelrotatie" : 235
+      },
+      "geometry" : {
+        "x" : 3.7614317200000755,
+        "y" : 51.125293313000043
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 45,
+        "kaainummer" : "8080",
+        "labelrotatie" : 235
+      },
+      "geometry" : {
+        "x" : 3.7622904360000575,
+        "y" : 51.126006910000058
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 46,
+        "kaainummer" : "8110",
+        "labelrotatie" : 235
+      },
+      "geometry" : {
+        "x" : 3.7596727620000365,
+        "y" : 51.123922870000058
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 47,
+        "kaainummer" : "8100",
+        "labelrotatie" : 235
+      },
+      "geometry" : {
+        "x" : 3.7604840750000221,
+        "y" : 51.124574587000041
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 48,
+        "kaainummer" : "8230",
+        "labelrotatie" : 225
+      },
+      "geometry" : {
+        "x" : 3.7486605310000414,
+        "y" : 51.115676922000034
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 49,
+        "kaainummer" : "8140",
+        "labelrotatie" : 235
+      },
+      "geometry" : {
+        "x" : 3.7569670330000235,
+        "y" : 51.121731933000035
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 50,
+        "kaainummer" : "8120",
+        "labelrotatie" : 235
+      },
+      "geometry" : {
+        "x" : 3.758857216000024,
+        "y" : 51.12313518600007
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 51,
+        "kaainummer" : "8130",
+        "labelrotatie" : 235
+      },
+      "geometry" : {
+        "x" : 3.757900505000066,
+        "y" : 51.122452718000034
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 52,
+        "kaainummer" : "8170",
+        "labelrotatie" : 230
+      },
+      "geometry" : {
+        "x" : 3.7542359440000723,
+        "y" : 51.119637356000055
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 53,
+        "kaainummer" : "8160",
+        "labelrotatie" : 230
+      },
+      "geometry" : {
+        "x" : 3.7551243180000711,
+        "y" : 51.120329430000027
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 54,
+        "kaainummer" : "8150",
+        "labelrotatie" : 230
+      },
+      "geometry" : {
+        "x" : 3.7560498480000319,
+        "y" : 51.121024760000068
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 55,
+        "kaainummer" : "8260",
+        "labelrotatie" : 220
+      },
+      "geometry" : {
+        "x" : 3.7453778940000575,
+        "y" : 51.11387643200004
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 56,
+        "kaainummer" : "8250",
+        "labelrotatie" : 220
+      },
+      "geometry" : {
+        "x" : 3.7464231740000287,
+        "y" : 51.114367414000071
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 57,
+        "kaainummer" : "8240",
+        "labelrotatie" : 220
+      },
+      "geometry" : {
+        "x" : 3.7474764600000299,
+        "y" : 51.11492690700004
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 58,
+        "kaainummer" : "8220",
+        "labelrotatie" : 225
+      },
+      "geometry" : {
+        "x" : 3.7496061420000615,
+        "y" : 51.116359081000041
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 59,
+        "kaainummer" : "8200",
+        "labelrotatie" : 225
+      },
+      "geometry" : {
+        "x" : 3.7513906780000639,
+        "y" : 51.117616577000035
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 60,
+        "kaainummer" : "8190",
+        "labelrotatie" : 225
+      },
+      "geometry" : {
+        "x" : 3.7522900510000454,
+        "y" : 51.118253198000048
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 61,
+        "kaainummer" : "8270",
+        "labelrotatie" : 220
+      },
+      "geometry" : {
+        "x" : 3.7442382660000249,
+        "y" : 51.113292841000032
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 62,
+        "kaainummer" : "8280",
+        "labelrotatie" : 215
+      },
+      "geometry" : {
+        "x" : 3.742899704000024,
+        "y" : 51.112756170000068
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 63,
+        "kaainummer" : "8290",
+        "labelrotatie" : 200
+      },
+      "geometry" : {
+        "x" : 3.7417408380000552,
+        "y" : 51.112277172000063
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 64,
+        "kaainummer" : "8300",
+        "labelrotatie" : 190
+      },
+      "geometry" : {
+        "x" : 3.7404131480000729,
+        "y" : 51.112014163000026
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 65,
+        "kaainummer" : "8440",
+        "labelrotatie" : 230
+      },
+      "geometry" : {
+        "x" : 3.7435842030000686,
+        "y" : 51.112063538000029
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 66,
+        "kaainummer" : "8450",
+        "labelrotatie" : 230
+      },
+      "geometry" : {
+        "x" : 3.7427553810000518,
+        "y" : 51.11137328600006
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 67,
+        "kaainummer" : "8510",
+        "labelrotatie" : 240
+      },
+      "geometry" : {
+        "x" : 3.7382022700000448,
+        "y" : 51.106932378000067
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 68,
+        "kaainummer" : "8490",
+        "labelrotatie" : 240
+      },
+      "geometry" : {
+        "x" : 3.739560994000044,
+        "y" : 51.108463178000079
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 69,
+        "kaainummer" : "8500",
+        "labelrotatie" : 240
+      },
+      "geometry" : {
+        "x" : 3.7388454060000527,
+        "y" : 51.107633528000065
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 70,
+        "kaainummer" : "8400",
+        "labelrotatie" : 15
+      },
+      "geometry" : {
+        "x" : 3.7391347100000303,
+        "y" : 51.111478952000027
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 71,
+        "kaainummer" : "8390",
+        "labelrotatie" : 25
+      },
+      "geometry" : {
+        "x" : 3.737838775000057,
+        "y" : 51.111144488000036
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 72,
+        "kaainummer" : "8370",
+        "labelrotatie" : 45
+      },
+      "geometry" : {
+        "x" : 3.7357372480000208,
+        "y" : 51.110179713000036
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 73,
+        "kaainummer" : "8380",
+        "labelrotatie" : 35
+      },
+      "geometry" : {
+        "x" : 3.7367528250000532,
+        "y" : 51.110705360000054
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 74,
+        "kaainummer" : "8310",
+        "labelrotatie" : 195
+      },
+      "geometry" : {
+        "x" : 3.7390182580000442,
+        "y" : 51.111831173000041
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 75,
+        "kaainummer" : "8320",
+        "labelrotatie" : 208
+      },
+      "geometry" : {
+        "x" : 3.7377328740000735,
+        "y" : 51.111508271000048
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 76,
+        "kaainummer" : "8330",
+        "labelrotatie" : 215
+      },
+      "geometry" : {
+        "x" : 3.736617696000053,
+        "y" : 51.111098617000039
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 77,
+        "kaainummer" : "8340",
+        "labelrotatie" : 225
+      },
+      "geometry" : {
+        "x" : 3.7355446480000296,
+        "y" : 51.11056818600008
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 78,
+        "kaainummer" : "8430",
+        "labelrotatie" : 30
+      },
+      "geometry" : {
+        "x" : 3.7428250290000733,
+        "y" : 51.112224669000057
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 79,
+        "kaainummer" : "0350",
+        "labelrotatie" : 275.49000000000001
+      },
+      "geometry" : {
+        "x" : 3.7356287030000317,
+        "y" : 51.077491597000062
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 80,
+        "kaainummer" : "0360",
+        "labelrotatie" : 275.49000000000001
+      },
+      "geometry" : {
+        "x" : 3.7358050020000633,
+        "y" : 51.076408892000075
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 81,
+        "kaainummer" : "0365",
+        "labelrotatie" : 275.49000000000001
+      },
+      "geometry" : {
+        "x" : 3.7359909020000259,
+        "y" : 51.075318793000065
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 82,
+        "kaainummer" : "4030",
+        "labelrotatie" : 64
+      },
+      "geometry" : {
+        "x" : 3.7726188440000215,
+        "y" : 51.132861481000077
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 83,
+        "kaainummer" : "4040",
+        "labelrotatie" : 65
+      },
+      "geometry" : {
+        "x" : 3.7732457030000432,
+        "y" : 51.133743278000054
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 84,
+        "kaainummer" : "4050",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7737478200000396,
+        "y" : 51.134518530000037
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 85,
+        "kaainummer" : "4060",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7742882710000458,
+        "y" : 51.135307541000032
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 86,
+        "kaainummer" : "4070",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7748394300000427,
+        "y" : 51.136178521000033
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 87,
+        "kaainummer" : "4080",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7753948220000666,
+        "y" : 51.137156584000081
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 88,
+        "kaainummer" : "4090",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7759707700000718,
+        "y" : 51.138033962000065
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 89,
+        "kaainummer" : "4100",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7765163530000336,
+        "y" : 51.138883858000042
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 90,
+        "kaainummer" : "4110",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7770237580000412,
+        "y" : 51.139650607000078
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 91,
+        "kaainummer" : "4620",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7793040430000246,
+        "y" : 51.14310129200004
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 92,
+        "kaainummer" : "4630",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7798031480000418,
+        "y" : 51.143914142000028
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 93,
+        "kaainummer" : "4640",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7804006600000548,
+        "y" : 51.144796072000076
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 94,
+        "kaainummer" : "4660",
+        "labelrotatie" : 26
+      },
+      "geometry" : {
+        "x" : 3.7814566300000365,
+        "y" : 51.145935589000032
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 95,
+        "kaainummer" : "6680",
+        "labelrotatie" : 237
+      },
+      "geometry" : {
+        "x" : 3.7998526460000335,
+        "y" : 51.184929710000063
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 96,
+        "kaainummer" : "6720",
+        "labelrotatie" : 240
+      },
+      "geometry" : {
+        "x" : 3.7986902420000206,
+        "y" : 51.18341408100008
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 97,
+        "kaainummer" : "6900",
+        "labelrotatie" : 257
+      },
+      "geometry" : {
+        "x" : 3.7949027340000612,
+        "y" : 51.175624302000074
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 98,
+        "kaainummer" : "6920",
+        "labelrotatie" : 257
+      },
+      "geometry" : {
+        "x" : 3.7944756970000526,
+        "y" : 51.174700097000027
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 99,
+        "kaainummer" : "7940",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7749849880000284,
+        "y" : 51.140730845000064
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 100,
+        "kaainummer" : "0240",
+        "labelrotatie" : 273
+      },
+      "geometry" : {
+        "x" : 3.7271447320000561,
+        "y" : 51.07883193400005
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 101,
+        "kaainummer" : "9460",
+        "labelrotatie" : 250
+      },
+      "geometry" : {
+        "x" : 3.7287285110000425,
+        "y" : 51.09095217600003
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 102,
+        "kaainummer" : "9500",
+        "labelrotatie" : 245
+      },
+      "geometry" : {
+        "x" : 3.7265368060000696,
+        "y" : 51.087595142000055
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 103,
+        "kaainummer" : "9490",
+        "labelrotatie" : 245
+      },
+      "geometry" : {
+        "x" : 3.7268653100000506,
+        "y" : 51.088509755000075
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 104,
+        "kaainummer" : "9480",
+        "labelrotatie" : 245
+      },
+      "geometry" : {
+        "x" : 3.7276711210000713,
+        "y" : 51.08929448400005
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 105,
+        "kaainummer" : "9520",
+        "labelrotatie" : 260
+      },
+      "geometry" : {
+        "x" : 3.7256591100000378,
+        "y" : 51.085933581000063
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 106,
+        "kaainummer" : "9510",
+        "labelrotatie" : 255
+      },
+      "geometry" : {
+        "x" : 3.7260032940000656,
+        "y" : 51.086789526000075
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 107,
+        "kaainummer" : "9560",
+        "labelrotatie" : 272
+      },
+      "geometry" : {
+        "x" : 3.7255925900000761,
+        "y" : 51.082360785000049
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 108,
+        "kaainummer" : "9530",
+        "labelrotatie" : 265
+      },
+      "geometry" : {
+        "x" : 3.7254659630000333,
+        "y" : 51.084934817000033
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 109,
+        "kaainummer" : "0245",
+        "labelrotatie" : 273
+      },
+      "geometry" : {
+        "x" : 3.7270878160000507,
+        "y" : 51.079433597000047
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 110,
+        "kaainummer" : "9570",
+        "labelrotatie" : 272
+      },
+      "geometry" : {
+        "x" : 3.7256662430000347,
+        "y" : 51.081504357000028
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 111,
+        "kaainummer" : "0250",
+        "labelrotatie" : 273
+      },
+      "geometry" : {
+        "x" : 3.7269883700000719,
+        "y" : 51.080475384000067
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 112,
+        "kaainummer" : "9580",
+        "labelrotatie" : 273
+      },
+      "geometry" : {
+        "x" : 3.7257574760000693,
+        "y" : 51.080619966000029
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 113,
+        "kaainummer" : "9590",
+        "labelrotatie" : 273
+      },
+      "geometry" : {
+        "x" : 3.7258462510000641,
+        "y" : 51.079693018000057
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 114,
+        "kaainummer" : "0260",
+        "labelrotatie" : 273
+      },
+      "geometry" : {
+        "x" : 3.7268820240000764,
+        "y" : 51.081576083000073
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 115,
+        "kaainummer" : "0265",
+        "labelrotatie" : 273
+      },
+      "geometry" : {
+        "x" : 3.7267797830000404,
+        "y" : 51.082598960000041
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 116,
+        "kaainummer" : "9720",
+        "labelrotatie" : 273
+      },
+      "geometry" : {
+        "x" : 3.7273492550000356,
+        "y" : 51.068600436000054
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 117,
+        "kaainummer" : "0200",
+        "labelrotatie" : 273
+      },
+      "geometry" : {
+        "x" : 3.7276382090000197,
+        "y" : 51.073727446000078
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 118,
+        "kaainummer" : "0205",
+        "labelrotatie" : 273
+      },
+      "geometry" : {
+        "x" : 3.7275353130000326,
+        "y" : 51.074800778000053
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 119,
+        "kaainummer" : "0210",
+        "labelrotatie" : 273
+      },
+      "geometry" : {
+        "x" : 3.7274723180000251,
+        "y" : 51.075402822000058
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 120,
+        "kaainummer" : "0215",
+        "labelrotatie" : 273
+      },
+      "geometry" : {
+        "x" : 3.727411739000047,
+        "y" : 51.076050837000082
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 121,
+        "kaainummer" : "0220",
+        "labelrotatie" : 273
+      },
+      "geometry" : {
+        "x" : 3.7273456830000669,
+        "y" : 51.076654198000028
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 122,
+        "kaainummer" : "0225",
+        "labelrotatie" : 273
+      },
+      "geometry" : {
+        "x" : 3.7272894990000509,
+        "y" : 51.077203158000032
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 123,
+        "kaainummer" : "9610",
+        "labelrotatie" : 273
+      },
+      "geometry" : {
+        "x" : 3.7257151130000352,
+        "y" : 51.078167481000037
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 124,
+        "kaainummer" : "9620",
+        "labelrotatie" : 273
+      },
+      "geometry" : {
+        "x" : 3.726037930000075,
+        "y" : 51.077474015000064
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 125,
+        "kaainummer" : "9630",
+        "labelrotatie" : 273
+      },
+      "geometry" : {
+        "x" : 3.7265654570000493,
+        "y" : 51.076325818000043
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 126,
+        "kaainummer" : "9640",
+        "labelrotatie" : 273
+      },
+      "geometry" : {
+        "x" : 3.7266487080000275,
+        "y" : 51.075356212000031
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 127,
+        "kaainummer" : "9650",
+        "labelrotatie" : 273
+      },
+      "geometry" : {
+        "x" : 3.7267457140000602,
+        "y" : 51.074516513000049
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 128,
+        "kaainummer" : "9690",
+        "labelrotatie" : 273
+      },
+      "geometry" : {
+        "x" : 3.7271821270000487,
+        "y" : 51.071169012000041
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 129,
+        "kaainummer" : "9680",
+        "labelrotatie" : 273
+      },
+      "geometry" : {
+        "x" : 3.7270477440000604,
+        "y" : 51.072092847000079
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 130,
+        "kaainummer" : "9670",
+        "labelrotatie" : 273
+      },
+      "geometry" : {
+        "x" : 3.7269441840000468,
+        "y" : 51.072906819000082
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 131,
+        "kaainummer" : "9660",
+        "labelrotatie" : 273
+      },
+      "geometry" : {
+        "x" : 3.7268334920000257,
+        "y" : 51.073628408000047
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 132,
+        "kaainummer" : "9710",
+        "labelrotatie" : 273
+      },
+      "geometry" : {
+        "x" : 3.7272711720000302,
+        "y" : 51.069484828000043
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 133,
+        "kaainummer" : "9700",
+        "labelrotatie" : 273
+      },
+      "geometry" : {
+        "x" : 3.7273036000000275,
+        "y" : 51.070247954000081
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 134,
+        "kaainummer" : "0195",
+        "labelrotatie" : 305
+      },
+      "geometry" : {
+        "x" : 3.7282792660000723,
+        "y" : 51.071267774000034
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 135,
+        "kaainummer" : "0100",
+        "labelrotatie" : 285
+      },
+      "geometry" : {
+        "x" : 3.7365212040000415,
+        "y" : 51.061853537000047
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 136,
+        "kaainummer" : "0180",
+        "labelrotatie" : 250
+      },
+      "geometry" : {
+        "x" : 3.7330400870000631,
+        "y" : 51.071079350000048
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 137,
+        "kaainummer" : "0160",
+        "labelrotatie" : 70
+      },
+      "geometry" : {
+        "x" : 3.734333313000036,
+        "y" : 51.070937764000064
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 138,
+        "kaainummer" : "0190",
+        "labelrotatie" : 195
+      },
+      "geometry" : {
+        "x" : 3.7317065300000536,
+        "y" : 51.07022991000008
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 139,
+        "kaainummer" : "0010",
+        "labelrotatie" : 310
+      },
+      "geometry" : {
+        "x" : 3.7322995690000198,
+        "y" : 51.069532504000051
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 140,
+        "kaainummer" : "0170",
+        "labelrotatie" : 160
+      },
+      "geometry" : {
+        "x" : 3.7340609810000274,
+        "y" : 51.07179284700004
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 141,
+        "kaainummer" : "0090",
+        "labelrotatie" : 285
+      },
+      "geometry" : {
+        "x" : 3.7361846850000688,
+        "y" : 51.062565796000058
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 142,
+        "kaainummer" : "0080",
+        "labelrotatie" : 285
+      },
+      "geometry" : {
+        "x" : 3.7358519870000464,
+        "y" : 51.063300924000032
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 143,
+        "kaainummer" : "0070",
+        "labelrotatie" : 285
+      },
+      "geometry" : {
+        "x" : 3.7355358790000537,
+        "y" : 51.063988054000049
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 144,
+        "kaainummer" : "0060",
+        "labelrotatie" : 285
+      },
+      "geometry" : {
+        "x" : 3.7352130280000324,
+        "y" : 51.064649440000039
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 145,
+        "kaainummer" : "0050",
+        "labelrotatie" : 285
+      },
+      "geometry" : {
+        "x" : 3.7348718740000209,
+        "y" : 51.065395549000073
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 146,
+        "kaainummer" : "0040",
+        "labelrotatie" : 285
+      },
+      "geometry" : {
+        "x" : 3.7345269990000247,
+        "y" : 51.066109639000047
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 147,
+        "kaainummer" : "0030",
+        "labelrotatie" : 285
+      },
+      "geometry" : {
+        "x" : 3.7342073970000342,
+        "y" : 51.066790711000067
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 148,
+        "kaainummer" : "0125",
+        "labelrotatie" : 107
+      },
+      "geometry" : {
+        "x" : 3.7376913930000342,
+        "y" : 51.06038185500006
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 149,
+        "kaainummer" : "0130",
+        "labelrotatie" : 15
+      },
+      "geometry" : {
+        "x" : 3.7375785690000498,
+        "y" : 51.061691925000048
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 150,
+        "kaainummer" : "0145",
+        "labelrotatie" : 107
+      },
+      "geometry" : {
+        "x" : 3.7358032290000551,
+        "y" : 51.066320444000041
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 151,
+        "kaainummer" : "0140",
+        "labelrotatie" : 107
+      },
+      "geometry" : {
+        "x" : 3.7363566550000655,
+        "y" : 51.065153335000048
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 152,
+        "kaainummer" : "0135",
+        "labelrotatie" : 107
+      },
+      "geometry" : {
+        "x" : 3.7371107530000245,
+        "y" : 51.063550037000027
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 153,
+        "kaainummer" : "0275",
+        "labelrotatie" : 275.49000000000001
+      },
+      "geometry" : {
+        "x" : 3.7330519350000486,
+        "y" : 51.092877464000026
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 154,
+        "kaainummer" : "0370",
+        "labelrotatie" : 9.9600000000000009
+      },
+      "geometry" : {
+        "x" : 3.7370170450000728,
+        "y" : 51.074791074000075
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 155,
+        "kaainummer" : "0375",
+        "labelrotatie" : 95.5
+      },
+      "geometry" : {
+        "x" : 3.7380605000000742,
+        "y" : 51.074871213000051
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 156,
+        "kaainummer" : "0380",
+        "labelrotatie" : 95.480000000000004
+      },
+      "geometry" : {
+        "x" : 3.7377394330000584,
+        "y" : 51.075749251000047
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 157,
+        "kaainummer" : "0390",
+        "labelrotatie" : 95.480000000000004
+      },
+      "geometry" : {
+        "x" : 3.7375346180000406,
+        "y" : 51.076945697000042
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 158,
+        "kaainummer" : "0400",
+        "labelrotatie" : 95.480000000000004
+      },
+      "geometry" : {
+        "x" : 3.7373554660000536,
+        "y" : 51.078050425000072
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 159,
+        "kaainummer" : "0410",
+        "labelrotatie" : 95.480000000000004
+      },
+      "geometry" : {
+        "x" : 3.7372065240000438,
+        "y" : 51.078986272000066
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 160,
+        "kaainummer" : "0415",
+        "labelrotatie" : 29.91
+      },
+      "geometry" : {
+        "x" : 3.7374432230000707,
+        "y" : 51.07974693400007
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 161,
+        "kaainummer" : "0420",
+        "labelrotatie" : 339.08999999999997
+      },
+      "geometry" : {
+        "x" : 3.7385738370000468,
+        "y" : 51.079695610000044
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 162,
+        "kaainummer" : "0430",
+        "labelrotatie" : 339.08999999999997
+      },
+      "geometry" : {
+        "x" : 3.7400486710000678,
+        "y" : 51.079343984000047
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 163,
+        "kaainummer" : "0440",
+        "labelrotatie" : 339.08999999999997
+      },
+      "geometry" : {
+        "x" : 3.7413467120000519,
+        "y" : 51.079037288000052
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 164,
+        "kaainummer" : "0450",
+        "labelrotatie" : 339.08999999999997
+      },
+      "geometry" : {
+        "x" : 3.7428640230000383,
+        "y" : 51.078685853000081
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 165,
+        "kaainummer" : "0470",
+        "labelrotatie" : 95.390000000000001
+      },
+      "geometry" : {
+        "x" : 3.7434615940000526,
+        "y" : 51.080021808000026
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 166,
+        "kaainummer" : "0460",
+        "labelrotatie" : 95.390000000000001
+      },
+      "geometry" : {
+        "x" : 3.7436093880000385,
+        "y" : 51.079143328000043
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 167,
+        "kaainummer" : "0510",
+        "labelrotatie" : 159.08000000000001
+      },
+      "geometry" : {
+        "x" : 3.7376766640000483,
+        "y" : 51.081807811000033
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 168,
+        "kaainummer" : "0500",
+        "labelrotatie" : 159.08000000000001
+      },
+      "geometry" : {
+        "x" : 3.7392671540000606,
+        "y" : 51.081444385000054
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 169,
+        "kaainummer" : "0650",
+        "labelrotatie" : 95
+      },
+      "geometry" : {
+        "x" : 3.7357010440000522,
+        "y" : 51.089535135000062
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 170,
+        "kaainummer" : "0640",
+        "labelrotatie" : 95
+      },
+      "geometry" : {
+        "x" : 3.735925395000038,
+        "y" : 51.088221320000059
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 171,
+        "kaainummer" : "0655",
+        "labelrotatie" : 37
+      },
+      "geometry" : {
+        "x" : 3.7358730500000661,
+        "y" : 51.090295198000035
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 172,
+        "kaainummer" : "0660",
+        "labelrotatie" : 338
+      },
+      "geometry" : {
+        "x" : 3.736761045000037,
+        "y" : 51.090231118000077
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 173,
+        "kaainummer" : "0670",
+        "labelrotatie" : 338
+      },
+      "geometry" : {
+        "x" : 3.7381206870000483,
+        "y" : 51.089886546000059
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 174,
+        "kaainummer" : "0680",
+        "labelrotatie" : 338
+      },
+      "geometry" : {
+        "x" : 3.7397485050000228,
+        "y" : 51.089478373000077
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 175,
+        "kaainummer" : "0740",
+        "labelrotatie" : 159
+      },
+      "geometry" : {
+        "x" : 3.7360284200000251,
+        "y" : 51.092246863000071
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 176,
+        "kaainummer" : "0730",
+        "labelrotatie" : 159
+      },
+      "geometry" : {
+        "x" : 3.7374635570000692,
+        "y" : 51.091897634000077
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 177,
+        "kaainummer" : "0720",
+        "labelrotatie" : 159
+      },
+      "geometry" : {
+        "x" : 3.7390469560000383,
+        "y" : 51.091505494000046
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 178,
+        "kaainummer" : "0710",
+        "labelrotatie" : 159
+      },
+      "geometry" : {
+        "x" : 3.7406776060000198,
+        "y" : 51.091098181000064
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 179,
+        "kaainummer" : "0690",
+        "labelrotatie" : 68
+      },
+      "geometry" : {
+        "x" : 3.740674957000067,
+        "y" : 51.089716594000038
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 180,
+        "kaainummer" : "0700",
+        "labelrotatie" : 68
+      },
+      "geometry" : {
+        "x" : 3.7411922660000414,
+        "y" : 51.090560714000048
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 181,
+        "kaainummer" : "0745",
+        "labelrotatie" : 95
+      },
+      "geometry" : {
+        "x" : 3.7350797440000747,
+        "y" : 51.093281927000078
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 182,
+        "kaainummer" : "0750",
+        "labelrotatie" : 95
+      },
+      "geometry" : {
+        "x" : 3.7347700420000365,
+        "y" : 51.094801302000064
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 183,
+        "kaainummer" : "0760",
+        "labelrotatie" : 95
+      },
+      "geometry" : {
+        "x" : 3.7345511930000725,
+        "y" : 51.096179716000051
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 184,
+        "kaainummer" : "0770",
+        "labelrotatie" : 95
+      },
+      "geometry" : {
+        "x" : 3.7343586140000298,
+        "y" : 51.097260399000049
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 185,
+        "kaainummer" : "0800",
+        "labelrotatie" : 65
+      },
+      "geometry" : {
+        "x" : 3.735974236000061,
+        "y" : 51.101894571000059
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 186,
+        "kaainummer" : "0810",
+        "labelrotatie" : 65
+      },
+      "geometry" : {
+        "x" : 3.7369691710000552,
+        "y" : 51.103269859000079
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 187,
+        "kaainummer" : "0820",
+        "labelrotatie" : 65
+      },
+      "geometry" : {
+        "x" : 3.7379375430000437,
+        "y" : 51.104566017000082
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 188,
+        "kaainummer" : "0870",
+        "labelrotatie" : 294
+      },
+      "geometry" : {
+        "x" : 3.7428326510000716,
+        "y" : 51.101162117000058
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 189,
+        "kaainummer" : "0880",
+        "labelrotatie" : 294
+      },
+      "geometry" : {
+        "x" : 3.7435890370000493,
+        "y" : 51.10015222800007
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 190,
+        "kaainummer" : "0890",
+        "labelrotatie" : 294
+      },
+      "geometry" : {
+        "x" : 3.7442452080000521,
+        "y" : 51.099212833000081
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 191,
+        "kaainummer" : "0900",
+        "labelrotatie" : 294
+      },
+      "geometry" : {
+        "x" : 3.7452498390000528,
+        "y" : 51.097823086000062
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 192,
+        "kaainummer" : "1030",
+        "labelrotatie" : 114
+      },
+      "geometry" : {
+        "x" : 3.7462258500000303,
+        "y" : 51.102482278000082
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 193,
+        "kaainummer" : "0850",
+        "labelrotatie" : 294
+      },
+      "geometry" : {
+        "x" : 3.7413831310000205,
+        "y" : 51.103093675000082
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 194,
+        "kaainummer" : "0860",
+        "labelrotatie" : 294
+      },
+      "geometry" : {
+        "x" : 3.7420629400000394,
+        "y" : 51.102163244000053
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 195,
+        "kaainummer" : "1040",
+        "labelrotatie" : 114
+      },
+      "geometry" : {
+        "x" : 3.7445499140000607,
+        "y" : 51.104718696000077
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 196,
+        "kaainummer" : "1080",
+        "labelrotatie" : 52
+      },
+      "geometry" : {
+        "x" : 3.7451776460000588,
+        "y" : 51.110476286000051
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 197,
+        "kaainummer" : "1090",
+        "labelrotatie" : 52
+      },
+      "geometry" : {
+        "x" : 3.7462562650000564,
+        "y" : 51.111345136000068
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 198,
+        "kaainummer" : "1100",
+        "labelrotatie" : 52
+      },
+      "geometry" : {
+        "x" : 3.7470269290000715,
+        "y" : 51.111951074000046
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 199,
+        "kaainummer" : "1110",
+        "labelrotatie" : 50
+      },
+      "geometry" : {
+        "x" : 3.748002978000045,
+        "y" : 51.112688659000071
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 200,
+        "kaainummer" : "1120",
+        "labelrotatie" : 50
+      },
+      "geometry" : {
+        "x" : 3.7488698490000729,
+        "y" : 51.113313755000036
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 201,
+        "kaainummer" : "2010",
+        "labelrotatie" : 50
+      },
+      "geometry" : {
+        "x" : 3.7496847700000444,
+        "y" : 51.113943235000079
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 202,
+        "kaainummer" : "2020",
+        "labelrotatie" : 50
+      },
+      "geometry" : {
+        "x" : 3.7509830430000761,
+        "y" : 51.114877259000082
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 203,
+        "kaainummer" : "2030",
+        "labelrotatie" : 50
+      },
+      "geometry" : {
+        "x" : 3.7519458540000414,
+        "y" : 51.115544822000061
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 204,
+        "kaainummer" : "2040",
+        "labelrotatie" : 352
+      },
+      "geometry" : {
+        "x" : 3.752773851000029,
+        "y" : 51.115750439000067
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 205,
+        "kaainummer" : "2050",
+        "labelrotatie" : 292
+      },
+      "geometry" : {
+        "x" : 3.7535438210000507,
+        "y" : 51.11529254800007
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 206,
+        "kaainummer" : "2060",
+        "labelrotatie" : 292
+      },
+      "geometry" : {
+        "x" : 3.7541843390000622,
+        "y" : 51.114479411000048
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 207,
+        "kaainummer" : "2070",
+        "labelrotatie" : 292
+      },
+      "geometry" : {
+        "x" : 3.7547449570000708,
+        "y" : 51.11372443700003
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 208,
+        "kaainummer" : "2080",
+        "labelrotatie" : 292
+      },
+      "geometry" : {
+        "x" : 3.7553558780000458,
+        "y" : 51.112889001000042
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 209,
+        "kaainummer" : "2090",
+        "labelrotatie" : 292
+      },
+      "geometry" : {
+        "x" : 3.755989459000034,
+        "y" : 51.112074470000039
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 210,
+        "kaainummer" : "2100",
+        "labelrotatie" : 292
+      },
+      "geometry" : {
+        "x" : 3.7564951270000506,
+        "y" : 51.111375158000044
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 211,
+        "kaainummer" : "2110",
+        "labelrotatie" : 292
+      },
+      "geometry" : {
+        "x" : 3.7570459420000475,
+        "y" : 51.110652604000052
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 212,
+        "kaainummer" : "2120",
+        "labelrotatie" : 47
+      },
+      "geometry" : {
+        "x" : 3.7579989190000447,
+        "y" : 51.110640706000027
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 213,
+        "kaainummer" : "2130",
+        "labelrotatie" : 47
+      },
+      "geometry" : {
+        "x" : 3.7592866310000659,
+        "y" : 51.111557375000075
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 214,
+        "kaainummer" : "2140",
+        "labelrotatie" : 115
+      },
+      "geometry" : {
+        "x" : 3.7594096990000594,
+        "y" : 51.112340706000055
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 215,
+        "kaainummer" : "2150",
+        "labelrotatie" : 115
+      },
+      "geometry" : {
+        "x" : 3.7588768770000343,
+        "y" : 51.113047868000081
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 216,
+        "kaainummer" : "2160",
+        "labelrotatie" : 115
+      },
+      "geometry" : {
+        "x" : 3.7581053790000283,
+        "y" : 51.114056467000069
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 217,
+        "kaainummer" : "2170",
+        "labelrotatie" : 115
+      },
+      "geometry" : {
+        "x" : 3.7574892190000355,
+        "y" : 51.114845802000048
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 218,
+        "kaainummer" : "2180",
+        "labelrotatie" : 115
+      },
+      "geometry" : {
+        "x" : 3.7569836480000731,
+        "y" : 51.115536059000078
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 219,
+        "kaainummer" : "2190",
+        "labelrotatie" : 115
+      },
+      "geometry" : {
+        "x" : 3.7564293090000547,
+        "y" : 51.116282261000038
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 220,
+        "kaainummer" : "6740",
+        "labelrotatie" : 240
+      },
+      "geometry" : {
+        "x" : 3.7981575450000378,
+        "y" : 51.182621663000077
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 221,
+        "kaainummer" : "6700",
+        "labelrotatie" : 240
+      },
+      "geometry" : {
+        "x" : 3.7992324810000468,
+        "y" : 51.184199788000058
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 222,
+        "kaainummer" : "6760",
+        "labelrotatie" : 240
+      },
+      "geometry" : {
+        "x" : 3.7974729260000686,
+        "y" : 51.181641827000078
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 223,
+        "kaainummer" : "6840",
+        "labelrotatie" : 267
+      },
+      "geometry" : {
+        "x" : 3.7957160870000735,
+        "y" : 51.178069348000065
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 224,
+        "kaainummer" : "7960",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7731345840000472,
+        "y" : 51.137808375000077
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 225,
+        "kaainummer" : "6860",
+        "labelrotatie" : 257
+      },
+      "geometry" : {
+        "x" : 3.7954183080000234,
+        "y" : 51.177153039000075
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 226,
+        "kaainummer" : "6880",
+        "labelrotatie" : 257
+      },
+      "geometry" : {
+        "x" : 3.7951994010000476,
+        "y" : 51.176532622000082
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 227,
+        "kaainummer" : "6820",
+        "labelrotatie" : 255
+      },
+      "geometry" : {
+        "x" : 3.795912291000036,
+        "y" : 51.179142007000053
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 228,
+        "kaainummer" : "7955",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7735563230000366,
+        "y" : 51.138487913000063
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 229,
+        "kaainummer" : "7950",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7740176410000572,
+        "y" : 51.139186310000071
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 230,
+        "kaainummer" : "7980",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7708868630000438,
+        "y" : 51.134329946000037
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 231,
+        "kaainummer" : "7975",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7714896000000522,
+        "y" : 51.135253029000069
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 232,
+        "kaainummer" : "7970",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7720286150000675,
+        "y" : 51.136087970000062
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 233,
+        "kaainummer" : "6780",
+        "labelrotatie" : 250
+      },
+      "geometry" : {
+        "x" : 3.7968849950000276,
+        "y" : 51.180791241000065
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 234,
+        "kaainummer" : "0490",
+        "labelrotatie" : 159.08000000000001
+      },
+      "geometry" : {
+        "x" : 3.7408394930000668,
+        "y" : 51.081074147000038
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 235,
+        "kaainummer" : "0480",
+        "labelrotatie" : 159.08000000000001
+      },
+      "geometry" : {
+        "x" : 3.7425093480000555,
+        "y" : 51.08067763400004
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 236,
+        "kaainummer" : "0520",
+        "labelrotatie" : 95.450000000000003
+      },
+      "geometry" : {
+        "x" : 3.7368319830000587,
+        "y" : 51.082725928000059
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 237,
+        "kaainummer" : "0530",
+        "labelrotatie" : 95.450000000000003
+      },
+      "geometry" : {
+        "x" : 3.7366125820000207,
+        "y" : 51.08412677900003
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 238,
+        "kaainummer" : "0535",
+        "labelrotatie" : 42.270000000000003
+      },
+      "geometry" : {
+        "x" : 3.7367915640000433,
+        "y" : 51.084819955000057
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 239,
+        "kaainummer" : "0930",
+        "labelrotatie" : 294
+      },
+      "geometry" : {
+        "x" : 3.749424728000065,
+        "y" : 51.092166345000066
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 240,
+        "kaainummer" : "0940",
+        "labelrotatie" : 294
+      },
+      "geometry" : {
+        "x" : 3.7509871360000488,
+        "y" : 51.090055611000082
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 241,
+        "kaainummer" : "0950",
+        "labelrotatie" : 294
+      },
+      "geometry" : {
+        "x" : 3.7524596150000207,
+        "y" : 51.088008043000059
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 242,
+        "kaainummer" : "0980",
+        "labelrotatie" : 114
+      },
+      "geometry" : {
+        "x" : 3.7535950720000528,
+        "y" : 51.09242019900006
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 243,
+        "kaainummer" : "0920",
+        "labelrotatie" : 294
+      },
+      "geometry" : {
+        "x" : 3.7481564910000316,
+        "y" : 51.093886839000049
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 244,
+        "kaainummer" : "1010",
+        "labelrotatie" : 114
+      },
+      "geometry" : {
+        "x" : 3.749178875000041,
+        "y" : 51.098419352000064
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 245,
+        "kaainummer" : "1000",
+        "labelrotatie" : 114
+      },
+      "geometry" : {
+        "x" : 3.7504545150000581,
+        "y" : 51.096705923000059
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 246,
+        "kaainummer" : "0990",
+        "labelrotatie" : 114
+      },
+      "geometry" : {
+        "x" : 3.7518145020000588,
+        "y" : 51.094861989000037
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 247,
+        "kaainummer" : "1020",
+        "labelrotatie" : 114
+      },
+      "geometry" : {
+        "x" : 3.7476160560000267,
+        "y" : 51.100534054000036
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 248,
+        "kaainummer" : "1050",
+        "labelrotatie" : 114
+      },
+      "geometry" : {
+        "x" : 3.742978178000044,
+        "y" : 51.106913940000027
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 249,
+        "kaainummer" : "0970",
+        "labelrotatie" : 82
+      },
+      "geometry" : {
+        "x" : 3.7542171560000384,
+        "y" : 51.090209542000082
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 250,
+        "kaainummer" : "0965",
+        "labelrotatie" : 82
+      },
+      "geometry" : {
+        "x" : 3.7536978060000479,
+        "y" : 51.087986508000029
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 251,
+        "kaainummer" : "2200",
+        "labelrotatie" : 85
+      },
+      "geometry" : {
+        "x" : 3.756424020000054,
+        "y" : 51.117184892000068
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 252,
+        "kaainummer" : "0955",
+        "labelrotatie" : 268
+      },
+      "geometry" : {
+        "x" : 3.753750850000074,
+        "y" : 51.085077114000057
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 253,
+        "kaainummer" : "0960",
+        "labelrotatie" : 295
+      },
+      "geometry" : {
+        "x" : 3.7542797010000299,
+        "y" : 51.086009472000057
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 254,
+        "kaainummer" : "2210",
+        "labelrotatie" : 85
+      },
+      "geometry" : {
+        "x" : 3.7565467600000488,
+        "y" : 51.11804879400006
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 255,
+        "kaainummer" : "2220",
+        "labelrotatie" : 54
+      },
+      "geometry" : {
+        "x" : 3.7571744560000297,
+        "y" : 51.119220111000061
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 256,
+        "kaainummer" : "2230",
+        "labelrotatie" : 54
+      },
+      "geometry" : {
+        "x" : 3.7582418580000763,
+        "y" : 51.120092916000033
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 257,
+        "kaainummer" : "2250",
+        "labelrotatie" : 54
+      },
+      "geometry" : {
+        "x" : 3.7601769020000688,
+        "y" : 51.121676959000069
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 258,
+        "kaainummer" : "2260",
+        "labelrotatie" : 54
+      },
+      "geometry" : {
+        "x" : 3.7610255870000628,
+        "y" : 51.122368165000069
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 259,
+        "kaainummer" : "2270",
+        "labelrotatie" : 53
+      },
+      "geometry" : {
+        "x" : 3.761978956000064,
+        "y" : 51.123139459000072
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 260,
+        "kaainummer" : "2280",
+        "labelrotatie" : 53
+      },
+      "geometry" : {
+        "x" : 3.763050885000041,
+        "y" : 51.123998782000058
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 261,
+        "kaainummer" : "2290",
+        "labelrotatie" : 53
+      },
+      "geometry" : {
+        "x" : 3.7637863920000427,
+        "y" : 51.124604540000064
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 262,
+        "kaainummer" : "2300",
+        "labelrotatie" : 53
+      },
+      "geometry" : {
+        "x" : 3.7645499620000464,
+        "y" : 51.125280445000044
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 263,
+        "kaainummer" : "2310",
+        "labelrotatie" : 53
+      },
+      "geometry" : {
+        "x" : 3.7657522100000733,
+        "y" : 51.126114517000076
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 264,
+        "kaainummer" : "2320",
+        "labelrotatie" : 53
+      },
+      "geometry" : {
+        "x" : 3.7666425120000326,
+        "y" : 51.126882543000079
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 265,
+        "kaainummer" : "2330",
+        "labelrotatie" : 53
+      },
+      "geometry" : {
+        "x" : 3.7675204360000407,
+        "y" : 51.127622595000048
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 266,
+        "kaainummer" : "2340",
+        "labelrotatie" : 53
+      },
+      "geometry" : {
+        "x" : 3.7684037020000574,
+        "y" : 51.128365231000032
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 267,
+        "kaainummer" : "2350",
+        "labelrotatie" : 53
+      },
+      "geometry" : {
+        "x" : 3.769187200000033,
+        "y" : 51.129004609000049
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 268,
+        "kaainummer" : "2360",
+        "labelrotatie" : 53
+      },
+      "geometry" : {
+        "x" : 3.7698564820000229,
+        "y" : 51.129590205000056
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 269,
+        "kaainummer" : "2370",
+        "labelrotatie" : 53
+      },
+      "geometry" : {
+        "x" : 3.7705449060000547,
+        "y" : 51.130178099000034
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 270,
+        "kaainummer" : "4670",
+        "labelrotatie" : 340
+      },
+      "geometry" : {
+        "x" : 3.7827887700000247,
+        "y" : 51.145921834000035
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 271,
+        "kaainummer" : "4680",
+        "labelrotatie" : 340
+      },
+      "geometry" : {
+        "x" : 3.7842818710000756,
+        "y" : 51.145600904000048
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 272,
+        "kaainummer" : "4690",
+        "labelrotatie" : 340
+      },
+      "geometry" : {
+        "x" : 3.7856956130000299,
+        "y" : 51.145314770000027
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 273,
+        "kaainummer" : "4710",
+        "labelrotatie" : 340
+      },
+      "geometry" : {
+        "x" : 3.7878498450000393,
+        "y" : 51.145461214000079
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 274,
+        "kaainummer" : "4720",
+        "labelrotatie" : 340
+      },
+      "geometry" : {
+        "x" : 3.7890669850000336,
+        "y" : 51.145214431000056
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 275,
+        "kaainummer" : "4730",
+        "labelrotatie" : 340
+      },
+      "geometry" : {
+        "x" : 3.7906208820000415,
+        "y" : 51.144893035000052
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 276,
+        "kaainummer" : "4740",
+        "labelrotatie" : 340
+      },
+      "geometry" : {
+        "x" : 3.7920738090000441,
+        "y" : 51.144596436000029
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 277,
+        "kaainummer" : "4750",
+        "labelrotatie" : 340
+      },
+      "geometry" : {
+        "x" : 3.7933451860000673,
+        "y" : 51.144330572000058
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 278,
+        "kaainummer" : "4760",
+        "labelrotatie" : 340
+      },
+      "geometry" : {
+        "x" : 3.7946258790000229,
+        "y" : 51.14405968300008
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 279,
+        "kaainummer" : "4780",
+        "labelrotatie" : 340
+      },
+      "geometry" : {
+        "x" : 3.7972500110000738,
+        "y" : 51.143515624000031
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 280,
+        "kaainummer" : "4790",
+        "labelrotatie" : 70
+      },
+      "geometry" : {
+        "x" : 3.7981833770000435,
+        "y" : 51.143956617000072
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 281,
+        "kaainummer" : "4800",
+        "labelrotatie" : 70
+      },
+      "geometry" : {
+        "x" : 3.7987456410000391,
+        "y" : 51.144997464000028
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 282,
+        "kaainummer" : "4810",
+        "labelrotatie" : 160
+      },
+      "geometry" : {
+        "x" : 3.7985017400000629,
+        "y" : 51.145622336000031
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 283,
+        "kaainummer" : "4820",
+        "labelrotatie" : 160
+      },
+      "geometry" : {
+        "x" : 3.7970689480000601,
+        "y" : 51.145919111000069
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 284,
+        "kaainummer" : "4830",
+        "labelrotatie" : 160
+      },
+      "geometry" : {
+        "x" : 3.7956965970000738,
+        "y" : 51.146209834000047
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 285,
+        "kaainummer" : "4840",
+        "labelrotatie" : 160
+      },
+      "geometry" : {
+        "x" : 3.7943275440000548,
+        "y" : 51.14650055900006
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 286,
+        "kaainummer" : "4850",
+        "labelrotatie" : 160
+      },
+      "geometry" : {
+        "x" : 3.7928343290000726,
+        "y" : 51.14679602800004
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 287,
+        "kaainummer" : "4860",
+        "labelrotatie" : 160
+      },
+      "geometry" : {
+        "x" : 3.7914113700000485,
+        "y" : 51.14710543800004
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 288,
+        "kaainummer" : "4870",
+        "labelrotatie" : 160
+      },
+      "geometry" : {
+        "x" : 3.789954822000027,
+        "y" : 51.147413150000034
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 289,
+        "kaainummer" : "4880",
+        "labelrotatie" : 160
+      },
+      "geometry" : {
+        "x" : 3.7885472480000431,
+        "y" : 51.147696254000039
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 290,
+        "kaainummer" : "4890",
+        "labelrotatie" : 160
+      },
+      "geometry" : {
+        "x" : 3.7871529750000263,
+        "y" : 51.14798360900005
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 291,
+        "kaainummer" : "4900",
+        "labelrotatie" : 160
+      },
+      "geometry" : {
+        "x" : 3.7857167740000364,
+        "y" : 51.148284896000064
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 292,
+        "kaainummer" : "4910",
+        "labelrotatie" : 115
+      },
+      "geometry" : {
+        "x" : 3.7847090420000313,
+        "y" : 51.148822489000054
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 293,
+        "kaainummer" : "4920",
+        "labelrotatie" : 115
+      },
+      "geometry" : {
+        "x" : 3.7839913400000569,
+        "y" : 51.149516911000035
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 294,
+        "kaainummer" : "4930",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7840662880000764,
+        "y" : 51.150464272000079
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 295,
+        "kaainummer" : "4940",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7846019350000688,
+        "y" : 51.151304223000068
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 296,
+        "kaainummer" : "4950",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7850857860000247,
+        "y" : 51.152026692000049
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 297,
+        "kaainummer" : "4960",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7856076780000762,
+        "y" : 51.152904264000028
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 298,
+        "kaainummer" : "4970",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7861563320000755,
+        "y" : 51.15377397900005
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 299,
+        "kaainummer" : "4980",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7866921600000296,
+        "y" : 51.154605545000038
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 300,
+        "kaainummer" : "4990",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7872550130000491,
+        "y" : 51.155412125000055
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 301,
+        "kaainummer" : "5030",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7883261820000484,
+        "y" : 51.157122111000035
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 302,
+        "kaainummer" : "5045",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7888617580000528,
+        "y" : 51.157980476000034
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 303,
+        "kaainummer" : "5060",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7894507620000581,
+        "y" : 51.158829037000032
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 304,
+        "kaainummer" : "5075",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7899738870000306,
+        "y" : 51.159619905000056
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 305,
+        "kaainummer" : "5090",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7905294430000254,
+        "y" : 51.160480839000058
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 306,
+        "kaainummer" : "5105",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7910517410000466,
+        "y" : 51.161341610000079
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 307,
+        "kaainummer" : "5120",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7916410310000401,
+        "y" : 51.162173414000051
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 308,
+        "kaainummer" : "5135",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7921006840000473,
+        "y" : 51.162943066000082
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 309,
+        "kaainummer" : "7910",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7783595760000708,
+        "y" : 51.146253312000056
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 310,
+        "kaainummer" : "7935",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7756215280000447,
+        "y" : 51.141758491000076
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 311,
+        "kaainummer" : "7930",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7761479880000479,
+        "y" : 51.142646461000027
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 312,
+        "kaainummer" : "7925",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7766848110000524,
+        "y" : 51.143517101000043
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 313,
+        "kaainummer" : "7920",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7771768100000713,
+        "y" : 51.144271034000042
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 314,
+        "kaainummer" : "4250",
+        "labelrotatie" : 345
+      },
+      "geometry" : {
+        "x" : 3.7943461600000319,
+        "y" : 51.135700633000056
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 315,
+        "kaainummer" : "4260",
+        "labelrotatie" : 355
+      },
+      "geometry" : {
+        "x" : 3.7958930170000258,
+        "y" : 51.135447136000039
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 316,
+        "kaainummer" : "4280",
+        "labelrotatie" : 358
+      },
+      "geometry" : {
+        "x" : 3.7985267450000606,
+        "y" : 51.13530041000007
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 317,
+        "kaainummer" : "4270",
+        "labelrotatie" : 355
+      },
+      "geometry" : {
+        "x" : 3.7972353520000297,
+        "y" : 51.135346269000081
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 318,
+        "kaainummer" : "4290",
+        "labelrotatie" : 5
+      },
+      "geometry" : {
+        "x" : 3.8000348670000221,
+        "y" : 51.135338494000052
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 319,
+        "kaainummer" : "4420",
+        "labelrotatie" : 190
+      },
+      "geometry" : {
+        "x" : 3.8005024130000606,
+        "y" : 51.135745433000068
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 320,
+        "kaainummer" : "4430",
+        "labelrotatie" : 185
+      },
+      "geometry" : {
+        "x" : 3.7990157430000409,
+        "y" : 51.135663928000042
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 321,
+        "kaainummer" : "4440",
+        "labelrotatie" : 175
+      },
+      "geometry" : {
+        "x" : 3.7975235370000746,
+        "y" : 51.135685857000055
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 322,
+        "kaainummer" : "4460",
+        "labelrotatie" : 165
+      },
+      "geometry" : {
+        "x" : 3.7946484460000534,
+        "y" : 51.136017688000038
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 323,
+        "kaainummer" : "4450",
+        "labelrotatie" : 170
+      },
+      "geometry" : {
+        "x" : 3.7961098960000754,
+        "y" : 51.135779022000065
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 324,
+        "kaainummer" : "4700",
+        "labelrotatie" : 47
+      },
+      "geometry" : {
+        "x" : 3.7866807700000322,
+        "y" : 51.145439041000031
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 325,
+        "kaainummer" : "5150",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7927064920000362,
+        "y" : 51.163833915000055
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 326,
+        "kaainummer" : "5165",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7932295870000416,
+        "y" : 51.164636070000029
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 327,
+        "kaainummer" : "5225",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7954136510000467,
+        "y" : 51.167994600000043
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 328,
+        "kaainummer" : "5240",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7959111670000425,
+        "y" : 51.168717085000026
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 329,
+        "kaainummer" : "5270",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7970332930000268,
+        "y" : 51.170347107000055
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 330,
+        "kaainummer" : "5285",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7977552600000308,
+        "y" : 51.171448008000027
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 331,
+        "kaainummer" : "5300",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7982728390000489,
+        "y" : 51.172270664000052
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 332,
+        "kaainummer" : "5315",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7988448250000602,
+        "y" : 51.173110921000045
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 333,
+        "kaainummer" : "5330",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7994313880000732,
+        "y" : 51.174013807000051
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 334,
+        "kaainummer" : "5345",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.8000032450000276,
+        "y" : 51.174867887000062
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 335,
+        "kaainummer" : "5360",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.8004381940000371,
+        "y" : 51.175641527000039
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 336,
+        "kaainummer" : "5375",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.8010249780000436,
+        "y" : 51.176531411000042
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 337,
+        "kaainummer" : "5390",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.8014903070000514,
+        "y" : 51.177258605000077
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 338,
+        "kaainummer" : "5400",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.8019360030000371,
+        "y" : 51.177932829000042
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 339,
+        "kaainummer" : "5420",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.8022972160000563,
+        "y" : 51.178473637000081
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 340,
+        "kaainummer" : "5435",
+        "labelrotatie" : 75
+      },
+      "geometry" : {
+        "x" : 3.801950975000068,
+        "y" : 51.179204973000026
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 341,
+        "kaainummer" : "5450",
+        "labelrotatie" : 75
+      },
+      "geometry" : {
+        "x" : 3.8022346600000674,
+        "y" : 51.180244324000057
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 342,
+        "kaainummer" : "5465",
+        "labelrotatie" : 80
+      },
+      "geometry" : {
+        "x" : 3.802433049000058,
+        "y" : 51.181118189000074
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 343,
+        "kaainummer" : "5480",
+        "labelrotatie" : 85
+      },
+      "geometry" : {
+        "x" : 3.8032382140000323,
+        "y" : 51.182213737000041
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 344,
+        "kaainummer" : "5495",
+        "labelrotatie" : 90
+      },
+      "geometry" : {
+        "x" : 3.8033762670000328,
+        "y" : 51.183101070000077
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 345,
+        "kaainummer" : "5510",
+        "labelrotatie" : 90
+      },
+      "geometry" : {
+        "x" : 3.8034246410000492,
+        "y" : 51.183967414000051
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 346,
+        "kaainummer" : "5525",
+        "labelrotatie" : 90
+      },
+      "geometry" : {
+        "x" : 3.8034140030000572,
+        "y" : 51.18483188600004
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 347,
+        "kaainummer" : "5540",
+        "labelrotatie" : 90
+      },
+      "geometry" : {
+        "x" : 3.8033993740000369,
+        "y" : 51.185670822000077
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 348,
+        "kaainummer" : "5555",
+        "labelrotatie" : 90
+      },
+      "geometry" : {
+        "x" : 3.8033476490000453,
+        "y" : 51.186583269000039
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 349,
+        "kaainummer" : "5570",
+        "labelrotatie" : 90
+      },
+      "geometry" : {
+        "x" : 3.8033640520000631,
+        "y" : 51.187469221000072
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 350,
+        "kaainummer" : "5585",
+        "labelrotatie" : 60
+      },
+      "geometry" : {
+        "x" : 3.8039280970000391,
+        "y" : 51.18830276500006
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 351,
+        "kaainummer" : "5615",
+        "labelrotatie" : 60
+      },
+      "geometry" : {
+        "x" : 3.8054681700000401,
+        "y" : 51.189928528000053
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 352,
+        "kaainummer" : "5995",
+        "labelrotatie" : 100
+      },
+      "geometry" : {
+        "x" : 3.8049682450000546,
+        "y" : 51.210683002000053
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 353,
+        "kaainummer" : "5990",
+        "labelrotatie" : 300
+      },
+      "geometry" : {
+        "x" : 3.804717513000071,
+        "y" : 51.208300989000065
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 354,
+        "kaainummer" : "6340",
+        "labelrotatie" : 270
+      },
+      "geometry" : {
+        "x" : 3.8007516400000441,
+        "y" : 51.19992845400003
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 355,
+        "kaainummer" : "6620",
+        "labelrotatie" : 270
+      },
+      "geometry" : {
+        "x" : 3.8011783600000513,
+        "y" : 51.187372994000043
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 356,
+        "kaainummer" : "6640",
+        "labelrotatie" : 270
+      },
+      "geometry" : {
+        "x" : 3.8012064410000335,
+        "y" : 51.186546154000041
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 357,
+        "kaainummer" : "7220",
+        "labelrotatie" : 192
+      },
+      "geometry" : {
+        "x" : 3.7697579880000376,
+        "y" : 51.162748623000027
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 358,
+        "kaainummer" : "7230",
+        "labelrotatie" : 192
+      },
+      "geometry" : {
+        "x" : 3.7683667370000649,
+        "y" : 51.162549281000054
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 359,
+        "kaainummer" : "7240",
+        "labelrotatie" : 192
+      },
+      "geometry" : {
+        "x" : 3.7669708510000532,
+        "y" : 51.162349257000074
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 360,
+        "kaainummer" : "7250",
+        "labelrotatie" : 192
+      },
+      "geometry" : {
+        "x" : 3.7655799030000594,
+        "y" : 51.162149924000062
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 361,
+        "kaainummer" : "7610",
+        "labelrotatie" : 12
+      },
+      "geometry" : {
+        "x" : 3.7678926750000414,
+        "y" : 51.159420795000074
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 362,
+        "kaainummer" : "7600",
+        "labelrotatie" : 12
+      },
+      "geometry" : {
+        "x" : 3.7666584520000583,
+        "y" : 51.159232907000046
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 363,
+        "kaainummer" : "7620",
+        "labelrotatie" : 12
+      },
+      "geometry" : {
+        "x" : 3.7692945390000432,
+        "y" : 51.159621677000075
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 364,
+        "kaainummer" : "7630",
+        "labelrotatie" : 12
+      },
+      "geometry" : {
+        "x" : 3.7706964170000674,
+        "y" : 51.159822543000075
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 365,
+        "kaainummer" : "7640",
+        "labelrotatie" : 12
+      },
+      "geometry" : {
+        "x" : 3.7720983040000533,
+        "y" : 51.160023393000074
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 366,
+        "kaainummer" : "7660",
+        "labelrotatie" : 12
+      },
+      "geometry" : {
+        "x" : 3.7748506720000705,
+        "y" : 51.160417671000062
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 367,
+        "kaainummer" : "7670",
+        "labelrotatie" : 12
+      },
+      "geometry" : {
+        "x" : 3.776244322000025,
+        "y" : 51.160617287000036
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 368,
+        "kaainummer" : "7680",
+        "labelrotatie" : 12
+      },
+      "geometry" : {
+        "x" : 3.7776385370000298,
+        "y" : 51.160816964000048
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 369,
+        "kaainummer" : "7740",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.784801084000037,
+        "y" : 51.159375383000054
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 370,
+        "kaainummer" : "7750",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7842403750000244,
+        "y" : 51.158583686000043
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 371,
+        "kaainummer" : "7790",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7821229080000762,
+        "y" : 51.155292875000043
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 372,
+        "kaainummer" : "7800",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7816473550000751,
+        "y" : 51.154542522000042
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 373,
+        "kaainummer" : "7810",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7810503010000502,
+        "y" : 51.153625116000057
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 374,
+        "kaainummer" : "7820",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7805466630000524,
+        "y" : 51.152842651000071
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 375,
+        "kaainummer" : "7830",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7799962920000212,
+        "y" : 51.151997190000031
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 376,
+        "kaainummer" : "7840",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7795114510000758,
+        "y" : 51.151234836000071
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 377,
+        "kaainummer" : "8480",
+        "labelrotatie" : 235
+      },
+      "geometry" : {
+        "x" : 3.7403081320000524,
+        "y" : 51.10915413500004
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 378,
+        "kaainummer" : "8210",
+        "labelrotatie" : 225
+      },
+      "geometry" : {
+        "x" : 3.750465934000033,
+        "y" : 51.116965462000053
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 379,
+        "kaainummer" : "9370",
+        "labelrotatie" : 250
+      },
+      "geometry" : {
+        "x" : 3.7319523980000326,
+        "y" : 51.098747533000051
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 380,
+        "kaainummer" : "9380",
+        "labelrotatie" : 250
+      },
+      "geometry" : {
+        "x" : 3.7315383080000402,
+        "y" : 51.098002610000037
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 381,
+        "kaainummer" : "9390",
+        "labelrotatie" : 255
+      },
+      "geometry" : {
+        "x" : 3.7312689430000319,
+        "y" : 51.097112668000079
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 382,
+        "kaainummer" : "9400",
+        "labelrotatie" : 255
+      },
+      "geometry" : {
+        "x" : 3.7309477310000716,
+        "y" : 51.096201110000038
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 383,
+        "kaainummer" : "0110",
+        "labelrotatie" : 285
+      },
+      "geometry" : {
+        "x" : 3.7370126120000577,
+        "y" : 51.060701376000054
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 384,
+        "kaainummer" : "9420",
+        "labelrotatie" : 255
+      },
+      "geometry" : {
+        "x" : 3.7304276010000308,
+        "y" : 51.094421884000042
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 385,
+        "kaainummer" : "9410",
+        "labelrotatie" : 260
+      },
+      "geometry" : {
+        "x" : 3.7305291430000693,
+        "y" : 51.095363676000034
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 386,
+        "kaainummer" : "0115",
+        "labelrotatie" : 107
+      },
+      "geometry" : {
+        "x" : 3.7382584120000502,
+        "y" : 51.058852584000078
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 387,
+        "kaainummer" : "0120",
+        "labelrotatie" : 105
+      },
+      "geometry" : {
+        "x" : 3.7387398100000269,
+        "y" : 51.058099319000064
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 388,
+        "kaainummer" : "9330",
+        "labelrotatie" : 335
+      },
+      "geometry" : {
+        "x" : 3.7310156140000572,
+        "y" : 51.101735406000046
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 389,
+        "kaainummer" : "8580",
+        "labelrotatie" : 155
+      },
+      "geometry" : {
+        "x" : 3.7329190640000434,
+        "y" : 51.101771326000062
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 390,
+        "kaainummer" : "8350",
+        "labelrotatie" : 335
+      },
+      "geometry" : {
+        "x" : 3.7348198190000517,
+        "y" : 51.110155047000035
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 391,
+        "kaainummer" : "8360",
+        "labelrotatie" : 335
+      },
+      "geometry" : {
+        "x" : 3.7352084420000438,
+        "y" : 51.11001656600007
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 392,
+        "kaainummer" : "5195",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7935838630000376,
+        "y" : 51.165992895000045
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 393,
+        "kaainummer" : "5180",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7936313250000353,
+        "y" : 51.165224770000066
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 394,
+        "kaainummer" : "0550",
+        "labelrotatie" : 337.69999999999999
+      },
+      "geometry" : {
+        "x" : 3.7391783400000236,
+        "y" : 51.084434974000033
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 395,
+        "kaainummer" : "0560",
+        "labelrotatie" : 337.69999999999999
+      },
+      "geometry" : {
+        "x" : 3.740580474000069,
+        "y" : 51.084079127000052
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 396,
+        "kaainummer" : "0570",
+        "labelrotatie" : 337.69999999999999
+      },
+      "geometry" : {
+        "x" : 3.7420739100000446,
+        "y" : 51.083708451000064
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 397,
+        "kaainummer" : "0540",
+        "labelrotatie" : 337.69999999999999
+      },
+      "geometry" : {
+        "x" : 3.7377457110000591,
+        "y" : 51.084798290000037
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 398,
+        "kaainummer" : "9230",
+        "labelrotatie" : 0
+      },
+      "geometry" : {
+        "x" : 3.7166823080000313,
+        "y" : 51.104883247000032
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 399,
+        "kaainummer" : "0790",
+        "labelrotatie" : 65
+      },
+      "geometry" : {
+        "x" : 3.7344957870000712,
+        "y" : 51.099921361000042
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 400,
+        "kaainummer" : "4610",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7787480790000245,
+        "y" : 51.14223701800006
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 401,
+        "kaainummer" : "5675",
+        "labelrotatie" : 90
+      },
+      "geometry" : {
+        "x" : 3.8029285090000258,
+        "y" : 51.189930246000074
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 402,
+        "kaainummer" : "5690",
+        "labelrotatie" : 90
+      },
+      "geometry" : {
+        "x" : 3.8029194260000736,
+        "y" : 51.190680137000072
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 403,
+        "kaainummer" : "5705",
+        "labelrotatie" : 90
+      },
+      "geometry" : {
+        "x" : 3.8028872640000486,
+        "y" : 51.191469514000062
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 404,
+        "kaainummer" : "5720",
+        "labelrotatie" : 90
+      },
+      "geometry" : {
+        "x" : 3.8029165750000402,
+        "y" : 51.192404957000065
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 405,
+        "kaainummer" : "5735",
+        "labelrotatie" : 90
+      },
+      "geometry" : {
+        "x" : 3.8028518200000576,
+        "y" : 51.193283159000032
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 406,
+        "kaainummer" : "5750",
+        "labelrotatie" : 90
+      },
+      "geometry" : {
+        "x" : 3.8027850800000351,
+        "y" : 51.194325050000032
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 407,
+        "kaainummer" : "5765",
+        "labelrotatie" : 90
+      },
+      "geometry" : {
+        "x" : 3.8027641620000736,
+        "y" : 51.195115015000056
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 408,
+        "kaainummer" : "5780",
+        "labelrotatie" : 90
+      },
+      "geometry" : {
+        "x" : 3.8027344550000635,
+        "y" : 51.196077784000067
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 409,
+        "kaainummer" : "5795",
+        "labelrotatie" : 90
+      },
+      "geometry" : {
+        "x" : 3.8026877730000592,
+        "y" : 51.196952671000076
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 410,
+        "kaainummer" : "5810",
+        "labelrotatie" : 90
+      },
+      "geometry" : {
+        "x" : 3.8026401560000522,
+        "y" : 51.197904030000075
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 411,
+        "kaainummer" : "5825",
+        "labelrotatie" : 90
+      },
+      "geometry" : {
+        "x" : 3.8026293120000219,
+        "y" : 51.198798928000031
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 412,
+        "kaainummer" : "5840",
+        "labelrotatie" : 90
+      },
+      "geometry" : {
+        "x" : 3.8026058170000283,
+        "y" : 51.19992239700008
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 413,
+        "kaainummer" : "6320",
+        "labelrotatie" : 270
+      },
+      "geometry" : {
+        "x" : 3.8006402090000506,
+        "y" : 51.200835075000043
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 414,
+        "kaainummer" : "6360",
+        "labelrotatie" : 270
+      },
+      "geometry" : {
+        "x" : 3.8007699340000727,
+        "y" : 51.198974488000033
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 415,
+        "kaainummer" : "6380",
+        "labelrotatie" : 270
+      },
+      "geometry" : {
+        "x" : 3.800825499000041,
+        "y" : 51.19821255100004
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 416,
+        "kaainummer" : "6400",
+        "labelrotatie" : 270
+      },
+      "geometry" : {
+        "x" : 3.8008365170000502,
+        "y" : 51.197306335000064
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 417,
+        "kaainummer" : "6420",
+        "labelrotatie" : 270
+      },
+      "geometry" : {
+        "x" : 3.8008698510000727,
+        "y" : 51.196431383000061
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 418,
+        "kaainummer" : "6440",
+        "labelrotatie" : 270
+      },
+      "geometry" : {
+        "x" : 3.800899596000022,
+        "y" : 51.195468615000038
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 419,
+        "kaainummer" : "6460",
+        "labelrotatie" : 270
+      },
+      "geometry" : {
+        "x" : 3.8009271360000412,
+        "y" : 51.19468708800008
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 420,
+        "kaainummer" : "6480",
+        "labelrotatie" : 270
+      },
+      "geometry" : {
+        "x" : 3.8009752290000733,
+        "y" : 51.193649196000081
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 421,
+        "kaainummer" : "6500",
+        "labelrotatie" : 270
+      },
+      "geometry" : {
+        "x" : 3.8010051700000531,
+        "y" : 51.192766740000081
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 422,
+        "kaainummer" : "6520",
+        "labelrotatie" : 270
+      },
+      "geometry" : {
+        "x" : 3.8010321320000457,
+        "y" : 51.191985212000077
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 423,
+        "kaainummer" : "6540",
+        "labelrotatie" : 270
+      },
+      "geometry" : {
+        "x" : 3.8010624210000401,
+        "y" : 51.190977130000078
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 424,
+        "kaainummer" : "6560",
+        "labelrotatie" : 270
+      },
+      "geometry" : {
+        "x" : 3.8010703820000344,
+        "y" : 51.190225223000027
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 425,
+        "kaainummer" : "6580",
+        "labelrotatie" : 270
+      },
+      "geometry" : {
+        "x" : 3.8011021200000528,
+        "y" : 51.189241815000059
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 426,
+        "kaainummer" : "6600",
+        "labelrotatie" : 270
+      },
+      "geometry" : {
+        "x" : 3.8011489010000332,
+        "y" : 51.188313108000045
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 427,
+        "kaainummer" : "7010",
+        "labelrotatie" : 255
+      },
+      "geometry" : {
+        "x" : 3.7932119600000647,
+        "y" : 51.171466624000061
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 428,
+        "kaainummer" : "7020",
+        "labelrotatie" : 255
+      },
+      "geometry" : {
+        "x" : 3.7930172500000481,
+        "y" : 51.170904771000039
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 429,
+        "kaainummer" : "7030",
+        "labelrotatie" : 212
+      },
+      "geometry" : {
+        "x" : 3.7923580260000449,
+        "y" : 51.170271795000076
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 430,
+        "kaainummer" : "7040",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7913278000000332,
+        "y" : 51.169442394000043
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 431,
+        "kaainummer" : "7050",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7906704080000395,
+        "y" : 51.168462466000051
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 432,
+        "kaainummer" : "7070",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7895293800000331,
+        "y" : 51.166787127000077
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 433,
+        "kaainummer" : "7080",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7889586190000273,
+        "y" : 51.165992372000062
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 434,
+        "kaainummer" : "7090",
+        "labelrotatie" : 192
+      },
+      "geometry" : {
+        "x" : 3.7878331690000664,
+        "y" : 51.165351588000078
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 435,
+        "kaainummer" : "7110",
+        "labelrotatie" : 192
+      },
+      "geometry" : {
+        "x" : 3.7851205920000552,
+        "y" : 51.164961927000036
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 436,
+        "kaainummer" : "7650",
+        "labelrotatie" : 12
+      },
+      "geometry" : {
+        "x" : 3.7735002070000405,
+        "y" : 51.160224225000036
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 437,
+        "kaainummer" : "7730",
+        "labelrotatie" : 310
+      },
+      "geometry" : {
+        "x" : 3.7841341550000607,
+        "y" : 51.160248619000072
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 438,
+        "kaainummer" : "7890",
+        "labelrotatie" : 340
+      },
+      "geometry" : {
+        "x" : 3.7800279710000382,
+        "y" : 51.14985875900004
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 439,
+        "kaainummer" : "8530",
+        "labelrotatie" : 240
+      },
+      "geometry" : {
+        "x" : 3.73681576000007,
+        "y" : 51.105269211000063
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 440,
+        "kaainummer" : "8590",
+        "labelrotatie" : 155
+      },
+      "geometry" : {
+        "x" : 3.7317798580000385,
+        "y" : 51.102067151000028
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 441,
+        "kaainummer" : "9350",
+        "labelrotatie" : 260
+      },
+      "geometry" : {
+        "x" : 3.7326080740000407,
+        "y" : 51.100593150000066
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 442,
+        "kaainummer" : "9360",
+        "labelrotatie" : 255
+      },
+      "geometry" : {
+        "x" : 3.7323398490000272,
+        "y" : 51.099597899000059
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 443,
+        "kaainummer" : "9340",
+        "labelrotatie" : 335
+      },
+      "geometry" : {
+        "x" : 3.7321713490000548,
+        "y" : 51.101374132000046
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 444,
+        "kaainummer" : "9320",
+        "labelrotatie" : 335
+      },
+      "geometry" : {
+        "x" : 3.7299666300000354,
+        "y" : 51.10202644900005
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 445,
+        "kaainummer" : "9310",
+        "labelrotatie" : 335
+      },
+      "geometry" : {
+        "x" : 3.7290064040000743,
+        "y" : 51.10232250200005
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 446,
+        "kaainummer" : "9300",
+        "labelrotatie" : 335
+      },
+      "geometry" : {
+        "x" : 3.7275351480000722,
+        "y" : 51.10263386500003
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 447,
+        "kaainummer" : "9260",
+        "labelrotatie" : 340
+      },
+      "geometry" : {
+        "x" : 3.7215154020000227,
+        "y" : 51.104426703000058
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 448,
+        "kaainummer" : "9250",
+        "labelrotatie" : 345
+      },
+      "geometry" : {
+        "x" : 3.7193885220000311,
+        "y" : 51.104759432000037
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 449,
+        "kaainummer" : "9220",
+        "labelrotatie" : 5
+      },
+      "geometry" : {
+        "x" : 3.7154170460000273,
+        "y" : 51.104817184000069
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 450,
+        "kaainummer" : "9210",
+        "labelrotatie" : 18
+      },
+      "geometry" : {
+        "x" : 3.7127165800000625,
+        "y" : 51.10444238000008
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 451,
+        "kaainummer" : "9215",
+        "labelrotatie" : 10
+      },
+      "geometry" : {
+        "x" : 3.714074667000034,
+        "y" : 51.104671064000058
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 452,
+        "kaainummer" : "8655",
+        "labelrotatie" : 190
+      },
+      "geometry" : {
+        "x" : 3.7147753340000236,
+        "y" : 51.105162735000079
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 453,
+        "kaainummer" : "8660",
+        "labelrotatie" : 195
+      },
+      "geometry" : {
+        "x" : 3.7135535000000459,
+        "y" : 51.105005134000066
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 454,
+        "kaainummer" : "9240",
+        "labelrotatie" : 353
+      },
+      "geometry" : {
+        "x" : 3.7180787600000258,
+        "y" : 51.104862481000055
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 455,
+        "kaainummer" : "9205",
+        "labelrotatie" : 20
+      },
+      "geometry" : {
+        "x" : 3.7115893970000684,
+        "y" : 51.104177881000055
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 456,
+        "kaainummer" : "8670",
+        "labelrotatie" : 205
+      },
+      "geometry" : {
+        "x" : 3.7112192710000613,
+        "y" : 51.104476395000063
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 457,
+        "kaainummer" : "8665",
+        "labelrotatie" : 200
+      },
+      "geometry" : {
+        "x" : 3.7123518630000376,
+        "y" : 51.104764105000072
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 458,
+        "kaainummer" : "6300",
+        "labelrotatie" : 275
+      },
+      "geometry" : {
+        "x" : 3.8004388570000742,
+        "y" : 51.201620238000032
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 459,
+        "kaainummer" : "6280",
+        "labelrotatie" : 270
+      },
+      "geometry" : {
+        "x" : 3.8002727440000399,
+        "y" : 51.20254949100007
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 460,
+        "kaainummer" : "6260",
+        "labelrotatie" : 270
+      },
+      "geometry" : {
+        "x" : 3.8002860250000481,
+        "y" : 51.203483084000027
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 461,
+        "kaainummer" : "0580",
+        "labelrotatie" : 95.390000000000001
+      },
+      "geometry" : {
+        "x" : 3.7426075210000249,
+        "y" : 51.084239051000054
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 462,
+        "kaainummer" : "0590",
+        "labelrotatie" : 95.390000000000001
+      },
+      "geometry" : {
+        "x" : 3.7424224710000544,
+        "y" : 51.08535555900005
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 463,
+        "kaainummer" : "0630",
+        "labelrotatie" : 159
+      },
+      "geometry" : {
+        "x" : 3.7367154010000263,
+        "y" : 51.087311523000039
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 464,
+        "kaainummer" : "0620",
+        "labelrotatie" : 159
+      },
+      "geometry" : {
+        "x" : 3.7382455790000222,
+        "y" : 51.086929620000035
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 465,
+        "kaainummer" : "0610",
+        "labelrotatie" : 159
+      },
+      "geometry" : {
+        "x" : 3.7398002840000686,
+        "y" : 51.086529281000026
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 466,
+        "kaainummer" : "0600",
+        "labelrotatie" : 159
+      },
+      "geometry" : {
+        "x" : 3.7414950590000444,
+        "y" : 51.086102317000041
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 467,
+        "kaainummer" : "0780",
+        "labelrotatie" : 95
+      },
+      "geometry" : {
+        "x" : 3.7341623670000672,
+        "y" : 51.098610937000046
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 468,
+        "kaainummer" : "0795",
+        "labelrotatie" : 65
+      },
+      "geometry" : {
+        "x" : 3.7352276720000646,
+        "y" : 51.100879774000077
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 469,
+        "kaainummer" : "0910",
+        "labelrotatie" : 294
+      },
+      "geometry" : {
+        "x" : 3.7466239590000328,
+        "y" : 51.095962028000031
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 470,
+        "kaainummer" : "2240",
+        "labelrotatie" : 54
+      },
+      "geometry" : {
+        "x" : 3.7593549230000463,
+        "y" : 51.120978237000031
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 471,
+        "kaainummer" : "4010",
+        "labelrotatie" : 63
+      },
+      "geometry" : {
+        "x" : 3.7712601660000473,
+        "y" : 51.131140802000061
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 472,
+        "kaainummer" : "4020",
+        "labelrotatie" : 63
+      },
+      "geometry" : {
+        "x" : 3.7719203910000374,
+        "y" : 51.131991050000067
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 473,
+        "kaainummer" : "4120",
+        "labelrotatie" : 337
+      },
+      "geometry" : {
+        "x" : 3.7780904940000255,
+        "y" : 51.139842502000079
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 474,
+        "kaainummer" : "4130",
+        "labelrotatie" : 337
+      },
+      "geometry" : {
+        "x" : 3.7795007560000613,
+        "y" : 51.13948094400007
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 475,
+        "kaainummer" : "4140",
+        "labelrotatie" : 337
+      },
+      "geometry" : {
+        "x" : 3.780991881000034,
+        "y" : 51.139090888000055
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 476,
+        "kaainummer" : "4150",
+        "labelrotatie" : 337
+      },
+      "geometry" : {
+        "x" : 3.782490259000042,
+        "y" : 51.138705513000048
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 477,
+        "kaainummer" : "4160",
+        "labelrotatie" : 337
+      },
+      "geometry" : {
+        "x" : 3.7837030310000728,
+        "y" : 51.138397723000026
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 478,
+        "kaainummer" : "4170",
+        "labelrotatie" : 337
+      },
+      "geometry" : {
+        "x" : 3.7849826810000309,
+        "y" : 51.138061659000073
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 479,
+        "kaainummer" : "4180",
+        "labelrotatie" : 337
+      },
+      "geometry" : {
+        "x" : 3.7863291700000445,
+        "y" : 51.13770102400008
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 480,
+        "kaainummer" : "4190",
+        "labelrotatie" : 337
+      },
+      "geometry" : {
+        "x" : 3.7876533090000635,
+        "y" : 51.137351901000045
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 481,
+        "kaainummer" : "4200",
+        "labelrotatie" : 337
+      },
+      "geometry" : {
+        "x" : 3.7889996100000758,
+        "y" : 51.137002872000039
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 482,
+        "kaainummer" : "4210",
+        "labelrotatie" : 337
+      },
+      "geometry" : {
+        "x" : 3.7901899190000563,
+        "y" : 51.136717004000047
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 483,
+        "kaainummer" : "4220",
+        "labelrotatie" : 337
+      },
+      "geometry" : {
+        "x" : 3.7913579730000606,
+        "y" : 51.136429836000048
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 484,
+        "kaainummer" : "4240",
+        "labelrotatie" : 337
+      },
+      "geometry" : {
+        "x" : 3.7929191040000205,
+        "y" : 51.136035228000026
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 485,
+        "kaainummer" : "4470",
+        "labelrotatie" : 157
+      },
+      "geometry" : {
+        "x" : 3.7930925420000676,
+        "y" : 51.136359182000035
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 486,
+        "kaainummer" : "4490",
+        "labelrotatie" : 157
+      },
+      "geometry" : {
+        "x" : 3.7916016920000288,
+        "y" : 51.136742420000076
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 487,
+        "kaainummer" : "4500",
+        "labelrotatie" : 157
+      },
+      "geometry" : {
+        "x" : 3.7903779270000655,
+        "y" : 51.137050237000039
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 488,
+        "kaainummer" : "4510",
+        "labelrotatie" : 157
+      },
+      "geometry" : {
+        "x" : 3.7891653140000585,
+        "y" : 51.13734523100004
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 489,
+        "kaainummer" : "4520",
+        "labelrotatie" : 157
+      },
+      "geometry" : {
+        "x" : 3.7879526050000436,
+        "y" : 51.137653077000039
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 490,
+        "kaainummer" : "4530",
+        "labelrotatie" : 157
+      },
+      "geometry" : {
+        "x" : 3.7866173700000445,
+        "y" : 51.138002148000055
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 491,
+        "kaainummer" : "4540",
+        "labelrotatie" : 157
+      },
+      "geometry" : {
+        "x" : 3.7853117960000304,
+        "y" : 51.138351402000069
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 492,
+        "kaainummer" : "4550",
+        "labelrotatie" : 157
+      },
+      "geometry" : {
+        "x" : 3.7838766130000749,
+        "y" : 51.138707618000069
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 493,
+        "kaainummer" : "4560",
+        "labelrotatie" : 157
+      },
+      "geometry" : {
+        "x" : 3.7826527430000283,
+        "y" : 51.139015355000026
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 494,
+        "kaainummer" : "4570",
+        "labelrotatie" : 157
+      },
+      "geometry" : {
+        "x" : 3.7812839890000305,
+        "y" : 51.139371174000075
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 495,
+        "kaainummer" : "4580",
+        "labelrotatie" : 157
+      },
+      "geometry" : {
+        "x" : 3.7798596670000393,
+        "y" : 51.139740647000053
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 496,
+        "kaainummer" : "4590",
+        "labelrotatie" : 157
+      },
+      "geometry" : {
+        "x" : 3.7783797790000335,
+        "y" : 51.140116798000065
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 497,
+        "kaainummer" : "4770",
+        "labelrotatie" : 340
+      },
+      "geometry" : {
+        "x" : 3.7959383470000603,
+        "y" : 51.143787664000058
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 498,
+        "kaainummer" : "5015",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7877638590000515,
+        "y" : 51.156273677000058
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 499,
+        "kaainummer" : "5255",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7964688670000442,
+        "y" : 51.169428334000031
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 500,
+        "kaainummer" : "5600",
+        "labelrotatie" : 60
+      },
+      "geometry" : {
+        "x" : 3.8047178460000737,
+        "y" : 51.189166850000049
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 501,
+        "kaainummer" : "5915",
+        "labelrotatie" : 85
+      },
+      "geometry" : {
+        "x" : 3.8027429130000314,
+        "y" : 51.204268377000062
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 502,
+        "kaainummer" : "5630",
+        "labelrotatie" : 138
+      },
+      "geometry" : {
+        "x" : 3.8055249250000429,
+        "y" : 51.190625860000068
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 503,
+        "kaainummer" : "5645",
+        "labelrotatie" : 240
+      },
+      "geometry" : {
+        "x" : 3.8047878720000199,
+        "y" : 51.190501510000047
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 504,
+        "kaainummer" : "5660",
+        "labelrotatie" : 240
+      },
+      "geometry" : {
+        "x" : 3.804054380000025,
+        "y" : 51.189728884000033
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 505,
+        "kaainummer" : "5855",
+        "labelrotatie" : 90
+      },
+      "geometry" : {
+        "x" : 3.802583516000027,
+        "y" : 51.20096867400008
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 506,
+        "kaainummer" : "5870",
+        "labelrotatie" : 85
+      },
+      "geometry" : {
+        "x" : 3.8026670050000462,
+        "y" : 51.201649970000062
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 507,
+        "kaainummer" : "5885",
+        "labelrotatie" : 85
+      },
+      "geometry" : {
+        "x" : 3.8027470570000332,
+        "y" : 51.202488711000058
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 508,
+        "kaainummer" : "5900",
+        "labelrotatie" : 85
+      },
+      "geometry" : {
+        "x" : 3.8027422220000631,
+        "y" : 51.203268482000055
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 509,
+        "kaainummer" : "5930",
+        "labelrotatie" : 85
+      },
+      "geometry" : {
+        "x" : 3.8028059650000614,
+        "y" : 51.205021493000061
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 510,
+        "kaainummer" : "5945",
+        "labelrotatie" : 85
+      },
+      "geometry" : {
+        "x" : 3.8028153410000414,
+        "y" : 51.205664377000062
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 511,
+        "kaainummer" : "5960",
+        "labelrotatie" : 85
+      },
+      "geometry" : {
+        "x" : 3.8029236570000648,
+        "y" : 51.206501973000059
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 512,
+        "kaainummer" : "5975",
+        "labelrotatie" : 85
+      },
+      "geometry" : {
+        "x" : 3.8030302630000392,
+        "y" : 51.207431716000031
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 513,
+        "kaainummer" : "7700",
+        "labelrotatie" : 12
+      },
+      "geometry" : {
+        "x" : 3.7805138470000657,
+        "y" : 51.161230107000051
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 514,
+        "kaainummer" : "5980",
+        "labelrotatie" : 85
+      },
+      "geometry" : {
+        "x" : 3.8032378360000507,
+        "y" : 51.208533859000056
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 515,
+        "kaainummer" : "7710",
+        "labelrotatie" : 12
+      },
+      "geometry" : {
+        "x" : 3.7818353930000512,
+        "y" : 51.161418265000066
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 516,
+        "kaainummer" : "7720",
+        "labelrotatie" : 310
+      },
+      "geometry" : {
+        "x" : 3.7830365700000357,
+        "y" : 51.161062874000038
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 517,
+        "kaainummer" : "7905",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7789806430000681,
+        "y" : 51.147173931000054
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 518,
+        "kaainummer" : "7900",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7794967840000595,
+        "y" : 51.147954895000055
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 519,
+        "kaainummer" : "7895",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7800478060000273,
+        "y" : 51.148842647000038
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 520,
+        "kaainummer" : "7915",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7777159060000258,
+        "y" : 51.145161717000065
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 521,
+        "kaainummer" : "6940",
+        "labelrotatie" : 255
+      },
+      "geometry" : {
+        "x" : 3.794147123000073,
+        "y" : 51.173821500000031
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 522,
+        "kaainummer" : "6240",
+        "labelrotatie" : 265
+      },
+      "geometry" : {
+        "x" : 3.8002991400000496,
+        "y" : 51.204431468000053
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 523,
+        "kaainummer" : "7100",
+        "labelrotatie" : 192
+      },
+      "geometry" : {
+        "x" : 3.7864086590000738,
+        "y" : 51.165148661000046
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 524,
+        "kaainummer" : "7150",
+        "labelrotatie" : 192
+      },
+      "geometry" : {
+        "x" : 3.7795197050000411,
+        "y" : 51.164146794000033
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 525,
+        "kaainummer" : "7160",
+        "labelrotatie" : 192
+      },
+      "geometry" : {
+        "x" : 3.7781209180000701,
+        "y" : 51.163946500000065
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 526,
+        "kaainummer" : "7690",
+        "labelrotatie" : 12
+      },
+      "geometry" : {
+        "x" : 3.7790313490000358,
+        "y" : 51.161016423000035
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 527,
+        "kaainummer" : "7945",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7745487090000438,
+        "y" : 51.140024136000079
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 528,
+        "kaainummer" : "7965",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7725376500000607,
+        "y" : 51.136902368000051
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 529,
+        "kaainummer" : "7990",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7696426440000437,
+        "y" : 51.132628648000036
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 530,
+        "kaainummer" : "8010",
+        "labelrotatie" : 235
+      },
+      "geometry" : {
+        "x" : 3.7681550940000648,
+        "y" : 51.130948735000061
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 531,
+        "kaainummer" : "8040",
+        "labelrotatie" : 235
+      },
+      "geometry" : {
+        "x" : 3.7658909350000727,
+        "y" : 51.128968116000067
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 532,
+        "kaainummer" : "8180",
+        "labelrotatie" : 225
+      },
+      "geometry" : {
+        "x" : 3.7532495970000355,
+        "y" : 51.118907711000077
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 533,
+        "kaainummer" : "8520",
+        "labelrotatie" : 240
+      },
+      "geometry" : {
+        "x" : 3.7375090990000217,
+        "y" : 51.106093508000072
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 534,
+        "kaainummer" : "8540",
+        "labelrotatie" : 240
+      },
+      "geometry" : {
+        "x" : 3.7361934950000659,
+        "y" : 51.104478541000049
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 535,
+        "kaainummer" : "8550",
+        "labelrotatie" : 240
+      },
+      "geometry" : {
+        "x" : 3.735627806000025,
+        "y" : 51.103735812000082
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 536,
+        "kaainummer" : "8560",
+        "labelrotatie" : 245
+      },
+      "geometry" : {
+        "x" : 3.7350240800000734,
+        "y" : 51.102869408000061
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 537,
+        "kaainummer" : "8570",
+        "labelrotatie" : 245
+      },
+      "geometry" : {
+        "x" : 3.7344105110000214,
+        "y" : 51.102036058000067
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 538,
+        "kaainummer" : "8460",
+        "labelrotatie" : 235
+      },
+      "geometry" : {
+        "x" : 3.7417954100000657,
+        "y" : 51.110509699000033
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 539,
+        "kaainummer" : "8470",
+        "labelrotatie" : 235
+      },
+      "geometry" : {
+        "x" : 3.7409010220000596,
+        "y" : 51.109735839000052
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 540,
+        "kaainummer" : "9450",
+        "labelrotatie" : 250
+      },
+      "geometry" : {
+        "x" : 3.7292464910000263,
+        "y" : 51.091787985000053
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 541,
+        "kaainummer" : "9440",
+        "labelrotatie" : 250
+      },
+      "geometry" : {
+        "x" : 3.7296458300000381,
+        "y" : 51.092623752000065
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 542,
+        "kaainummer" : "9470",
+        "labelrotatie" : 245
+      },
+      "geometry" : {
+        "x" : 3.728192449000062,
+        "y" : 51.090105422000079
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 543,
+        "kaainummer" : "9600",
+        "labelrotatie" : 273
+      },
+      "geometry" : {
+        "x" : 3.7259251910000444,
+        "y" : 51.078817637000043
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 544,
+        "kaainummer" : "9550",
+        "labelrotatie" : 275
+      },
+      "geometry" : {
+        "x" : 3.7254955740000355,
+        "y" : 51.083222662000026
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 545,
+        "kaainummer" : "9540",
+        "labelrotatie" : 270
+      },
+      "geometry" : {
+        "x" : 3.7254347010000401,
+        "y" : 51.084110297000052
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 546,
+        "kaainummer" : "9430",
+        "labelrotatie" : 260
+      },
+      "geometry" : {
+        "x" : 3.7299711760000491,
+        "y" : 51.093531284000051
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 547,
+        "kaainummer" : "0230",
+        "labelrotatie" : 273
+      },
+      "geometry" : {
+        "x" : 3.727242019000073,
+        "y" : 51.077725523000026
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 548,
+        "kaainummer" : "0235",
+        "labelrotatie" : 273
+      },
+      "geometry" : {
+        "x" : 3.7271945270000515,
+        "y" : 51.078305751000073
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 549,
+        "kaainummer" : "0020",
+        "labelrotatie" : 285
+      },
+      "geometry" : {
+        "x" : 3.7336791100000255,
+        "y" : 51.067906114000039
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 550,
+        "kaainummer" : "0150",
+        "labelrotatie" : 105
+      },
+      "geometry" : {
+        "x" : 3.7341216310000505,
+        "y" : 51.068539164000072
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 551,
+        "kaainummer" : "0155",
+        "labelrotatie" : 85
+      },
+      "geometry" : {
+        "x" : 3.7337538020000238,
+        "y" : 51.069722765000051
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 552,
+        "kaainummer" : "9290",
+        "labelrotatie" : 335
+      },
+      "geometry" : {
+        "x" : 3.7262109330000612,
+        "y" : 51.103032453000026
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 553,
+        "kaainummer" : "9280",
+        "labelrotatie" : 335
+      },
+      "geometry" : {
+        "x" : 3.7249226780000413,
+        "y" : 51.103420525000047
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 554,
+        "kaainummer" : "9270",
+        "labelrotatie" : 335
+      },
+      "geometry" : {
+        "x" : 3.7235280940000735,
+        "y" : 51.103952845000038
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 555,
+        "kaainummer" : "8600",
+        "labelrotatie" : 155
+      },
+      "geometry" : {
+        "x" : 3.7301581440000291,
+        "y" : 51.102359006000029
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 556,
+        "kaainummer" : "8605",
+        "labelrotatie" : 155
+      },
+      "geometry" : {
+        "x" : 3.7288914500000487,
+        "y" : 51.102734883000039
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 557,
+        "kaainummer" : "8610",
+        "labelrotatie" : 155
+      },
+      "geometry" : {
+        "x" : 3.7275736980000715,
+        "y" : 51.103144239000073
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 558,
+        "kaainummer" : "8615",
+        "labelrotatie" : 155
+      },
+      "geometry" : {
+        "x" : 3.7265200430000505,
+        "y" : 51.103459152000028
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 559,
+        "kaainummer" : "8620",
+        "labelrotatie" : 155
+      },
+      "geometry" : {
+        "x" : 3.7252641040000753,
+        "y" : 51.103846382000029
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 560,
+        "kaainummer" : "8625",
+        "labelrotatie" : 160
+      },
+      "geometry" : {
+        "x" : 3.7236392050000404,
+        "y" : 51.104318256000056
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 561,
+        "kaainummer" : "8630",
+        "labelrotatie" : 160
+      },
+      "geometry" : {
+        "x" : 3.7215910620000727,
+        "y" : 51.104799435000075
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 562,
+        "kaainummer" : "8635",
+        "labelrotatie" : 170
+      },
+      "geometry" : {
+        "x" : 3.7198631350000255,
+        "y" : 51.105089061000058
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 563,
+        "kaainummer" : "8640",
+        "labelrotatie" : 175
+      },
+      "geometry" : {
+        "x" : 3.7186228370000549,
+        "y" : 51.105226371000072
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 564,
+        "kaainummer" : "8645",
+        "labelrotatie" : 175
+      },
+      "geometry" : {
+        "x" : 3.7173435460000519,
+        "y" : 51.105290296000078
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 565,
+        "kaainummer" : "8650",
+        "labelrotatie" : 185
+      },
+      "geometry" : {
+        "x" : 3.716038731000026,
+        "y" : 51.105259526000054
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 566,
+        "kaainummer" : "8410",
+        "labelrotatie" : 12
+      },
+      "geometry" : {
+        "x" : 3.7404092250000645,
+        "y" : 51.111663212000053
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 567,
+        "kaainummer" : "8420",
+        "labelrotatie" : 20
+      },
+      "geometry" : {
+        "x" : 3.7416686160000268,
+        "y" : 51.111879714000054
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 568,
+        "kaainummer" : "6220",
+        "labelrotatie" : 265
+      },
+      "geometry" : {
+        "x" : 3.8003773560000695,
+        "y" : 51.205308215000059
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 569,
+        "kaainummer" : "6200",
+        "labelrotatie" : 265
+      },
+      "geometry" : {
+        "x" : 3.8004591580000238,
+        "y" : 51.206223182000031
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 570,
+        "kaainummer" : "6180",
+        "labelrotatie" : 265
+      },
+      "geometry" : {
+        "x" : 3.8005774610000458,
+        "y" : 51.207179049000047
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 571,
+        "kaainummer" : "6160",
+        "labelrotatie" : 265
+      },
+      "geometry" : {
+        "x" : 3.8006849060000718,
+        "y" : 51.208036509000067
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 572,
+        "kaainummer" : "6140",
+        "labelrotatie" : 265
+      },
+      "geometry" : {
+        "x" : 3.8008458570000698,
+        "y" : 51.208879610000054
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 573,
+        "kaainummer" : "6120",
+        "labelrotatie" : 265
+      },
+      "geometry" : {
+        "x" : 3.801061958000048,
+        "y" : 51.209962824000058
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 574,
+        "kaainummer" : "5200",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7942351880000729,
+        "y" : 51.167006013000048
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 575,
+        "kaainummer" : "5210",
+        "labelrotatie" : 67
+      },
+      "geometry" : {
+        "x" : 3.7949946920000457,
+        "y" : 51.167356521000045
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 576,
+        "kaainummer" : "7760",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7837433970000234,
+        "y" : 51.157813419000036
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 577,
+        "kaainummer" : "7770",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7832040980000556,
+        "y" : 51.156980616000055
+      }
+    },
+    {
+      "attributes" : {
+        "OBJECTID" : 578,
+        "kaainummer" : "7780",
+        "labelrotatie" : 247
+      },
+      "geometry" : {
+        "x" : 3.7826579700000593,
+        "y" : 51.15613722900008
+      }
+    }
+  ]
+}

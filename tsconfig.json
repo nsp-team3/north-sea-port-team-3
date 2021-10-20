@@ -1,11 +1,13 @@
 {
     "compilerOptions": {
+        "module": "commonjs",
         "target": "es6",
         "sourceMap": true,
         "noImplicitAny": true,
         "noImplicitReturns": true,
         "removeComments": true,
-        "outFile": "public/js/app.js",
+        "outDir": "public/js/",
+        // "outFile": "public/js/app.js",
         "noEmitOnError": true
     },
     "include": [

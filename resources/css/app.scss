@@ -1,0 +1,12 @@
+@import "https://unpkg.com/leaflet@1.7.1/dist/leaflet.css";
+@import "leaflet-sidebar-v2";
+@import "../../node_modules/bootstrap/scss/bootstrap";
+@import "https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css";
+
+body {
+    margin: 0;
+}
+
+#map {
+    height: 100vh;
+}
