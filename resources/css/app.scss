@@ -6,8 +6,28 @@
 
 body {
     margin: 0;
-}
+};
 
 #map {
     height: 100vh;
-}
+};
+
+#searchresults {
+
+    RES {
+        display: block;
+        margin: .5rem 0;
+        border-radius: .2rem;
+        background-color: lightgrey;
+    };
+
+    NAME {
+        display: block;
+        font-size: 1.5rem;
+    };
+
+    ID { //MMSI
+        margin: 0 .5rem;
+    };
+
+};

@@ -29,7 +29,7 @@
         <div class="leaflet-sidebar-content">
             <div class="leaflet-sidebar-pane" id="home">
                 <h1 class="leaflet-sidebar-header">
-                    Scheepsinformatie
+                    Schip zoeken
                     <span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span>
                 </h1>
                 <input type="text" id="searchfield" placeholder="Zoeken...">

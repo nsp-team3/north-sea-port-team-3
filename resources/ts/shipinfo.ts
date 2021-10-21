@@ -18,7 +18,31 @@ export class ShipInfo {
             fetch(request)
                 .then(response => {
                     if (response.status === 200) {
-                        console.log(response)
+                        response.text().then(body => {
+                            let searchresults = <HTMLDivElement>document.getElementById('searchresults');
+                            const parser = new DOMParser();
+                            const xmlDoc = parser.parseFromString(body,"text/xml");
+                            const results = xmlDoc.getElementsByTagName("RESULTS");
+                            if (results.length !== 0) {
+                                const result = <HTMLElement>results[0]
+                                /**
+                                 * from <RES><ID>316000000</ID><NAME>TEST</NAME><D>Not available</D><TYPE>0</TYPE><FLAG>CA</FLAG><LAT>0.00000</LAT><LNG>0.00000</LNG></RES>
+                                 * to <RES><NAME>UAIS TEST HO</NAME><D>Not available</D><ID>442010045</ID><FLAG>00</FLAG></RES>
+                                 */
+                                result.childNodes.forEach(element => {
+                                    console.log(element)
+                                    element.insertBefore(element.childNodes[0], element.childNodes[3]);
+                                    element.lastChild.remove()
+                                    element.lastChild.remove()
+                                    element.lastChild.previousSibling.remove()
+                                    let id = element.lastChild.previousSibling.textContent;
+                                    console.log(id)
+                                });
+
+
+                                searchresults.replaceChildren(result)
+                            }
+                        })
                     } else {
                         throw new Error('Something went wrong on api server!');
                     }

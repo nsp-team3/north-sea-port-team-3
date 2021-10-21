@@ -84,6 +84,10 @@ function onMapClick() {
     console.log(map.getCenter());
     console.log(map.getZoom());
     console.log(map.getBounds());
+    let test = shipinfo.main.getLayer(244690791);
+    var popupContent = `I am here!`;
+    test.bindPopup(popupContent);
+    test.openPopup()
 }
 
 map.on('click', onMapClick);
