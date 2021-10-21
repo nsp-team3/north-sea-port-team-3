@@ -3,11 +3,30 @@
 import * as L from "leaflet";
 import './libs/tracksymbol'
 
-const colors = ["#6b6b6c","#0fa8b7","#ac7b22","#2856fe","#0c9338","#d60202","#e716f4","#ede115","#e716f4","#e716f4","#e716f4"];
+const colors = ["#6b6b6c", "#0fa8b7", "#ac7b22", "#2856fe", "#0c9338", "#d60202", "#e716f4", "#ede115", "#e716f4", "#e716f4", "#e716f4"];
 
 export class ShipInfo {
     constructor(map: L.Map) {
         this.getShipInfo(map)
+        const searchfield = <HTMLInputElement>document.getElementById('searchfield');
+        searchfield.addEventListener('input', (e) => {
+            const params = new URLSearchParams({
+                req: searchfield.value,
+                res: "all"
+            })
+            const request = new Request(`https://www.myshiptracking.com/requests/autocomplete.php?${params}`);
+            fetch(request)
+                .then(response => {
+                    if (response.status === 200) {
+                        console.log(response)
+                    } else {
+                        throw new Error('Something went wrong on api server!');
+                    }
+                }).catch(error => {
+                    console.error(error);
+                });
+
+        });
     }
 
     public getShipInfo(map: L.Map) {
@@ -90,34 +109,6 @@ export class ShipInfo {
                                 //     pid: shipInfo[15],
                                 //     type: shipInfo[16],
                                 //     offset: shipInfo[17]
-                                // })
-
-                                // ships.push({
-                                //     type: "Feature",
-                                //     id: index as number,
-                                //     geometry: {
-                                //         type: "Point",
-                                //         coordinates: [location.lng, location.lat],
-                                //     },
-                                //     properties: {
-                                //         aisType: shipInfo[0],
-                                //         imo: shipInfo[1],
-                                //         name: shipInfo[2],
-                                //         SOG: shipInfo[3], //speed
-                                //         COG: shipInfo[4], //direction
-                                //         S1: shipInfo[7],
-                                //         S2: shipInfo[8],
-                                //         S3: shipInfo[9],
-                                //         S4: shipInfo[10],
-                                //         ARV_Text: shipInfo[11],
-                                //         ARV: new Date(shipInfo[11]),
-                                //         rtime: shipInfo[12],
-                                //         DEST: shipInfo[13],
-                                //         eta: shipInfo[14],
-                                //         pid: shipInfo[15],
-                                //         type: shipInfo[16],
-                                //         offset: shipInfo[17]
-                                //     }
                                 // })
                             }
                         })
