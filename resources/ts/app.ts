@@ -60,11 +60,11 @@ let overlays = {
     "Bedrijven": bedrijven.bedrijvenGroup,
     "Ligplaatsen": ligplaats.main,
     "Signalatie": scheepvaartsignalisatieLayer,
-    "Open sea maps": OpenSeaMap
 };
 let optionalOverlays = {
     "Windsnelheid": windsnelheid.main,
-    "Ship info": shipinfo.main
+    "Ship info": shipinfo.main,
+    "Open sea maps": OpenSeaMap
 };
 
 L.control.layers(overlays, optionalOverlays, {

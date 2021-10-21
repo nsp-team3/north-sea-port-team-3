@@ -14,7 +14,7 @@ export class ShipInfo {
                 req: searchfield.value,
                 res: "all"
             })
-            const request = new Request(`https://www.myshiptracking.com/requests/autocomplete.php?${params}`);
+            const request = new Request(`http://localhost:8000/search?${params}`);
             fetch(request)
                 .then(response => {
                     if (response.status === 200) {
