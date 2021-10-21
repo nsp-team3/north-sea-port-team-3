@@ -17,7 +17,8 @@ export class Bedrijven {
                   <td>${feature.properties.havenNummer}</td>
                 </tr>
             </table>`;
-            layer.bindPopup(popupContent);},
+            layer.bindPopup(popupContent);
+        },
         style: {
             "color": "#ff7800",
             "weight": 0,
@@ -31,7 +32,7 @@ export class Bedrijven {
     /**
      * checkZoom
      */
-     public checkZoom(map: L.Map) {
+    public checkZoom(map: L.Map) {
         if (map.hasLayer(this.bedrijvenGroup)) {
             if (map.getZoom() >= 13) {
                 map.addLayer(this.bedrijvenLayer)

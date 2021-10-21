@@ -1,9 +1,14 @@
 /// <reference path="../../node_modules/@types/leaflet/index.d.ts" />
 /// <reference path="./types/leaflet_velocity.ts" />
+/// <reference path="./types/leaflet_mouse_position.ts" />
+/// <reference path="./types/leaflet_tracksymbol.ts" />
 import * as L from "leaflet";
 import 'leaflet-sidebar-v2';
 import 'leaflet-velocity';
+import 'leaflet-mouse-position';
+import './libs/tracksymbol'
 
+import { ShipInfo } from "./shipinfo";
 import { Bedrijven } from "./views/bedrijven";
 import { Ligplaats } from "./views/ligplaats";
 import { Windsnelheid } from "./views/windsnelheid";
@@ -22,7 +27,7 @@ let wegen = require('../northSeaPortGeoJson/wegen_northsp.json');
 
 let main = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-})
+});
 
 // var Thunderforest_Transport = L.tileLayer('https://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=db5ae1f5778a448ca662554581f283c5', {
 //     attribution: '&copy; <a href="http://www.thunderforest.com/%22%3EThunderforest</a>, &copy; <a href="https://www.openstreetmap.org/copyright%22%3EOpenStreetMap</a> contributors',
@@ -39,10 +44,27 @@ var OpenSeaMap = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.p
 
 let map: L.Map = L.map('map', {
     center: { lat: 51.2797429555907, lng: 3.7477111816406254 },
+    maxBounds: [[52.45600939264076, 8.322143554687502], [50.085344397538876, -2.2247314453125004]],
     zoom: 11,
+    minZoom: 8,
     layers: [main]
 });
 L.control.scale().addTo(map);
+L.control.mousePosition().addTo(map);
+
+var trackMarker = L.trackSymbol(L.latLng(51.2797429555907, 3.7477111816406254), {
+    trackId: 123,
+       fill: true,
+    fillColor: '#0000ff',
+    fillOpacity: 1.0,
+    stroke: true,
+    color: '#000000',
+       opacity: 1.0,
+       weight: 1.0,
+    speed: 2,
+    course: 3,
+    heading: 4
+  }).addTo(map);
 
 let fietspadenLayer = L.geoJSON(arcgisToGeoJSON(fietspaden));
 let gebouwenLayer = L.geoJSON(arcgisToGeoJSON(gebouwen));
@@ -54,13 +76,31 @@ let kaainrsLayer = L.geoJSON(arcgisToGeoJSON(kaainrs), {
             layer.setIcon(new L.DivIcon({
                 html: feature.properties.kaainummer,
                 iconSize: [0, 0]
-            }))
+            }));
         }
     }
 });
 let kaarverdelingLayer = L.geoJSON(arcgisToGeoJSON(kaarverdeling));
 
-let scheepvaartsignalisatieLayer = L.geoJSON(arcgisToGeoJSON(scheepvaartsignalisatie));
+let scheepvaartsignalisatieLayer = L.geoJSON(arcgisToGeoJSON(scheepvaartsignalisatie), {
+    onEachFeature: (feature, layer) => {
+        var popupContent = `<table>
+            <tr>
+              <th>Omschrijving</th>
+              <th>Haven</th>
+            </tr>
+            <tr>
+              <td>${feature.properties.omschrijving}</td>
+            </tr>
+        </table>`;
+        layer.bindPopup(popupContent);
+    },
+    style: {
+        "color": "#ff7800",
+        "weight": 0,
+        "opacity": 0.65
+    }
+});
 let spoorasLayer = L.geoJSON(arcgisToGeoJSON(spooras));
 let steigersLayer = L.geoJSON(arcgisToGeoJSON(steigers));
 let wegenLayer = L.geoJSON(arcgisToGeoJSON(wegen));
@@ -71,14 +111,15 @@ let windmolensLayer = L.geoJSON(arcgisToGeoJSON(windmolens), {
                 iconUrl: '/icons/windmill.png',
                 iconSize: [28, 28],
                 iconAnchor: [14, 28]
-            }))
+            }));
         }
     }
 });
 
-let ligplaats = new Ligplaats
-let bedrijven = new Bedrijven
-let windsnelheid = new Windsnelheid
+let ligplaats = new Ligplaats;
+let bedrijven = new Bedrijven;
+let windsnelheid = new Windsnelheid;
+let shipinfo = new ShipInfo(map);
 
 let overlays = {
     "Bedrijven": bedrijven.bedrijvenGroup,
@@ -98,6 +139,7 @@ let overlays = {
 };
 let optionalOverlays = {
     "Windsnelheid": windsnelheid.main,
+    "Ship info": shipinfo.main
 };
 
 L.control.layers(overlays, optionalOverlays, {
@@ -122,16 +164,11 @@ function onMapClick() {
 map.on('click', onMapClick);
 
 map.on('zoomend', () => {
-    ligplaats.checkZoom(map)
-    bedrijven.checkZoom(map)
-})
+    ligplaats.checkZoom(map);
+    bedrijven.checkZoom(map);
+});
 
 map.on('baselayerchange', () => {
-    ligplaats.checkLayer(map)
-    bedrijven.checkLayer(map)
-})
-
-
-map.on('overlayadd', e => {
-    console.log(e)
-})
+    ligplaats.checkLayer(map);
+    bedrijven.checkLayer(map);
+});

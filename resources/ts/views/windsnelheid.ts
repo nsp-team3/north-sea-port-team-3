@@ -1,8 +1,6 @@
-import L = require("leaflet");
+import * as L from "leaflet";
 
 export class Windsnelheid {
-    public main = L.layerGroup();
-
     constructor() {
         const request = new Request('http://10.0.0.20:7000/latest');
 
@@ -46,4 +44,7 @@ export class Windsnelheid {
                 console.error(error);
             });
     }
+
+    public main = L.layerGroup();
+
 }
