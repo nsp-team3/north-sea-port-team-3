@@ -2,11 +2,29 @@ import * as L from "leaflet";
 
 let ligplaatsen = require('../../northSeaPortGeoJson/ligplaatsen_northsp.json');
 let bolders = require('../../northSeaPortGeoJson/bolders_northsp.json');
+let steigers = require('../../northSeaPortGeoJson/steigers_northsp.json');
 let reddingsboeien = require('../../northSeaPortGeoJson/reddingsboeien_northsp.json');
+let gebouwen = require('../../northSeaPortGeoJson/gebouwen_fm_northsp.json');
 const { arcgisToGeoJSON } = require('@esri/arcgis-to-geojson-utils');
 
 export class Ligplaats {
     private ligplaatsenNummers = L.layerGroup();
+    private gebouwenLayer = L.geoJSON(arcgisToGeoJSON(gebouwen), {
+        style: {
+            "color": "#ff7800",
+            "weight": 3,
+            "opacity": 0.65
+        }
+    });
+
+    private steigersLayer = L.geoJSON(arcgisToGeoJSON(steigers), {
+        style: {
+            "color": "#fd5353",
+            "weight": 3,
+            "opacity": 0.65
+        }
+    });
+
     private boldersLayer = L.geoJSON(arcgisToGeoJSON(bolders), {
         onEachFeature: (feature, layer) => {
             if (layer instanceof L.Marker) {
@@ -30,7 +48,7 @@ export class Ligplaats {
         }
     });
 
-    public ligplaatsenLayer = L.geoJSON(ligplaatsen, {
+    private ligplaatsenLayer = L.geoJSON(ligplaatsen, {
         onEachFeature: (feature, layer) => {
             if (layer instanceof L.Polygon) {
                 L.marker(layer.getBounds().getCenter(), {
@@ -43,6 +61,8 @@ export class Ligplaats {
             }
         }
     });
+
+    public main = L.layerGroup([this.ligplaatsenLayer, this.gebouwenLayer, this.steigersLayer]);
 
     /**
      * checkZoom

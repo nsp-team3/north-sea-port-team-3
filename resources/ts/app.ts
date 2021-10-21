@@ -1,12 +1,10 @@
 /// <reference path="../../node_modules/@types/leaflet/index.d.ts" />
 /// <reference path="./types/leaflet_velocity.ts" />
 /// <reference path="./types/leaflet_mouse_position.ts" />
-/// <reference path="./types/leaflet_tracksymbol.ts" />
 import * as L from "leaflet";
 import 'leaflet-sidebar-v2';
 import 'leaflet-velocity';
 import 'leaflet-mouse-position';
-import './libs/tracksymbol'
 
 import { ShipInfo } from "./shipinfo";
 import { Bedrijven } from "./views/bedrijven";
@@ -14,14 +12,12 @@ import { Ligplaats } from "./views/ligplaats";
 import { Windsnelheid } from "./views/windsnelheid";
 const { arcgisToGeoJSON } = require('@esri/arcgis-to-geojson-utils');
 let windmolens = require('../northSeaPortGeoJson/windmolens_northsp.json');
-let steigers = require('../northSeaPortGeoJson/steigers_northsp.json');
 let kaainrs = require('../northSeaPortGeoJson/kaainrs_northsp_be.json');
 let kaarverdeling = require('../northSeaPortGeoJson/kaaiverdeling_northsp_be.json');
 let kaaimuren = require('../northSeaPortGeoJson/kaaimuren_northsp.json');
 let haven_dokken = require('../northSeaPortGeoJson/haven_dokken_northsp.json');
 let scheepvaartsignalisatie = require('../northSeaPortGeoJson/scheepvaartsignalisatie_northsp.json');
 let fietspaden = require('../northSeaPortGeoJson/fietspaden_northsp.json');
-let gebouwen = require('../northSeaPortGeoJson/gebouwen_fm_northsp.json');
 let spooras = require('../northSeaPortGeoJson/spooras_northsp.json');
 let wegen = require('../northSeaPortGeoJson/wegen_northsp.json');
 
@@ -45,29 +41,15 @@ var OpenSeaMap = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.p
 let map: L.Map = L.map('map', {
     center: { lat: 51.2797429555907, lng: 3.7477111816406254 },
     maxBounds: [[52.45600939264076, 8.322143554687502], [50.085344397538876, -2.2247314453125004]],
-    zoom: 11,
+    zoom: 8,
     minZoom: 8,
     layers: [main]
 });
 L.control.scale().addTo(map);
 L.control.mousePosition().addTo(map);
 
-var trackMarker = L.trackSymbol(L.latLng(51.2797429555907, 3.7477111816406254), {
-    trackId: 123,
-       fill: true,
-    fillColor: '#0000ff',
-    fillOpacity: 1.0,
-    stroke: true,
-    color: '#000000',
-       opacity: 1.0,
-       weight: 1.0,
-    speed: 2,
-    course: 3,
-    heading: 4
-  }).addTo(map);
-
 let fietspadenLayer = L.geoJSON(arcgisToGeoJSON(fietspaden));
-let gebouwenLayer = L.geoJSON(arcgisToGeoJSON(gebouwen));
+
 let haven_dokkenLayer = L.geoJSON(arcgisToGeoJSON(haven_dokken));
 let kaaimurenLayer = L.geoJSON(arcgisToGeoJSON(kaaimuren));
 let kaainrsLayer = L.geoJSON(arcgisToGeoJSON(kaainrs), {
@@ -102,7 +84,7 @@ let scheepvaartsignalisatieLayer = L.geoJSON(arcgisToGeoJSON(scheepvaartsignalis
     }
 });
 let spoorasLayer = L.geoJSON(arcgisToGeoJSON(spooras));
-let steigersLayer = L.geoJSON(arcgisToGeoJSON(steigers));
+
 let wegenLayer = L.geoJSON(arcgisToGeoJSON(wegen));
 let windmolensLayer = L.geoJSON(arcgisToGeoJSON(windmolens), {
     onEachFeature: (feature, layer) => {
@@ -123,18 +105,17 @@ let shipinfo = new ShipInfo(map);
 
 let overlays = {
     "Bedrijven": bedrijven.bedrijvenGroup,
-    "Ligplaatsen": ligplaats.ligplaatsenLayer,
-    "Windmolens": windmolensLayer,
-    "Steigers": steigersLayer,
-    "Kaai nummers": kaainrsLayer,
-    "Kaaiverdeling": kaarverdelingLayer,
-    "Kaaimuren": kaaimurenLayer,
-    "Haven en dokken": haven_dokkenLayer,
+    "Ligplaatsen": ligplaats.main,
+    // "Windmolens": windmolensLayer,
+    // "Kaai nummers": kaainrsLayer,
+    // "Kaaiverdeling": kaarverdelingLayer,
+    // "Kaaimuren": kaaimurenLayer,
+    // "Haven en dokken": haven_dokkenLayer,
     "Signalatie": scheepvaartsignalisatieLayer,
-    "Fietspaden": fietspadenLayer,
-    "Gebouwen": gebouwenLayer,
-    "Spoor as": spoorasLayer,
-    "Wegen": wegenLayer,
+    // "Fietspaden": fietspadenLayer,
+    // "Gebouwen": gebouwenLayer,
+    // "Spoor as": spoorasLayer,
+    // "Wegen": wegenLayer,
     "Open sea maps": OpenSeaMap
 };
 let optionalOverlays = {
@@ -166,7 +147,12 @@ map.on('click', onMapClick);
 map.on('zoomend', () => {
     ligplaats.checkZoom(map);
     bedrijven.checkZoom(map);
+    shipinfo.getShipInfo(map);
 });
+
+map.on('dragend', () => {
+    shipinfo.getShipInfo(map);
+})
 
 map.on('baselayerchange', () => {
     ligplaats.checkLayer(map);
