@@ -30,14 +30,18 @@ export class ShipInfo {
                                  * to <RES><NAME>UAIS TEST HO</NAME><D>Not available</D><ID>442010045</ID><FLAG>00</FLAG></RES>
                                  */
                                 result.childNodes.forEach(element => {
-                                    console.log(element)
                                     element.insertBefore(element.childNodes[0], element.childNodes[3]);
+                                    element.firstChild.textContent = element.firstChild.textContent.toLowerCase()
+                                    console.log(element.firstChild)
                                     element.lastChild.remove()
                                     element.lastChild.remove()
                                     element.lastChild.previousSibling.remove()
                                     let id = element.lastChild.previousSibling.textContent;
-                                    console.log(id)
+                                    element.addEventListener('click', () => {
+                                        console.log(id)
+                                    })
                                 });
+
 
 
                                 searchresults.replaceChildren(result)
