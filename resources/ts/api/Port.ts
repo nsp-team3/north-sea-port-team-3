@@ -31,14 +31,20 @@ class Port {
     }
 
     public get ETA(): Date | void {
-        return parseHtmlDate(this._rawVesselInfo[`${this._type}ETA`]);
+        if (this._type == PortType.Next) {
+            return parseHtmlDate(this._rawVesselInfo[`${this._type}ETA`]);
+        }
     }
 
-    public get department(): Date | void {
-        return parseHtmlDate(this._rawVesselInfo[`${this._type}DEP`]);
+    public get departTime(): Date | void {
+        if (this._type === PortType.Last) {
+            return parseHtmlDate(this._rawVesselInfo[`${this._type}DEP`]);
+        }
     }
 
-    public get arrival(): Date | void {
-        return parseHtmlDate(this._rawVesselInfo[`${this._type}ARR`]);
+    public get arrivalTime(): Date | void {
+        if (this._type === PortType.Current) {
+            return parseHtmlDate(this._rawVesselInfo[`${this._type}ARR`]);
+        }
     }
 }
