@@ -1,6 +1,13 @@
 /// <reference path="Port.ts" />
 
-class Vessel {
+import { Destination } from "./Destination";
+import { LocationInfo } from "./enums/LocationInfo";
+import { PortType } from "./enums/PortType";
+import { RawDestination } from "./enums/RawDestination";
+import { RawVesselInfo } from "./enums/RawVesselInfo";
+import { Port } from "./Port";
+
+export class Vessel {
     private _rawVesselInfo: RawVesselInfo;
     private static BASE_URL: string = "https://services.myshiptracking.com/requests";
 

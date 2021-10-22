@@ -1,6 +1,9 @@
 /// <reference path="Util.ts" />
 
-class Destination {
+import { RawDestination } from "./enums/RawDestination";
+import { parseHtmlDate } from "./Util";
+
+export class Destination {
     private _rawDestination: RawDestination;
 
     public constructor (rawDestination: RawDestination) {

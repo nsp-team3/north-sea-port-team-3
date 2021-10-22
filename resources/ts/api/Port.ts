@@ -1,6 +1,11 @@
 /// <reference path="Util.ts" />
 
-class Port {
+import { PortType } from "./enums/PortType";
+import { RawVesselInfo } from "./enums/RawVesselInfo";
+import { parseHtmlDate } from "./Util";
+
+
+export class Port {
     private _type: PortType;
     private _rawVesselInfo: RawVesselInfo;
 
@@ -18,12 +23,11 @@ class Port {
     }
 
     public get countryCode(): string | void {
-        const key = `${this._type}CPC`;
-        return this._rawVesselInfo[`${this._type}CPC`];
+        return this._rawVesselInfo[`${this._type}C`];
     }
 
     public get country(): string | void {
-        return this._rawVesselInfo[`${this._type}CPC1`];
+        return this._rawVesselInfo[`${this._type}C1`];
     }
 
     public get url(): string | void {

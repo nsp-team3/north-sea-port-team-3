@@ -1,7 +1,10 @@
 /// <reference path="../../node_modules/@types/geojson/index.d.ts" />
 /// <reference path="./types/leaflet_tracksymbol.ts" />
+/// <reference path="./api/Vessel.ts" />
 import * as L from "leaflet";
-import './libs/tracksymbol'
+import './libs/tracksymbol';
+import { AIS } from "./api/AIS";
+import { Vessel } from "./api/Vessel";
 
 const colors = ["#6b6b6c", "#0fa8b7", "#ac7b22", "#2856fe", "#0c9338", "#d60202", "#e716f4", "#ede115", "#e716f4", "#e716f4", "#e716f4"];
 
@@ -116,28 +119,32 @@ export class ShipInfo {
                                     heading: Number(shipInfo[4]) * Math.PI / 180,
                                 })
                                 ship.on('click', (context) => {
-                                    console.log(context.sourceTarget.options.trackId)
+                                    console.log(context.sourceTarget.options.trackId);
+                                    AIS.getVessel(538007209).then((randomVessel: Vessel) => {
+                                        console.log(randomVessel);
+                                    });
                                 })
                                 ship.addTo(this.main);
-                                console.log({
-                                    aisType: shipInfo[0],
-                                    imo: shipInfo[1],
-                                    name: shipInfo[2],
-                                    SOG: shipInfo[3], //speed
-                                    COG: shipInfo[4], //direction
-                                    S1: shipInfo[7],
-                                    S2: shipInfo[8],
-                                    S3: shipInfo[9],
-                                    S4: shipInfo[10],
-                                    ARV_Text: shipInfo[11],
-                                    ARV: new Date(shipInfo[11]),
-                                    rtime: shipInfo[12],
-                                    DEST: shipInfo[13],
-                                    eta: shipInfo[14],
-                                    pid: shipInfo[15],
-                                    type: shipInfo[16],
-                                    offset: shipInfo[17]
-                                })
+                                //TODO: shipinfo spam
+                                // console.log({
+                                //     aisType: shipInfo[0],
+                                //     imo: shipInfo[1],
+                                //     name: shipInfo[2],
+                                //     SOG: shipInfo[3], //speed
+                                //     COG: shipInfo[4], //direction
+                                //     S1: shipInfo[7],
+                                //     S2: shipInfo[8],
+                                //     S3: shipInfo[9],
+                                //     S4: shipInfo[10],
+                                //     ARV_Text: shipInfo[11],
+                                //     ARV: new Date(shipInfo[11]),
+                                //     rtime: shipInfo[12],
+                                //     DEST: shipInfo[13],
+                                //     eta: shipInfo[14],
+                                //     pid: shipInfo[15],
+                                //     type: shipInfo[16],
+                                //     offset: shipInfo[17]
+                                // })
                             }
                         })
                     }

@@ -1,4 +1,6 @@
-interface RawVesselInfo {
+import { RawDestination } from "./RawDestination";
+
+export interface RawVesselInfo {
     AREA: string;
     C: string;
     CD: number;

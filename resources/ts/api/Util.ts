@@ -1,4 +1,4 @@
-const parseHtmlDate = (rawDate: string): Date | void => {
+export const parseHtmlDate = (rawDate: string): Date | void => {
     if (!rawDate) {
         return;
     }

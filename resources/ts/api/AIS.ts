@@ -1,6 +1,8 @@
 /// <reference path="Vessel.ts" />
 
-class AIS {
+import { Vessel } from "./Vessel";
+
+export class AIS {
     private static BASE_URL: string = "https://services.myshiptracking.com/requests";
 
     public static getVessel = async (mmsi: number): Promise<Vessel> => {
@@ -15,3 +17,5 @@ class AIS {
         return new Vessel(rawInfo);
     }
 }
+
+export default AIS;

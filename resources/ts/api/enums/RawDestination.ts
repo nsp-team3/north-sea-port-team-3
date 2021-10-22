@@ -1,4 +1,4 @@
-interface RawDestination {
+export interface RawDestination {
     ARR: string;
     C: string;
     C1: string;
