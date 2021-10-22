@@ -11573,12 +11573,25 @@ body {
   height: 100vh;
 }
 
+#searchfield {
+  margin-top: 1rem;
+  padding: 5px;
+  font-size: 17px;
+  border: 1px solid grey;
+  width: 100%;
+  background: #f1f1f1;
+}
+
 #searchresults RES {
   padding-left: 0.5rem;
   display: block;
   margin: 0.5rem 0;
   border-radius: 0.2rem;
   background-color: lightgrey;
+}
+#searchresults RES:hover {
+  background-color: rgba(211, 211, 211, 0.87);
+  cursor: pointer;
 }
 #searchresults NAME {
   display: block;

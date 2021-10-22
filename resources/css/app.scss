@@ -12,6 +12,15 @@ body {
     height: 100vh;
 };
 
+#searchfield {
+    margin-top: 1rem;
+    padding: 5px;
+    font-size: 17px;
+    border: 1px solid grey;
+    width: 100%;
+    background: #f1f1f1;
+}
+
 #searchresults {
 
     RES {
@@ -21,6 +30,11 @@ body {
         border-radius: .2rem;
         background-color: lightgrey;
     };
+
+    RES:hover {
+        background-color: rgba(211, 211, 211, 0.87);
+        cursor: pointer;
+    }
 
     NAME {
         display: block;
