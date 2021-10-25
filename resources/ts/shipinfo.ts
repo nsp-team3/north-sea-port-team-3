@@ -177,10 +177,11 @@ export class ShipInfo {
         const table = <HTMLTableElement>document.getElementById("shipinfo-content");
         table.innerHTML = ""
 
-        let row = table.insertRow();
-        let date = row.insertCell(0);
+        const row = table.insertRow();
+        const date = row.insertCell(0);
+        const name = row.insertCell(1);
+        
         date.innerHTML = "Land";
-        let name = row.insertCell(1);
         name.innerHTML = randomVessel.country;
     }
 }
