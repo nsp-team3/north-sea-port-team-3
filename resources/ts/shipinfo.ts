@@ -138,8 +138,17 @@ export class ShipInfo {
                         course: Number(shipInfo[4]) * Math.PI / 180,
                         heading: Number(shipInfo[4]) * Math.PI / 180,
                     })
+<<<<<<< HEAD
                     ship.on("click", (context) => {
                         this.show(Number(context.sourceTarget.options.trackId), map, false);
+=======
+                    ship.on('click', (context) => {
+                        console.log(context.sourceTarget.options.trackId);
+                        const mmsi: number = Number(context.sourceTarget.options.trackId);
+                        AIS.getVessel(mmsi).then((randomVessel: Vessel) => {
+                            console.log(randomVessel);
+                        });
+>>>>>>> be9efb4 (made some minor changes)
                     })
                     ship.addTo(this.main);
                     //TODO: shipinfo spam
