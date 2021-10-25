@@ -59,7 +59,7 @@ let scheepvaartsignalisatie = require('../northSeaPortGeoJson/scheepvaartsignali
     await windsnelheid.getWindInfo()
     let shipinfo = new ShipInfo();
     await shipinfo.enableSearch(map);
-    await shipinfo.getLocatons(map);
+    await shipinfo.getLocations(map);
     await shipinfo.enableBackButton();
 
     let overlays = {
@@ -101,11 +101,11 @@ let scheepvaartsignalisatie = require('../northSeaPortGeoJson/scheepvaartsignali
     map.on('zoomend', async () => {
         ligplaats.checkZoom(map);
         bedrijven.checkZoom(map);
-        await shipinfo.getLocatons(map);
+        await shipinfo.getLocations(map);
     });
 
     map.on('dragend', async () => {
-        await shipinfo.getLocatons(map);
+        await shipinfo.getLocations(map);
     })
 
     map.on('baselayerchange', () => {

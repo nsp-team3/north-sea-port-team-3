@@ -1,73 +1,68 @@
 /// <reference path="../../node_modules/@types/geojson/index.d.ts" />
 /// <reference path="./types/leaflet_tracksymbol.ts" />
-/// <reference path="./api/Vessel.ts" />
-import * as L from "leaflet";
-import './libs/tracksymbol';
+
+import * as Leaflet from "leaflet";
+import "./libs/tracksymbol";
 import { AIS } from "./api/AIS";
 import { Vessel } from "./api/Vessel";
 import { LocationInfo } from "./api/enums/LocationInfo";
 
-const colors = ["#6b6b6c", "#0fa8b7", "#ac7b22", "#2856fe", "#0c9338", "#d60202", "#e716f4", "#ede115", "#e716f4", "#e716f4", "#e716f4"];
-
 export class ShipInfo {
-    public showShipInfo(id: number, map: L.Map, zoom: boolean) {
-        AIS.getVessel(id).then((randomVessel: Vessel) => {
-            document.getElementById('main-search').style.display = "none";
-            document.getElementById('main-shipinfo').style.display = "block";
-            document.getElementById('main-title').textContent = "Scheepsinformatie";
-            document.getElementById('shipname').textContent = randomVessel.name;
-            this.loadTableData(randomVessel);
-            if (zoom) {
-                randomVessel.getLocationInfo().then((location: LocationInfo) => {
-                    map.flyTo(new L.LatLng(location.latitude, location.longtitude), 16);
-                });
-            }
-        });
+    private static VESSEL_COLORS: string[] = ["#6b6b6c", "#0fa8b7", "#ac7b22", "#2856fe", "#0c9338", "#d60202", "#e716f4", "#ede115", "#e716f4", "#e716f4", "#e716f4"];
+
+    public async show(mmsi: number, map: Leaflet.Map, zoom: boolean) {
+        const selectedVessel: Vessel = await AIS.getVessel(mmsi);
+        document.getElementById("main-search").style.display = "none";
+        document.getElementById("main-shipinfo").style.display = "block";
+        document.getElementById("main-title").textContent = "Scheepsinformatie";
+        document.getElementById("shipname").textContent = selectedVessel.name;
+        this.loadTableData(selectedVessel);
+        if (zoom) {
+            const location: LocationInfo = await selectedVessel.getLocation() as LocationInfo;
+            map.flyTo(new Leaflet.LatLng(location.latitude, location.longtitude), 16);
+        }
     }
 
-    public async enableSearch(map: L.Map) {
-        const searchfield = <HTMLInputElement>document.getElementById('searchfield');
-        searchfield.addEventListener('input', (e) => {
+    public async enableSearch(map: Leaflet.Map) {
+        const searchfield = <HTMLInputElement>document.getElementById("searchfield");
+        searchfield.addEventListener("input", (e) => {
             const params = new URLSearchParams({
                 req: searchfield.value,
                 res: "all"
-            })
+            });
             // const response = await fetch(`http://localhost:8000/search?${params}`);
             const request = new Request(`http://localhost:8000/search?${params}`);
             fetch(request)
                 .then(response => {
                     if (response.status === 200) {
                         response.text().then(body => {
-                            let searchresults = <HTMLDivElement>document.getElementById('searchresults');
+                            const searchresults = <HTMLDivElement>document.getElementById("searchresults");
                             const parser = new DOMParser();
                             const xmlDoc = parser.parseFromString(body, "text/xml");
                             const results = xmlDoc.getElementsByTagName("RESULTS");
                             if (results.length !== 0) {
-                                const result = <HTMLElement>results[0]
+                                const result = <HTMLElement>results[0];
                                 /**
                                  * from <RES><ID>316000000</ID><NAME>TEST</NAME><D>Not available</D><TYPE>0</TYPE><FLAG>CA</FLAG><LAT>0.00000</LAT><LNG>0.00000</LNG></RES>
                                  * to <RES><NAME>UAIS TEST HO</NAME><D>Not available</D><ID>442010045</ID><FLAG>00</FLAG></RES>
                                  */
                                 result.childNodes.forEach(element => {
                                     element.insertBefore(element.childNodes[0], element.childNodes[3]);
-                                    element.firstChild.textContent = element.firstChild.textContent.toLowerCase()
-                                    element.lastChild.remove()
-                                    element.lastChild.remove()
-                                    element.lastChild.previousSibling.remove()
-                                    let id = element.lastChild.previousSibling.textContent;
-                                    // show shipinfo on clicking them
-                                    element.addEventListener('click', () => {
-                                        this.showShipInfo(Number(id), map, true)
-                                    })
+                                    element.firstChild.textContent = element.firstChild.textContent.toLowerCase();
+                                    element.lastChild.remove();
+                                    element.lastChild.remove();
+                                    element.lastChild.previousSibling.remove();
+                                    const mmsi: number = Number(element.lastChild.previousSibling.textContent);
+                                    element.addEventListener("click", () => {
+                                        this.show(mmsi, map, true);
+                                    });
                                 });
 
-
-
-                                searchresults.replaceChildren(result)
+                                searchresults.replaceChildren(result);
                             }
                         })
                     } else {
-                        throw new Error('Something went wrong on api server!');
+                        throw new Error("Something went wrong on api server!");
                     }
                 }).catch(error => {
                     console.error(error);
@@ -76,33 +71,22 @@ export class ShipInfo {
         });
     }
 
-    private loadTableData(randomVessel: Vessel) {
-        const table = <HTMLTableElement>document.getElementById("shipinfo-content");
-        table.innerHTML = ""
-
-        let row = table.insertRow();
-        let date = row.insertCell(0);
-        date.innerHTML = "Land";
-        let name = row.insertCell(1);
-        name.innerHTML = randomVessel.country;
-    }
-
     public async enableBackButton() {
-        const searchResults = document.querySelectorAll('.back-button');
+        const searchResults = document.querySelectorAll(".back-button");
         searchResults.forEach((element: HTMLSpanElement) => {
-            element.addEventListener('click', () => {
-                let tabName = <HTMLSpanElement>document.getElementById('main-title');
-                tabName.textContent = "Schip zoeken"
-                document.getElementById('main-shipinfo').style.display = "none";
-                document.getElementById('main-search').style.display = "block";
+            element.addEventListener("click", () => {
+                let tabName = <HTMLSpanElement>document.getElementById("main-title");
+                tabName.textContent = "Schip zoeken";
+                document.getElementById("main-shipinfo").style.display = "none";
+                document.getElementById("main-search").style.display = "block";
             })
         });
     }
 
-    public async getLocatons(map: L.Map) {
+    public async getLocations(map: Leaflet.Map) {
         let bounds = map.getBounds();
-        var sw = bounds.getSouthWest();
-        var ne = bounds.getNorthEast();
+        const sw = bounds.getSouthWest();
+        const ne = bounds.getNorthEast();
         const params = new URLSearchParams({
             type: "json",
             minlat: String(sw.lat),
@@ -139,24 +123,24 @@ export class ShipInfo {
             allInfo.shift();
             allInfo.pop();
             allInfo.map((line) => {
-                const shipInfo = line.split('\t');
-                if (shipInfo[5] !== undefined && colors[Number(shipInfo[16])] !== undefined) {
-                    let location = L.latLng(Number(shipInfo[5]), Number(shipInfo[6]))
-                    let ship = L.trackSymbol(location, {
+                const shipInfo = line.split("\t");
+                if (shipInfo[5] !== undefined && ShipInfo.VESSEL_COLORS[Number(shipInfo[16])] !== undefined) {
+                    const location = Leaflet.latLng(Number(shipInfo[5]), Number(shipInfo[6]))
+                    const ship = Leaflet.trackSymbol(location, {
                         trackId: shipInfo[1],
                         fill: true,
-                        fillColor: colors[Number(shipInfo[16])],
+                        fillColor: ShipInfo.VESSEL_COLORS[Number(shipInfo[16])],
                         fillOpacity: 1.0,
                         stroke: true,
-                        color: '#000000',
+                        color: "#000000",
                         opacity: 1.0,
                         weight: 1.0,
                         speed: shipInfo[3],
                         course: Number(shipInfo[4]) * Math.PI / 180,
                         heading: Number(shipInfo[4]) * Math.PI / 180,
                     })
-                    ship.on('click', (context) => {
-                        this.showShipInfo(Number(context.sourceTarget.options.trackId), map, false);
+                    ship.on("click", (context) => {
+                        this.show(Number(context.sourceTarget.options.trackId), map, false);
                     })
                     ship.addTo(this.main);
                     //TODO: shipinfo spam
@@ -183,9 +167,20 @@ export class ShipInfo {
             }
             )
         } else {
-            throw new Error('Something went wrong on api server!');
+            throw new Error("Something went wrong on the api server!");
         }
     }
 
-    public main = L.layerGroup();
+    public main = Leaflet.layerGroup();
+
+    private loadTableData(randomVessel: Vessel) {
+        const table = <HTMLTableElement>document.getElementById("shipinfo-content");
+        table.innerHTML = ""
+
+        let row = table.insertRow();
+        let date = row.insertCell(0);
+        date.innerHTML = "Land";
+        let name = row.insertCell(1);
+        name.innerHTML = randomVessel.country;
+    }
 }

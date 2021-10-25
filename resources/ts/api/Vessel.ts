@@ -15,7 +15,7 @@ export class Vessel {
         this._rawVesselInfo = rawVesselInfo;
     }
 
-    public async getLocationInfo(): Promise<LocationInfo | void> {
+    public async getLocation(): Promise<LocationInfo | void> {
         const params: URLSearchParams = new URLSearchParams({
             type: "json",
             selid: String(this.mmsi),
@@ -124,7 +124,7 @@ export class Vessel {
         return this._rawVesselInfo.F;
     }
 
-    public get height(): number {
+    public get length(): number {
         return this._rawVesselInfo.H;
     }
 
