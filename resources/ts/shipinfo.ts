@@ -1,5 +1,4 @@
 /// <reference path="../../node_modules/@types/geojson/index.d.ts" />
-/// <reference path="./types/leaflet_tracksymbol.ts" />
 
 import * as Leaflet from "leaflet";
 import "./libs/tracksymbol";
@@ -180,7 +179,7 @@ export class ShipInfo {
         const row = table.insertRow();
         const date = row.insertCell(0);
         const name = row.insertCell(1);
-        
+
         date.innerHTML = "Land";
         name.innerHTML = randomVessel.country;
     }
