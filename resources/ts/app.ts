@@ -25,9 +25,9 @@ let scheepvaartsignalisatie = require('../northSeaPortGeoJson/scheepvaartsignali
 
     let map: L.Map = L.map('map', {
         center: { lat: 51.2797429555907, lng: 3.7477111816406254 },
-        maxBounds: [[52.45600939264076, 8.322143554687502], [50.085344397538876, -2.2247314453125004]],
+        // maxBounds: [[52.45600939264076, 8.322143554687502], [50.085344397538876, -2.2247314453125004]],
         zoom: 8,
-        minZoom: 8,
+        // minZoom: 8,
         layers: [main]
     });
     L.control.scale().addTo(map);
@@ -58,8 +58,9 @@ let scheepvaartsignalisatie = require('../northSeaPortGeoJson/scheepvaartsignali
     let windsnelheid = new Windsnelheid;
     await windsnelheid.getWindInfo()
     let shipinfo = new ShipInfo();
-    await shipinfo.enableSearch();
+    await shipinfo.enableSearch(map);
     await shipinfo.getLocatons(map);
+    await shipinfo.enableBackButton();
 
     let overlays = {
         "Bedrijven": bedrijven.bedrijvenGroup,

@@ -16,7 +16,7 @@
             <!-- top aligned tabs -->
             <ul role="tablist">
                 <li><a href="#home" role="tab"><i class="fa fa-search active"></i></a></li>
-                <li><a href="#autopan" role="tab"><i class="fa fa-info"></i></a></li>
+                {{-- <li><a href="#autopan" role="tab"><i class="fa fa-info"></i></a></li> --}}
             </ul>
 
             <!-- bottom aligned tabs -->
@@ -29,19 +29,31 @@
         <div class="leaflet-sidebar-content">
             <div class="leaflet-sidebar-pane" id="home">
                 <h1 class="leaflet-sidebar-header">
-                    Schip zoeken
-                    <span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span>
+                    <span id="main-title">Schip zoeken</span>
+                    <span class="leaflet-sidebar-close"><i class="fa fa-caret-right"></i></span>
                 </h1>
-                <input type="text" id="searchfield" placeholder="Zoeken...">
-                <div id="searchresults"></div>
+                <div id="main-search">
+                    <input type="text" id="searchfield" placeholder="Zoeken...">
+                    <div id="searchresults"></div>
+                </div>
+                <div id="main-shipinfo" style="display: none">
+                    <div class="title">
+                        <i class="fa fa-caret-left back-button"></i>
+                        <h4 id="shipname"></h4>
+                    </div>
+                    <table id="shipinfo-content">
+
+                    </table>
+
+                </div>
             </div>
 
 
 
-            <div class="leaflet-sidebar-pane" id="autopan">
+            {{-- <div class="leaflet-sidebar-pane" id="autopan">
                 <h1 class="leaflet-sidebar-header">
                     Scheepsinformatie
-                    <span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span>
+                    <span class="leaflet-sidebar-close"><i class="fa fa-caret-right"></i></span>
                 </h1>
                 <p>
                     <code>Leaflet.control.sidebar({ autopan: true })</code>
@@ -51,7 +63,7 @@
                     The autopan behviour is responsive as well.
                     Try opening and closing the sidebar from this pane!
                 </p>
-            </div>
+            </div> --}}
 
             <div class="leaflet-sidebar-pane" id="messages">
                 <h1 class="leaflet-sidebar-header">Messages<span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span></h1>

@@ -11575,6 +11575,7 @@ body {
 
 #searchfield {
   margin-top: 1rem;
+  margin-bottom: 0.2rem;
   padding: 5px;
   font-size: 17px;
   border: 1px solid grey;
@@ -11599,4 +11600,23 @@ body {
 }
 #searchresults ID {
   margin: 0 0.5rem;
+}
+
+.back-button {
+  font-size: 20pt;
+}
+
+#main-shipinfo {
+  margin-top: 0.5rem;
+}
+#main-shipinfo .title {
+  display: flex;
+  align-items: center;
+}
+#main-shipinfo .title #shipname {
+  margin-top: 0.5rem;
+  margin-left: 0.5rem;
+}
+#main-shipinfo tr:first-child {
+  background: #f2f2f2;
 }

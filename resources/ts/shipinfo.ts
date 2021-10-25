@@ -5,11 +5,27 @@ import * as L from "leaflet";
 import './libs/tracksymbol';
 import { AIS } from "./api/AIS";
 import { Vessel } from "./api/Vessel";
+import { LocationInfo } from "./api/enums/LocationInfo";
 
 const colors = ["#6b6b6c", "#0fa8b7", "#ac7b22", "#2856fe", "#0c9338", "#d60202", "#e716f4", "#ede115", "#e716f4", "#e716f4", "#e716f4"];
 
 export class ShipInfo {
-    public async enableSearch() {
+    public showShipInfo(id: number, map: L.Map, zoom: boolean) {
+        AIS.getVessel(id).then((randomVessel: Vessel) => {
+            document.getElementById('main-search').style.display = "none";
+            document.getElementById('main-shipinfo').style.display = "block";
+            document.getElementById('main-title').textContent = "Scheepsinformatie";
+            document.getElementById('shipname').textContent = randomVessel.name;
+            this.loadTableData(randomVessel);
+            if (zoom) {
+                randomVessel.getLocationInfo().then((location: LocationInfo) => {
+                    map.flyTo(new L.LatLng(location.latitude, location.longtitude), 16);
+                });
+            }
+        });
+    }
+
+    public async enableSearch(map: L.Map) {
         const searchfield = <HTMLInputElement>document.getElementById('searchfield');
         searchfield.addEventListener('input', (e) => {
             const params = new URLSearchParams({
@@ -35,13 +51,13 @@ export class ShipInfo {
                                 result.childNodes.forEach(element => {
                                     element.insertBefore(element.childNodes[0], element.childNodes[3]);
                                     element.firstChild.textContent = element.firstChild.textContent.toLowerCase()
-                                    console.log(element.firstChild)
                                     element.lastChild.remove()
                                     element.lastChild.remove()
                                     element.lastChild.previousSibling.remove()
                                     let id = element.lastChild.previousSibling.textContent;
+                                    // show shipinfo on clicking them
                                     element.addEventListener('click', () => {
-                                        console.log(id)
+                                        this.showShipInfo(Number(id), map, true)
                                     })
                                 });
 
@@ -57,6 +73,29 @@ export class ShipInfo {
                     console.error(error);
                 });
 
+        });
+    }
+
+    private loadTableData(randomVessel: Vessel) {
+        const table = <HTMLTableElement>document.getElementById("shipinfo-content");
+        table.innerHTML = ""
+
+        let row = table.insertRow();
+        let date = row.insertCell(0);
+        date.innerHTML = "Land";
+        let name = row.insertCell(1);
+        name.innerHTML = randomVessel.country;
+    }
+
+    public async enableBackButton() {
+        const searchResults = document.querySelectorAll('.back-button');
+        searchResults.forEach((element: HTMLSpanElement) => {
+            element.addEventListener('click', () => {
+                let tabName = <HTMLSpanElement>document.getElementById('main-title');
+                tabName.textContent = "Schip zoeken"
+                document.getElementById('main-shipinfo').style.display = "none";
+                document.getElementById('main-search').style.display = "block";
+            })
         });
     }
 
@@ -117,10 +156,7 @@ export class ShipInfo {
                         heading: Number(shipInfo[4]) * Math.PI / 180,
                     })
                     ship.on('click', (context) => {
-                        console.log(context.sourceTarget.options.trackId);
-                        AIS.getVessel(538007209).then((randomVessel: Vessel) => {
-                            console.log(randomVessel);
-                        });
+                        this.showShipInfo(Number(context.sourceTarget.options.trackId), map, false);
                     })
                     ship.addTo(this.main);
                     //TODO: shipinfo spam
