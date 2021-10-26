@@ -32,8 +32,8 @@ export class ShipInfo {
                 req: searchfield.value,
                 res: "all"
             })
-            // const response = await fetch(`http://localhost:8000/search?${params}`);
-            const request = new Request(`http://localhost:8000/search?${params}`);
+            const url = `${location.protocol}//${location.hostname}${location.port?':'+location.port:''}`;
+            const request = new Request(`${url}/search?${params}`);
             fetch(request)
                 .then(response => {
                     if (response.status === 200) {
