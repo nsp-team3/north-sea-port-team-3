@@ -195,8 +195,7 @@ export class ShipInfo {
         this.addInfoRow(table, "Length", `${vessel.length}m`);
         this.addInfoRow(table, "Width", `${vessel.width}m`);
         this.addInfoRow(table, "Draught", `${vessel.draught}m`);
-        this.addInfoRow(table, "Minimum depth", `${vessel.minDepth}m`);
-        this.addInfoRow(table, "Maximum depth", `${vessel.maxDepth}m`);
+        this.addInfoRow(table, "Safe depth range", `${vessel.minDepth}m to ${vessel.maxDepth}m`);
         this.addInfoRow(table, "Last draught", vessel.lastDraught ? `${vessel.lastDraught}m (${vessel.lastDraughtChange ? vessel.lastDraughtChange.toLocaleString() : ''})` : "Unknown");
         console.log(vessel.destinations);
         console.log(vessel.lastPort);
