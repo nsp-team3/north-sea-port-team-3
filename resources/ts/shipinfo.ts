@@ -185,7 +185,7 @@ export class ShipInfo {
         const table = <HTMLTableElement>document.getElementById("shipinfo-content");
         table.innerHTML = "";
 
-        this.addInfoRow(table, "IMO", vessel.imo);
+        this.addInfoRow(table, "IMO", vessel.imo ? vessel.imo : "Unknown");
         this.addInfoRow(table, "MMSI", vessel.mmsi);
         this.addInfoRow(table, "Type", vessel.typeText);
         this.addInfoRow(table, "Status", vessel.statusText);
