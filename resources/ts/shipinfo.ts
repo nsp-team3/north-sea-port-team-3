@@ -190,14 +190,14 @@ export class ShipInfo {
         this.addInfoRow(table, "Type", vessel.typeText);
         this.addInfoRow(table, "Status", vessel.statusText);
         this.addInfoRow(table, "Country of origin", `${vessel.country} [${vessel.flag}]`);
-        this.addInfoRow(table, "ETA", vessel.ETA ? vessel.ETA : 'Unknown');
+        this.addInfoRow(table, "ETA", vessel.ETA ? vessel.ETA : "Unknown");
         this.addInfoRow(table, "Velocity", `${vessel.course}° at ${vessel.speed} knots`);
         this.addInfoRow(table, "Length", `${vessel.length}m`);
         this.addInfoRow(table, "Width", `${vessel.width}m`);
         this.addInfoRow(table, "Draught", `${vessel.draught}m`);
         this.addInfoRow(table, "Minimum depth", `${vessel.minDepth}m`);
         this.addInfoRow(table, "Maximum depth", `${vessel.maxDepth}m`);
-        this.addInfoRow(table, "Last draught", `${vessel.lastDraught}m (${vessel.lastDraughtChange ? vessel.lastDraughtChange.toLocaleString() : ''})`);
+        this.addInfoRow(table, "Last draught", vessel.lastDraught ? `${vessel.lastDraught}m (${vessel.lastDraughtChange ? vessel.lastDraughtChange.toLocaleString() : ''})` : "Unknown");
         console.log(vessel.destinations);
         console.log(vessel.lastPort);
         console.log(vessel.port);
