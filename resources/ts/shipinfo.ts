@@ -1,5 +1,3 @@
-/// <reference path="../../node_modules/@types/geojson/index.d.ts" />
-
 import * as Leaflet from "leaflet";
 import "./libs/tracksymbol";
 import { AIS } from "./api/AIS";
@@ -180,7 +178,7 @@ export class ShipInfo {
         const date = row.insertCell(0);
         const name = row.insertCell(1);
 
-        date.innerHTML = "Land";
+        date.innerHTML = "<b>Home country</b>";
         name.innerHTML = randomVessel.country;
     }
 }
