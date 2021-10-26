@@ -170,15 +170,37 @@ export class ShipInfo {
 
     public main = Leaflet.layerGroup();
 
-    private loadTableData(randomVessel: Vessel) {
-        const table = <HTMLTableElement>document.getElementById("shipinfo-content");
-        table.innerHTML = ""
-
+    private addInfoRow(table: HTMLTableElement, key: string, value: string | number | Date | void): HTMLTableRowElement {
         const row = table.insertRow();
-        const date = row.insertCell(0);
-        const name = row.insertCell(1);
+        const nameCell = row.insertCell(0);
+        const valueCell = row.insertCell(1);
 
-        date.innerHTML = "<b>Home country</b>";
-        name.innerHTML = randomVessel.country;
+        nameCell.innerHTML = `<b>${key}</b>`;
+        valueCell.innerHTML = String(value);
+
+        return row;
+    }
+
+    private loadTableData(vessel: Vessel) {
+        const table = <HTMLTableElement>document.getElementById("shipinfo-content");
+        table.innerHTML = "";
+
+        this.addInfoRow(table, "IMO", vessel.imo);
+        this.addInfoRow(table, "MMSI", vessel.mmsi);
+        this.addInfoRow(table, "Type", vessel.typeText);
+        this.addInfoRow(table, "Status", vessel.statusText);
+        this.addInfoRow(table, "Country of origin", `${vessel.country} [${vessel.flag}]`);
+        this.addInfoRow(table, "ETA", vessel.ETA ? vessel.ETA : 'Unknown');
+        this.addInfoRow(table, "Velocity", `${vessel.course}° at ${vessel.speed} knots`);
+        this.addInfoRow(table, "Length", vessel.length);
+        this.addInfoRow(table, "Width", vessel.width);
+        this.addInfoRow(table, "Draught", vessel.draught);
+        this.addInfoRow(table, "Minimum depth", vessel.minDepth);
+        this.addInfoRow(table, "Maximum depth", vessel.maxDepth);
+        this.addInfoRow(table, "Last draught", `${vessel.lastDraught} (${vessel.lastDraughtChange ? vessel.lastDraughtChange.toLocaleString() : ''})`);
+        console.log(vessel.destinations);
+        console.log(vessel.lastPort);
+        console.log(vessel.port);
+        console.log(vessel.nextPort);
     }
 }
