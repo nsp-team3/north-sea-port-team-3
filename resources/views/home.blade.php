@@ -41,7 +41,7 @@
                         <i class="fa fa-caret-left back-button"></i>
                         <h4 id="shipname"></h4>
                     </div>
-                    <table id="shipinfo-content">
+                    <table id="shipinfo-content" class="table">
 
                     </table>
 
