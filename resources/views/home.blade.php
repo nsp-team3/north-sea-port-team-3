@@ -15,7 +15,7 @@
         <div class="leaflet-sidebar-tabs">
             <!-- top aligned tabs -->
             <ul role="tablist">
-                <li><a href="#home" role="tab"><i class="fa fa-search active"></i></a></li>
+                <li><a href="#home" role="tab"><i class="fa fa-ship active"></i></a></li>
                 {{-- <li><a href="#autopan" role="tab"><i class="fa fa-info"></i></a></li> --}}
             </ul>
 

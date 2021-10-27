@@ -1,5 +1,5 @@
 @import url(https://unpkg.com/leaflet@1.7.1/dist/leaflet.css);
-@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css);
+@import url(https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css);
 .leaflet-control-velocity{background-color:hsla(0,0%,100%,.7);color:#333;font:11px/1.5 Helvetica Neue,Arial,Helvetica,sans-serif;margin:0!important;padding:0 5px}.velocity-overlay{position:absolute;z-index:1}
 @charset "UTF-8";
 .leaflet-sidebar {
