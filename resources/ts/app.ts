@@ -15,6 +15,11 @@ let scheepvaartsignalisatie = require('../northSeaPortGeoJson/scheepvaartsignali
 
 (async() => {
 
+    let ligplaats = new Ligplaats;
+    let bedrijven = new Bedrijven;
+    let windsnelheid = new Windsnelheid;
+    let shipinfo = new ShipInfo();
+
     let main = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     });
@@ -28,7 +33,7 @@ let scheepvaartsignalisatie = require('../northSeaPortGeoJson/scheepvaartsignali
         // maxBounds: [[52.45600939264076, 8.322143554687502], [50.085344397538876, -2.2247314453125004]],
         zoom: 8,
         // minZoom: 8,
-        layers: [main]
+        layers: [main, shipinfo.circle]
     });
     L.control.scale().addTo(map);
     L.control.mousePosition().addTo(map);
@@ -53,11 +58,7 @@ let scheepvaartsignalisatie = require('../northSeaPortGeoJson/scheepvaartsignali
         }
     });
 
-    let ligplaats = new Ligplaats;
-    let bedrijven = new Bedrijven;
-    let windsnelheid = new Windsnelheid;
     await windsnelheid.getWindInfo()
-    let shipinfo = new ShipInfo();
     await shipinfo.enableSearch(map);
     await shipinfo.getLocations(map);
     await shipinfo.enableBackButton();

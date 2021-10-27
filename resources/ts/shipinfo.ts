@@ -14,10 +14,11 @@ export class ShipInfo {
         document.getElementById("main-title").textContent = "Scheepsinformatie";
         document.getElementById("shipname").textContent = selectedVessel.name;
         this.loadTableData(selectedVessel);
+        const location: LocationInfo = await selectedVessel.getLocation() as LocationInfo;
         if (zoom) {
-            const location: LocationInfo = await selectedVessel.getLocation() as LocationInfo;
             map.flyTo(new Leaflet.LatLng(location.latitude, location.longtitude), 16);
         }
+        Leaflet.circle([location.latitude, location.longtitude], {radius: 20}).addTo(this.circle);
     }
 
     public async enableSearch(map: Leaflet.Map) {
@@ -76,6 +77,7 @@ export class ShipInfo {
                 tabName.textContent = "Schip zoeken";
                 document.getElementById("main-shipinfo").style.display = "none";
                 document.getElementById("main-search").style.display = "block";
+                this.circle.clearLayers();
             })
         });
     }
@@ -137,6 +139,7 @@ export class ShipInfo {
                         heading: Number(shipInfo[4]) * Math.PI / 180,
                     })
                     ship.on("click", (context) => {
+                        this.circle.clearLayers()
                         this.show(Number(context.sourceTarget.options.trackId), map, false);
                     });
                     ship.addTo(this.main);
@@ -168,6 +171,7 @@ export class ShipInfo {
         }
     }
 
+    public circle = Leaflet.layerGroup();
     public main = Leaflet.layerGroup();
 
     private addInfoRow(table: HTMLTableElement, key: string, value: string | number | Date | void): HTMLTableRowElement {
