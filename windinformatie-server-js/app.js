@@ -16,7 +16,8 @@ var whitelist = [
 	'http://localhost:8000',
     'http://localhost',
     'http://127.0.0.1',
-    'http://laravel.test'
+    'http://laravel.test',
+    'https://nsp.jobse.space'
 ];
 
 var corsOptions = {

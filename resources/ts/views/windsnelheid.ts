@@ -2,7 +2,8 @@ import * as L from "leaflet";
 
 export class Windsnelheid {
     public async getWindInfo() {
-        const response = await fetch('http://127.0.0.1:7000/latest');
+        // const response = await fetch('http://127.0.0.1:7000/latest');
+        const response = await fetch('https://nsp-weather.jobse.space/latest');
         if (response.status === 200) {
             const data = await response.json()
             let weerInfo = L.velocityLayer({

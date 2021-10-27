@@ -6,6 +6,6 @@ COPY ./windinformatie-server-js .
 
 RUN npm install
 
-EXPOSE 4000
+EXPOSE 7000
 
 CMD ["node", "app.js"]
