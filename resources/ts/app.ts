@@ -1,10 +1,12 @@
 /// <reference path="../../node_modules/@types/leaflet/index.d.ts" />
 /// <reference path="./types/leaflet_velocity.ts" />
 /// <reference path="./types/leaflet_mouse_position.ts" />
+/// <reference path="./types/smooth_wheel_zoom.ts" />
 import * as L from "leaflet";
 import 'leaflet-sidebar-v2';
 import 'leaflet-velocity';
 import 'leaflet-mouse-position';
+import "./libs/smoothWheelZoom";
 
 import { ShipInfo } from "./shipinfo";
 import { Bedrijven } from "./views/bedrijven";
@@ -33,7 +35,10 @@ let scheepvaartsignalisatie = require('../northSeaPortGeoJson/scheepvaartsignali
         // maxBounds: [[52.45600939264076, 8.322143554687502], [50.085344397538876, -2.2247314453125004]],
         zoom: 8,
         // minZoom: 8,
-        layers: [main, shipinfo.circle]
+        layers: [main, shipinfo.circle],
+        scrollWheelZoom: false, // disable original zoom function
+        smoothWheelZoom: true,  // enable smooth zoom
+        smoothSensitivity: 1,   // zoom speed. default is 1
     });
     L.control.scale().addTo(map);
     L.control.mousePosition().addTo(map);
