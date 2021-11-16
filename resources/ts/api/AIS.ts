@@ -1,15 +1,21 @@
 /// <reference path="Vessel.ts" />
 
 import { Vessel } from "./Vessel";
+import * as Leaflet from "leaflet";
+import VesselStatus from "./enums/VesselStatus";
 
 type VesselFilters = {
-    minimumLatitude: number;
-    maximumLatitude: number;
-    minimumLongitude: number;
-    maximumLongitude: number;
-    zoom: number;
-    vesselType: number;
+    vesselTypes?: number[];
+    flag?: string;
+    status?: VesselStatus;
+    origin?: string;
+    destination?: string;
+    portId?: number; //don't know if it works but hey
 }
+
+
+
+
 export class AIS {
     private static BASE_URL: string = "https://services.myshiptracking.com/requests";
 
@@ -25,14 +31,17 @@ export class AIS {
         return new Vessel(rawInfo);
     }
 
-    public static filterVessels = async () : Promise<void> => {
+    public static filterVessels = async (map: Leaflet.Map, vesselFilters: VesselFilters) : Promise<void> => {
+        const bounds = map.getBounds();
+        const sw = bounds.getSouthWest();
+        const ne = bounds.getNorthEast();
         const params = new URLSearchParams({
             type: "json",
-            minlat: String(1),
-            maxlat: String(50),
-            minlon: String(1),
-            maxlon: String(50),
-            zoom: String(17),
+            minlat: String(sw.lat),
+            maxlat: String(ne.lat),
+            minlon: String(sw.lng),
+            maxlon: String(ne.lng),
+            zoom: String(Math.round(map.getZoom())),
             selid: "null",
             seltype: "null",
             timecode: "0",
@@ -46,7 +55,7 @@ export class AIS {
                 "minyr": 1950,
                 "maxyr": 2021,
                 "flag": "",
-                "status": "",
+                "status": vesselFilters.status,
                 "mapflt_from": "",
                 "mapflt_dest": "",
                 "ports": "1"
@@ -59,7 +68,7 @@ export class AIS {
     }
 }
 
-AIS.filterVessels();
+
 
 
 

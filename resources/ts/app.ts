@@ -12,6 +12,8 @@ import { ShipInfo } from "./shipinfo";
 import { Bedrijven } from "./views/bedrijven";
 import { Ligplaats } from "./views/ligplaats";
 import { Windsnelheid } from "./views/windsnelheid";
+import AIS from "./api/AIS";
+import VesselStatus from "./api/enums/VesselStatus";
 const { arcgisToGeoJSON } = require('@esri/arcgis-to-geojson-utils');
 let scheepvaartsignalisatie = require('../northSeaPortGeoJson/scheepvaartsignalisatie_northsp.json');
 
@@ -117,6 +119,10 @@ let scheepvaartsignalisatie = require('../northSeaPortGeoJson/scheepvaartsignali
     map.on('baselayerchange', () => {
         ligplaats.checkLayer(map);
         bedrijven.checkLayer(map);
+    });
+
+    AIS.filterVessels(map, {
+        status: VesselStatus.ReservedHSC
     });
 
 })();
