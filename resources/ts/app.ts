@@ -19,7 +19,7 @@ let scheepvaartsignalisatie = require('../northSeaPortGeoJson/scheepvaartsignali
 
 (async() => {
 
-    let ligplaats = new Ligplaats;
+
     let bedrijven = new Bedrijven;
     let windsnelheid = new Windsnelheid;
     let shipinfo = new ShipInfo();
@@ -70,6 +70,19 @@ let scheepvaartsignalisatie = require('../northSeaPortGeoJson/scheepvaartsignali
     await shipinfo.getLocations(map);
     await shipinfo.enableBackButton();
 
+
+    let sidebar = L.control.sidebar({
+        autopan: false,       // whether to maintain the centered map point when opening the sidebar
+        closeButton: true,    // whether t add a close button to the panes
+        container: 'sidebar', // the DOM container or #ID of a predefined sidebar container that should be used
+        position: 'right',     // left or right
+    }).addTo(map)
+        .open('home');
+
+    let ligplaats = new Ligplaats(sidebar);
+    await ligplaats.enableBackButton();
+
+
     let overlays = {
         "Bedrijven": bedrijven.bedrijvenGroup,
         "Ligplaatsen": ligplaats.main,
@@ -84,15 +97,6 @@ let scheepvaartsignalisatie = require('../northSeaPortGeoJson/scheepvaartsignali
     L.control.layers(overlays, optionalOverlays, {
         sortLayers: true
     }).addTo(map);
-
-
-    let sidebar = L.control.sidebar({
-        autopan: false,       // whether to maintain the centered map point when opening the sidebar
-        closeButton: true,    // whether t add a close button to the panes
-        container: 'sidebar', // the DOM container or #ID of a predefined sidebar container that should be used
-        position: 'right',     // left or right
-    }).addTo(map)
-        .open('home');
 
     function onMapClick() {
         console.log(map.getCenter());
