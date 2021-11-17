@@ -17,4 +17,5 @@ enum VesselStatus {
     Unknown = 15
 };
 
+
 export default VesselStatus;

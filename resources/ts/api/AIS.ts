@@ -5,7 +5,7 @@ import * as Leaflet from "leaflet";
 import VesselStatus from "./enums/VesselStatus";
 
 type VesselFilters = {
-    vesselTypes?: number[];
+    vesselTypes?: VesselType[];
     flag?: string;
     status?: VesselStatus;
     origin?: string;
@@ -14,10 +14,26 @@ type VesselFilters = {
 }
 
 
+enum VesselType {
+    Unavailable = 0,
+    Unknown1 = 1,
+    Unknown2 = 2,
+    Service = 3,
+    SpeedyBoys = 4,
+    Unknown5 = 5,
+    Unknown6 = 6,
+    Cargo = 7,
+    Unknown8 = 8,
+    Unknown9 = 9,
+    Fishing = 10,
+    Unknown11 = 11,
+    Unknown12 = 12,
+    Station = 13,
+}
 
 
 export class AIS {
-    private static BASE_URL: string = "https://services.myshiptracking.com/requests";
+    private static BASE_URL = "https://services.myshiptracking.com/requests";
 
     public static getVessel = async (mmsi: number): Promise<Vessel> => {
         const params = new URLSearchParams({
@@ -47,7 +63,7 @@ export class AIS {
             timecode: "0",
             slmp: "",
             filters: JSON.stringify({
-                "vtypes": ",0,3,4,6,7,8,9,10,11,12,13",
+                "vtypes": vesselFilters.vesselTypes.join(","),//",0,3,4,6,7,8,9,10,11,12,13",
                 "minsog": 0,
                 "maxsog": 60,
                 "minsz": 0,
@@ -55,7 +71,7 @@ export class AIS {
                 "minyr": 1950,
                 "maxyr": 2021,
                 "flag": "",
-                "status": vesselFilters.status,
+                "status": vesselFilters.status || "",
                 "mapflt_from": "",
                 "mapflt_dest": "",
                 "ports": "1"

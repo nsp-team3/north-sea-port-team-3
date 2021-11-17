@@ -122,7 +122,8 @@ let scheepvaartsignalisatie = require('../northSeaPortGeoJson/scheepvaartsignali
     });
 
     AIS.filterVessels(map, {
-        status: VesselStatus.ReservedHSC
+        status: VesselStatus.ReservedHSC,
+        vesselTypes: [0]
     });
 
 })();
