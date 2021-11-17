@@ -8,6 +8,13 @@ let gebouwen = require('../../northSeaPortGeoJson/gebouwen_fm_northsp.json');
 const { arcgisToGeoJSON } = require('@esri/arcgis-to-geojson-utils');
 
 export class Ligplaats {
+
+    sidebar: L.Control.Sidebar;
+
+    constructor(sidebar: L.Control.Sidebar) {
+        this.sidebar = sidebar
+    }
+
     private ligplaatsenNummers = L.layerGroup();
     private gebouwenLayer = L.geoJSON(arcgisToGeoJSON(gebouwen), {
         style: {
@@ -50,8 +57,11 @@ export class Ligplaats {
 
     private ligplaatsenLayer = L.geoJSON(ligplaatsen, {
         onEachFeature: (feature, layer) => {
+            layer.on("click", (event)=>{
+                this.showInTable(event)
+            })
             if (layer instanceof L.Polygon) {
-                L.marker(layer.getBounds().getCenter(), {
+                let marker = L.marker(layer.getBounds().getCenter(), {
                     icon: L.divIcon({
                         className: 'label',
                         html: feature.properties.ligplaatsNr,
@@ -63,6 +73,50 @@ export class Ligplaats {
     });
 
     public main = L.layerGroup([this.ligplaatsenLayer, this.gebouwenLayer, this.steigersLayer]);
+
+    private showInTable(event: L.LeafletEvent) {
+        let info = event.sourceTarget.feature.properties;
+        document.getElementById("main-ligplaatssearch").style.display = "none";
+        document.getElementById("main-ligplaatsinfo").style.display = "block";
+        document.getElementById("main-ligplaatstitle").textContent = "Ligplaats informatie";
+        document.getElementById("ligplaatsname").textContent = `${info.type} ${info.ligplaatsNr}`;
+        this.loadTableData(info);
+        this.sidebar.open('ligplaatsTab');
+    }
+
+    private addInfoRow(table: HTMLTableElement, key: string, value: string | number | Date | void): HTMLTableRowElement {
+        const row = table.insertRow();
+        const nameCell = row.insertCell(0);
+        const valueCell = row.insertCell(1);
+
+        nameCell.innerHTML = `<b>${key}</b>`;
+        valueCell.innerHTML = String(value);
+
+        return row;
+    }
+
+    public async enableBackButton() {
+        const searchResults = document.querySelectorAll(".back-button");
+        searchResults.forEach((element: HTMLSpanElement) => {
+            element.addEventListener("click", () => {
+                let tabName = <HTMLSpanElement>document.getElementById("main-ligplaatstitle");
+                tabName.textContent = "Ligplaats zoeken";
+                document.getElementById("main-ligplaatsinfo").style.display = "none";
+                document.getElementById("main-ligplaatssearch").style.display = "block";
+            })
+        });
+    }
+
+    private loadTableData(ligplaats: any) {
+        const table = <HTMLTableElement>document.getElementById("ligplaatsinfo-content");
+        table.innerHTML = "";
+
+        this.addInfoRow(table, "Ligplaats nummer", ligplaats.ligplaatsNr ? ligplaats.ligplaatsNr : "Unknown")
+        this.addInfoRow(table, "Type", ligplaats.type ? ligplaats.type : "Unknown")
+        this.addInfoRow(table, "Zone", ligplaats.zone ? ligplaats.zone : "Unknown")
+        this.addInfoRow(table, "Opmerkingen", ligplaats.opmerking ? ligplaats.opmerking : "Geen opmerkingen")
+    }
+
 
     /**
      * checkZoom

@@ -11573,7 +11573,7 @@ body {
   height: 100vh;
 }
 
-#searchfield {
+.searchfield {
   margin-top: 1rem;
   margin-bottom: 0.2rem;
   padding: 5px;
