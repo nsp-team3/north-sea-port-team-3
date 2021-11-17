@@ -2,7 +2,7 @@ import * as Leaflet from "leaflet";
 import "./libs/tracksymbol";
 import { AIS } from "./api/AIS";
 import { Vessel } from "./api/Vessel";
-import { LocationInfo } from "./api/enums/LocationInfo";
+import { LocationInfo } from "./types/enums/LocationInfo";
 
 export class ShipInfo {
     private static VESSEL_COLORS: string[] = ["#6b6b6c", "#0fa8b7", "#ac7b22", "#2856fe", "#0c9338", "#d60202", "#e716f4", "#ede115", "#e716f4", "#e716f4", "#e716f4"];

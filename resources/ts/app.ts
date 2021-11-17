@@ -13,7 +13,9 @@ import { Bedrijven } from "./views/bedrijven";
 import { Ligplaats } from "./views/ligplaats";
 import { Windsnelheid } from "./views/windsnelheid";
 import AIS from "./api/AIS";
-import VesselStatus from "./api/enums/VesselStatus";
+import VesselType from "./types/enums/VesselType";
+import VesselStatus from "./types/enums/VesselStatus";
+
 const { arcgisToGeoJSON } = require('@esri/arcgis-to-geojson-utils');
 let scheepvaartsignalisatie = require('../northSeaPortGeoJson/scheepvaartsignalisatie_northsp.json');
 
@@ -125,9 +127,12 @@ let scheepvaartsignalisatie = require('../northSeaPortGeoJson/scheepvaartsignali
         bedrijven.checkLayer(map);
     });
 
-    AIS.filterVessels(map, {
-        status: VesselStatus.ReservedHSC,
-        vesselTypes: [0]
+    window.addEventListener("keypress", (e) => {
+        if (e.key === "e") {
+            AIS.filterVessels(map, {
+                vesselTypes: [VesselType.Yacht],
+                origin: 263
+            });
+        }
     });
-
 })();
