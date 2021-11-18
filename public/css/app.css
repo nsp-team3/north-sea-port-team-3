@@ -11602,6 +11602,25 @@ body {
   margin: 0 0.5rem;
 }
 
+#searchresultsLigplaats res {
+  padding-left: 0.5rem;
+  display: block;
+  margin: 0.5rem 0;
+  border-radius: 0.2rem;
+  background-color: lightgrey;
+}
+#searchresultsLigplaats res:hover {
+  background-color: rgba(211, 211, 211, 0.87);
+  cursor: pointer;
+}
+#searchresultsLigplaats name {
+  display: block;
+  font-size: 1.5rem;
+}
+#searchresultsLigplaats id {
+  margin: 0 0.5rem;
+}
+
 .back-button {
   font-size: 20pt;
 }

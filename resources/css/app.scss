@@ -48,6 +48,32 @@ body {
 
 };
 
+#searchresultsLigplaats {
+
+    res {
+        padding-left: .5rem;
+        display: block;
+        margin: .5rem 0;
+        border-radius: .2rem;
+        background-color: lightgrey;
+    };
+
+    res:hover {
+        background-color: rgba(211, 211, 211, 0.87);
+        cursor: pointer;
+    }
+
+    name {
+        display: block;
+        font-size: 1.5rem;
+    };
+
+    id { //MMSI
+        margin: 0 .5rem;
+    };
+
+}
+
 .back-button {
     font-size: 20pt;
 }

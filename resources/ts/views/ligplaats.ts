@@ -55,13 +55,17 @@ export class Ligplaats {
         }
     });
 
+    private searchLigplaats: { [id: string]: any } = {};
+
     private ligplaatsenLayer = L.geoJSON(ligplaatsen, {
         onEachFeature: (feature, layer) => {
             layer.on("click", (event)=>{
-                this.showInTable(event)
+                this.showInTable(event.sourceTarget.feature.properties)
             })
             if (layer instanceof L.Polygon) {
-                let marker = L.marker(layer.getBounds().getCenter(), {
+                feature.properties.center = layer.getBounds().getCenter();
+                this.searchLigplaats[feature.properties.ligplaatsNr] = feature.properties;
+                L.marker(feature.properties.center, {
                     icon: L.divIcon({
                         className: 'label',
                         html: feature.properties.ligplaatsNr,
@@ -72,15 +76,40 @@ export class Ligplaats {
         }
     });
 
+
+    public async enableSearch(map: L.Map) {
+        const searchfield = <HTMLInputElement>document.getElementById("searchfieldLigplaats");
+        const searchresults = <HTMLDivElement>document.getElementById("searchresultsLigplaats");
+
+        searchfield.addEventListener("input", (_) => {
+            const results = document.createElement("RESULTS");
+            let i = 0
+            for (const [key, value] of Object.entries(this.searchLigplaats)) {
+                if (key.toLowerCase().includes(searchfield.value.toLowerCase()) && i < 10 && searchfield.value !== "") {
+                    const result = document.createElement("RES");
+                    const name = document.createElement("NAME");
+                    name.textContent = key;
+                    result.appendChild(name);
+                    result.addEventListener("click", () => {
+                        this.showInTable(value);
+                    });
+
+                    results.appendChild(result);
+                    i += 1
+                }
+            }
+            searchresults.replaceChildren(results);
+        });
+    }
+
     public main = L.layerGroup([this.ligplaatsenLayer, this.gebouwenLayer, this.steigersLayer]);
 
-    private showInTable(event: L.LeafletEvent) {
-        let info = event.sourceTarget.feature.properties;
+    private showInTable(properties: any) {
         document.getElementById("main-ligplaatssearch").style.display = "none";
         document.getElementById("main-ligplaatsinfo").style.display = "block";
         document.getElementById("main-ligplaatstitle").textContent = "Ligplaats informatie";
-        document.getElementById("ligplaatsname").textContent = `${info.type} ${info.ligplaatsNr}`;
-        this.loadTableData(info);
+        document.getElementById("ligplaatsname").textContent = `${properties.type} ${properties.ligplaatsNr}`;
+        this.loadTableData(properties);
         this.sidebar.open('ligplaatsTab');
     }
 
