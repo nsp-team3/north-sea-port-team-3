@@ -21,7 +21,7 @@
             <!-- top aligned tabs -->
             <ul role="tablist">
                 <li><a href="#home" role="tab"><i class="fa fa-ship active"></i></a></li>
-                <li><a href="#ligplaatsTab" role="tab"><i class="fa fa-info"></i></a></li>
+                <li><a href="#ligplaatsTab" role="tab"><i class="fa fa-anchor"></i></a></li>
             </ul>
 
             <!-- bottom aligned tabs -->
