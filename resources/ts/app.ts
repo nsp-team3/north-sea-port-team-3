@@ -82,6 +82,7 @@ let scheepvaartsignalisatie = require('../northSeaPortGeoJson/scheepvaartsignali
         .open('home');
 
     let ligplaats = new Ligplaats(sidebar);
+    await ligplaats.enableSearch(map);
     await ligplaats.enableBackButton();
 
 
