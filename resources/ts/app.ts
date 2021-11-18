@@ -8,7 +8,7 @@ import 'leaflet-velocity';
 import 'leaflet-mouse-position';
 import "./libs/smoothWheelZoom";
 
-import { ShipInfo } from "./shipinfo";
+import { ShipInfo } from "./info/shipinfo";
 import { Bedrijven } from "./views/bedrijven";
 import { Ligplaats } from "./views/ligplaats";
 import { Windsnelheid } from "./views/windsnelheid";
