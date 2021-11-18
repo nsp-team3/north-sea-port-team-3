@@ -15,7 +15,7 @@ export class ShipInfo {
         document.getElementById("main-shipinfo").style.display = "block";
         document.getElementById("main-title").textContent = "Scheepsinformatie";
         document.getElementById("shipname").textContent = selectedVessel.name;
-        this.loadTableData(selectedVessel);
+        this.loadTableData(map, selectedVessel);
         const location: LocationInfo = await selectedVessel.getLocation() as LocationInfo;
         if (zoom) {
             map.flyTo(new Leaflet.LatLng(location.latitude, location.longtitude), 16);
@@ -84,6 +84,9 @@ export class ShipInfo {
         });
     }
 
+    public circle = Leaflet.layerGroup();
+    public main = Leaflet.layerGroup();
+
     public async getLocations(map: Leaflet.Map) {
         let bounds = map.getBounds();
         const sw = bounds.getSouthWest();
@@ -115,10 +118,13 @@ export class ShipInfo {
             }),
             _: String(new Date().getTime())
         });
-        const response = await fetch(`https://services.myshiptracking.com/requests/vesselsonmaptempw.php?${params}`);
+        await this.requestVesselLocations(params, map);
+    }
 
+    private async requestVesselLocations(params: URLSearchParams, map: Leaflet.Map) {
+        const response = await fetch(`https://services.myshiptracking.com/requests/vesselsonmaptempw.php?${params}`);
         if (response.status === 200) {
-            const body = await response.text()
+            const body = await response.text();
             this.main.clearLayers();
             const allInfo = body.split("\n");
             allInfo.shift();
@@ -126,7 +132,7 @@ export class ShipInfo {
             allInfo.map((line) => {
                 const shipInfo = line.split("\t");
                 if (shipInfo[5] !== undefined && ShipInfo.VESSEL_COLORS[Number(shipInfo[16])] !== undefined) {
-                    const location = Leaflet.latLng(Number(shipInfo[5]), Number(shipInfo[6]))
+                    const location = Leaflet.latLng(Number(shipInfo[5]), Number(shipInfo[6]));
                     const ship = Leaflet.trackSymbol(location, {
                         trackId: shipInfo[1],
                         fill: true,
@@ -139,42 +145,39 @@ export class ShipInfo {
                         speed: shipInfo[3],
                         course: Number(shipInfo[4]) * Math.PI / 180,
                         heading: Number(shipInfo[4]) * Math.PI / 180,
-                    })
+                    });
                     ship.on("click", (context) => {
-                        this.circle.clearLayers()
+                        this.circle.clearLayers();
                         this.show(Number(context.sourceTarget.options.trackId), map, false);
                     });
                     ship.addTo(this.main);
-                    //TODO: shipinfo spam
-                    // console.log({
-                    //     aisType: shipInfo[0],
-                    //     imo: shipInfo[1],
-                    //     name: shipInfo[2],
-                    //     SOG: shipInfo[3], //speed
-                    //     COG: shipInfo[4], //direction
-                    //     S1: shipInfo[7],
-                    //     S2: shipInfo[8],
-                    //     S3: shipInfo[9],
-                    //     S4: shipInfo[10],
-                    //     ARV_Text: shipInfo[11],
-                    //     ARV: new Date(shipInfo[11]),
-                    //     rtime: shipInfo[12],
-                    //     DEST: shipInfo[13],
-                    //     eta: shipInfo[14],
-                    //     pid: shipInfo[15],
-                    //     type: shipInfo[16],
-                    //     offset: shipInfo[17]
-                    // })
                 }
             }
-            )
+            );
         } else {
             throw new Error("Something went wrong on the api server!");
         }
+        //TODO: shipinfo spam
+        // console.log({
+        //     aisType: shipInfo[0],
+        //     imo: shipInfo[1],
+        //     name: shipInfo[2],
+        //     SOG: shipInfo[3], //speed
+        //     COG: shipInfo[4], //direction
+        //     S1: shipInfo[7],
+        //     S2: shipInfo[8],
+        //     S3: shipInfo[9],
+        //     S4: shipInfo[10],
+        //     ARV_Text: shipInfo[11],
+        //     ARV: new Date(shipInfo[11]),
+        //     rtime: shipInfo[12],
+        //     DEST: shipInfo[13],
+        //     eta: shipInfo[14],
+        //     pid: shipInfo[15],
+        //     type: shipInfo[16],
+        //     offset: shipInfo[17]
+        // })
     }
-
-    public circle = Leaflet.layerGroup();
-    public main = Leaflet.layerGroup();
 
     private addInfoRow(table: HTMLTableElement, key: string, value: string | number | Date | void): HTMLTableRowElement {
         const row = table.insertRow();
@@ -187,7 +190,7 @@ export class ShipInfo {
         return row;
     }
 
-    private loadTableData(vessel: Vessel) {
+    private loadTableData(map: Leaflet.Map, vessel: Vessel) {
         const table = <HTMLTableElement>document.getElementById("shipinfo-content");
         table.innerHTML = "";
 
@@ -203,20 +206,15 @@ export class ShipInfo {
         this.addInfoRow(table, "Draught", vessel.draught ? `${vessel.draught}m` : "Unknown");
         this.addInfoRow(table, "Safe depth range", (typeof vessel.minDepth === "number" && typeof vessel.maxDepth === "number") ? `${vessel.minDepth}m to ${vessel.maxDepth}m` : "Unknown");
         this.addInfoRow(table, "Last draught", vessel.lastDraught ? `${vessel.lastDraught}m (${vessel.lastDraughtChange ? vessel.lastDraughtChange.toLocaleString() : ''})` : "Unknown");
-        this.addPortRow(table, "Last port", vessel.lastPort);
-        this.addPortRow(table, "Current port", vessel.port);
-        this.addPortRow(table, "Next port", vessel.nextPort);
-        
-        console.log(vessel.destinations);
-        console.log(vessel.lastPort);
-        console.log(vessel.port);
-        console.log(vessel.nextPort);
+        this.addPortRow(table, "Last port", vessel.lastPort, map);
+        this.addPortRow(table, "Current port", vessel.port, map);
+        this.addPortRow(table, "Next port", vessel.nextPort, map);
     }
 
-    private addPortRow(table: HTMLTableElement,title: string, port: Port){
+    private addPortRow(table: HTMLTableElement, title: string, port: Port, map: Leaflet.Map){
         const portRow = this.addInfoRow(table, title , port.name || "Unknown");
         portRow.addEventListener("click", () => {
-            PortInfo.show(port);
+            PortInfo.show(map, port);
         });
     }
 }
