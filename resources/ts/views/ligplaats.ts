@@ -64,7 +64,7 @@ export class Ligplaats {
             })
             if (layer instanceof L.Polygon) {
                 feature.properties.center = layer.getBounds().getCenter();
-                this.searchLigplaats[feature.properties.ligplaatsNr] = feature.properties;
+                this.searchLigplaats[`${feature.properties.type} ${feature.properties.ligplaatsNr}`] = feature.properties;
                 L.marker(feature.properties.center, {
                     icon: L.divIcon({
                         className: 'label',
@@ -89,9 +89,14 @@ export class Ligplaats {
                     const result = document.createElement("RES");
                     const name = document.createElement("NAME");
                     name.textContent = key;
+                    const description = document.createElement("D");
+                    description.textContent = value.enigmaNaam;
+
                     result.appendChild(name);
+                    result.appendChild(description);
                     result.addEventListener("click", () => {
                         this.showInTable(value);
+                        map.flyTo(new L.LatLng(value.center.lat, value.center.lng), 16);
                     });
 
                     results.appendChild(result);
