@@ -1,11 +1,16 @@
 import { Port } from "../api/Port";
+import * as Leaflet from "leaflet";
 
 export default class PortInfo{
-    public static async show(port: Port){
+    public static async show(map: Leaflet.Map, port: Port){
         document.getElementById("main-search").style.display = "none";
         document.getElementById("main-shipinfo").style.display = "block";
-        document.getElementById("main-title").textContent = "HavenInformatie";
+        document.getElementById("main-title").textContent = "Haven informatie";
         document.getElementById("shipname").textContent = port.name || "Unknown";
+
+        const info = await port.getInfo();
+        console.log(info);
+
         this.loadTableData(port);
     }
 

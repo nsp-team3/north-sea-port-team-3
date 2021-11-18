@@ -130,8 +130,7 @@ let scheepvaartsignalisatie = require('../northSeaPortGeoJson/scheepvaartsignali
     window.addEventListener("keypress", (e) => {
         if (e.key === "e") {
             AIS.filterVessels(map, {
-                vesselTypes: [VesselType.Yacht],
-                origin: 263
+                includePorts: true,
             });
         }
     });
