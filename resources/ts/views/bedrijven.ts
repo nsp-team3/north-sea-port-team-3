@@ -1,13 +1,13 @@
 import * as L from "leaflet";
 
-let bedrijven = require('../../northSeaPortGeoJson/bedrijven_northsp.json');
-let beheersgebied = require('../../northSeaPortGeoJson/beheergebied_northsp.json');
+const bedrijven = require('../../northSeaPortGeoJson/bedrijven_northsp.json');
+const beheersgebied = require('../../northSeaPortGeoJson/beheergebied_northsp.json');
 const { arcgisToGeoJSON } = require('@esri/arcgis-to-geojson-utils');
 
-export class Bedrijven {
-    private infoLayer = L.layerGroup();
+export default class Bedrijven {
+    private static infoLayer = L.layerGroup();
 
-    private bedrijvenLayer = L.geoJSON(arcgisToGeoJSON(bedrijven), {
+    private static bedrijvenLayer = L.geoJSON(arcgisToGeoJSON(bedrijven), {
         onEachFeature: (feature, layer) => {
 
             if (layer instanceof L.Polygon) {
@@ -41,16 +41,14 @@ export class Bedrijven {
             "opacity": 0.65
         }
     });
-    private beheersgebiedLayer = L.geoJSON(arcgisToGeoJSON(beheersgebied));
+    private static beheersgebiedLayer = L.geoJSON(arcgisToGeoJSON(beheersgebied));
 
-    public bedrijvenGroup = L.layerGroup();
-
-
+    public static bedrijvenGroup = L.layerGroup();
 
     /**
      * checkZoom
      */
-    public checkZoom(map: L.Map) {
+    public static checkZoom(map: L.Map) {
         if (map.hasLayer(this.bedrijvenGroup)) {
             if (map.getZoom() >= 16) {
                 map.addLayer(this.infoLayer)
@@ -70,7 +68,7 @@ export class Bedrijven {
     /**
      * checkLayer
      */
-    public checkLayer(map: L.Map) {
+    public static checkLayer(map: L.Map) {
         if (map.hasLayer(this.bedrijvenGroup)) {
             if (map.getZoom() >= 13) {
                 map.addLayer(this.bedrijvenLayer)

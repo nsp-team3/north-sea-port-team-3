@@ -1,7 +1,7 @@
 import * as L from "leaflet";
 
-export class Windsnelheid {
-    public async getWindInfo() {
+export default class Windsnelheid {
+    public static async getWindInfo() {
         // const response = await fetch('http://127.0.0.1:7000/latest');
         const response = await fetch('https://nsp-weather.jobse.space/latest');
         if (response.status === 200) {
@@ -27,12 +27,12 @@ export class Windsnelheid {
                 // velocityScale: 0.005,  // modifier for particle animations, arbitrarily defaults to 0.005
                 // colorScale: []         // define your own array of hex/rgb colors
             });
-            weerInfo.addTo(this.main);
+            weerInfo.addTo(Windsnelheid.main);
         } else {
             throw new Error('Something went wrong on api server!');
         }
     }
 
-    public main = L.layerGroup();
+    public static main = L.layerGroup();
 
 }

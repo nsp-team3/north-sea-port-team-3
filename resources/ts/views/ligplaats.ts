@@ -8,7 +8,6 @@ let gebouwen = require('../../northSeaPortGeoJson/gebouwen_fm_northsp.json');
 const { arcgisToGeoJSON } = require('@esri/arcgis-to-geojson-utils');
 
 export class Ligplaats {
-
     sidebar: L.Control.Sidebar;
 
     constructor(sidebar: L.Control.Sidebar) {

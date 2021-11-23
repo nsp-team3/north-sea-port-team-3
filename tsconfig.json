@@ -10,6 +10,7 @@
         "removeComments": true,
         "outDir": "public/js/",
         // "outFile": "public/js/app.js",
+        "resolveJsonModule": true,
         "noEmitOnError": true
     },
     "include": [
