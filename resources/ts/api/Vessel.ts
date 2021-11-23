@@ -1,10 +1,10 @@
 /// <reference path="Port.ts" />
 
 import { Destination } from "./Destination";
-import { LocationInfo } from "../types/enums/LocationInfo";
-import { PortType } from "../types/enums/PortType";
-import { RawDestination } from "../types/enums/RawDestination";
-import { RawVesselInfo } from "../types/enums/RawVesselInfo";
+import LocationInfo from "../types/LocationInfo";
+import PortType from "../types/enums/PortType";
+import RawDestination from "../types/RawDestination";
+import RawVesselInfo from "../types/RawVesselInfo";
 import { Port } from "./Port";
 
 export class Vessel {

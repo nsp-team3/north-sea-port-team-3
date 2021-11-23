@@ -1,7 +1,7 @@
 /// <reference path="Util.ts" />
 
-import { PortType } from "../types/enums/PortType";
-import { RawVesselInfo } from "../types/enums/RawVesselInfo";
+import PortType from "../types/enums/PortType";
+import RawVesselInfo from "../types/RawVesselInfo";
 import { parseHtmlDate } from "./Util";
 
 export class Port {

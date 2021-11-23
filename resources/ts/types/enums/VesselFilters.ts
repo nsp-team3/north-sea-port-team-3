@@ -17,8 +17,4 @@ enum VesselStatus {
     Unknown = 15
 };
 
-enum VesselType {
-
-}
-
-export{VesselStatus, VesselType};
+export default VesselStatus;

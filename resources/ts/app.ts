@@ -141,11 +141,10 @@ let scheepvaartsignalisatie = require('../northSeaPortGeoJson/scheepvaartsignali
 
     window.addEventListener("keypress", async (e) => {
         if (e.key === "e") {
-           const test = await AIS.filterVessels(map, {
+            const test = await AIS.filterVessels(map, {
                 includePorts: true,
             });
             console.log(test);
-            console.log(test[0].requestTime);
         }
     });
 })();

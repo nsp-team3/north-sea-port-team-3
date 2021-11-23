@@ -1,4 +1,4 @@
-import VesselType from "./VesselType";
+import VesselType from "./enums/VesselType";
 
 export default interface SimpleVesselInfo {
     aisType: number,
@@ -8,16 +8,10 @@ export default interface SimpleVesselInfo {
     direction: number,
     longitude: number,
     latitude: number,
-    _S1: number,
-    _S2: number,
-    _S3: number,
-    _S4: number,
-    arrivalText: string,
-    arrival?: Date,
+    arrival?: Date | void,
     requestTime: Date,
-    destination: string,
-    ETA?: Date,
+    destination?: string,
+    ETA?: Date | void,
     portId: number,
     vesselType: VesselType,
-    _offset: any,
 }

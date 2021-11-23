@@ -2,7 +2,7 @@ import * as Leaflet from "leaflet";
 import "../libs/tracksymbol";
 import { AIS } from "../api/AIS";
 import { Vessel } from "../api/Vessel";
-import { LocationInfo } from "../types/enums/LocationInfo";
+import LocationInfo from "../types/LocationInfo";
 import PortInfo from "./portinfo";
 import { Port } from "../api/Port";
 
