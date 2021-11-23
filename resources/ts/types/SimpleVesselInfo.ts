@@ -2,7 +2,7 @@ import VesselType from "./enums/VesselType";
 
 export default interface SimpleVesselInfo {
     aisType: number,
-    imo: number,
+    mmsi: number,
     name: string,
     speed: number,
     direction: number,

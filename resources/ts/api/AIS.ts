@@ -4,6 +4,7 @@ import * as Leaflet from "leaflet";
 import { Vessel } from "./Vessel";
 import VesselFilters from "../types/VesselFilters";
 import SimpleVesselInfo from "../types/SimpleVesselInfo";
+import { parseHtmlDate } from "./Util";
 
 export class AIS {
     private static BASE_URL = "https://services.myshiptracking.com/requests";
@@ -47,8 +48,8 @@ export class AIS {
                 "maxyr": 2021, // Maximum build year
                 "flag": typeof(vesselFilters.countryCode) === "string" ? vesselFilters.countryCode : "",
                 "status": typeof(vesselFilters.status) === "number" ? vesselFilters.status : "",
-                "mapflt_from": typeof(vesselFilters.origin) === "number" ? String(vesselFilters.origin) : "", // Departure port id
-                "mapflt_dest": typeof(vesselFilters.destination) === "number" ? String(vesselFilters.destination) : "", // Destination port id
+                "mapflt_from": typeof(vesselFilters.originPortId) === "number" ? String(vesselFilters.originPortId) : "", // Departure port id
+                "mapflt_dest": typeof(vesselFilters.destinationPortId) === "number" ? String(vesselFilters.destinationPortId) : "", // Destination port id
                 "ports": vesselFilters.includePorts ? "1" : undefined
             }),
             _: String(new Date().getTime())
@@ -57,12 +58,19 @@ export class AIS {
         const body = await res.text();
         const foundVessels = AIS.parseSearchResponse(body);
 
-        // TODO: Apply filters on foundVessels here
+        const filteredVessels = foundVessels.filter((simpleVesselInfo)=>{
+            const destination = simpleVesselInfo.destination;
+            const portID = simpleVesselInfo.portId;
+            const matchesPortId = vesselFilters.currentPortId ? portID && portID === vesselFilters.currentPortId : true;
+            const matchesDestination = vesselFilters.destination ? destination && destination.toLowerCase().includes("Vlissingen".toLowerCase()) : true;
+            
+            return matchesPortId && matchesDestination;
+        })
 
-        return foundVessels;
+        return filteredVessels;
     }
 
-    private static parseSearchResponse = async (body: string): Promise<SimpleVesselInfo[]> => {
+    private static parseSearchResponse = (body: string): SimpleVesselInfo[] => {
         const allInfo = body.split("\n");
         allInfo.shift();
         allInfo.pop();
@@ -75,13 +83,13 @@ export class AIS {
     private static parseSimpleVesselInfo = (shipInfo: string[]): SimpleVesselInfo => {
         const simpleInfo: SimpleVesselInfo = {
             aisType: Number(shipInfo[0]),
-            imo: Number(shipInfo[1]),
+            mmsi: Number(shipInfo[1]),
             name: shipInfo[2],
             speed: Number(shipInfo[3]),
             direction: Number(shipInfo[4]),
             longitude: Number(shipInfo[5]),
             latitude: Number(shipInfo[6]),
-            requestTime: new Date(Number(shipInfo[12] + '000')),
+            requestTime: new Date(Number(shipInfo[12] + "000")),
             portId: Number(shipInfo[15]),
             vesselType: Number(shipInfo[16]),
         }
@@ -90,12 +98,12 @@ export class AIS {
             simpleInfo.arrival = new Date(shipInfo[11]);
         }
 
-        if (shipInfo[13].length > 0) {
+        if (shipInfo[13] && shipInfo[13].length > 0) {
             simpleInfo.destination = shipInfo[13];
         }
 
         if (shipInfo[14] && shipInfo[14].length > 0) {
-            simpleInfo.ETA = new Date(shipInfo[14]);
+            simpleInfo.ETA = new Date(Number(shipInfo[14] + "000"));
         }
 
         return simpleInfo;

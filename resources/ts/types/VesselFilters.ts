@@ -5,9 +5,11 @@ type VesselFilters = {
     vesselTypes?: VesselType[];
     countryCode?: string;
     status?: VesselStatus;
-    origin?: number;
-    destination?: number;
+    currentPortId?: number;
+    destinationPortId?: number;
+    originPortId?: number;
     includePorts?: boolean;
+    destination?: string;
 }
 
 export default VesselFilters;

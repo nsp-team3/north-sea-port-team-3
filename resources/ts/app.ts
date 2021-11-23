@@ -89,7 +89,7 @@ let scheepvaartsignalisatie = require('../northSeaPortGeoJson/scheepvaartsignali
         .open('home');
 
     let ligplaats = new Ligplaats(sidebar);
-    await ligplaats.enableSearch(map);
+    // await ligplaats.enableSearch(map);
     await ligplaats.enableBackButton();
 
 
@@ -142,7 +142,11 @@ let scheepvaartsignalisatie = require('../northSeaPortGeoJson/scheepvaartsignali
     window.addEventListener("keypress", async (e) => {
         if (e.key === "e") {
             const test = await AIS.filterVessels(map, {
-                includePorts: true,
+                // includePorts: true,
+                // destination: "vlissingen",
+                currentPortId: 1145,
+                // originPortId: 166,
+                // destinationPortId: 1236
             });
             console.log(test);
         }
