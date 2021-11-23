@@ -3,7 +3,7 @@
 import { Vessel } from "./Vessel";
 import * as Leaflet from "leaflet";
 import VesselFilters from "../types/VesselFilters";
-import VesselType from "../types/enums/VesselType";
+import SimpleVesselInfo from "../types/enums/SimpleVesselInfo";
 
 export class AIS {
     private static BASE_URL = "https://services.myshiptracking.com/requests";
@@ -20,7 +20,7 @@ export class AIS {
         return new Vessel(rawInfo);
     }
 
-    public static filterVessels = async (map: Leaflet.Map, vesselFilters: VesselFilters) : Promise<void> => {
+    public static filterVessels = async (map: Leaflet.Map, vesselFilters: VesselFilters) : Promise<SimpleVesselInfo[]> => {
         const bounds = map.getBounds();
         const sw = bounds.getSouthWest();
         const ne = bounds.getNorthEast();
@@ -55,7 +55,37 @@ export class AIS {
         });
         const res = await fetch(`https://services.myshiptracking.com/requests/vesselsonmaptempw.php?${params}`);
         const body = await res.text();
-        console.log(body);
+        return AIS.parseSearchResponse(body);
+    }
+
+    private static parseSearchResponse = async (body: string): Promise<SimpleVesselInfo[]> => {
+        const allInfo = body.split("\n");
+        allInfo.shift();
+        allInfo.pop();
+        return allInfo.map((line) => {
+            const shipInfo = line.split("\t");
+            return {
+                aisType: Number(shipInfo[0]),
+                imo: Number(shipInfo[1]),
+                name: shipInfo[2],
+                speed: Number(shipInfo[3]),
+                direction: Number(shipInfo[4]),
+                _num5: shipInfo[5],
+                _num6: shipInfo[6],
+                _S1: shipInfo[7],
+                _S2: shipInfo[8],
+                _S3: shipInfo[9],
+                _S4: shipInfo[10],
+                arrivalText: shipInfo[11],
+                arrival: new Date(shipInfo[11]),
+                _rtime: shipInfo[12],
+                destination: shipInfo[13],
+                ETA: new Date(shipInfo[14]),
+                portId: Number(shipInfo[15]),
+                vesselType: Number(shipInfo[16]),
+                _offset: shipInfo[17],
+            }
+        });
     }
 }
 
