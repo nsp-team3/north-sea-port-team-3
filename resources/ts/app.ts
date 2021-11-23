@@ -34,6 +34,13 @@ let scheepvaartsignalisatie = require('../northSeaPortGeoJson/scheepvaartsignali
         attribution: 'Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors'
     });
 
+    let diepteLayer = L.tileLayer.wms('https://geo.rijkswaterstaat.nl/services/ogc/gdr/bodemhoogte_zeeland/ows', {
+        layers: 'bodemhoogte_zeeland',
+        format: 'image/png',
+        transparent: true,
+        attribution: "Bodemdiepte Zeeland (actueel). https://maps.rijkswaterstaat.nl/dataregister-publicatie/srv/api/records/e0422848-ca9c-443e-b674-16a295bcff23"
+    });
+
     let map: L.Map = L.map('map', {
         center: { lat: 51.2797429555907, lng: 3.7477111816406254 },
         // maxBounds: [[52.45600939264076, 8.322143554687502], [50.085344397538876, -2.2247314453125004]],
@@ -86,18 +93,17 @@ let scheepvaartsignalisatie = require('../northSeaPortGeoJson/scheepvaartsignali
     await ligplaats.enableBackButton();
 
 
-    let overlays = {
+    let optionalOverlays = {
         "Bedrijven": bedrijven.bedrijvenGroup,
         "Ligplaatsen": ligplaats.main,
         "Signalatie": scheepvaartsignalisatieLayer,
-    };
-    let optionalOverlays = {
         "Windsnelheid": windsnelheid.main,
         "Ship info": shipinfo.main,
-        "Open sea maps": OpenSeaMap
+        "Open sea maps": OpenSeaMap,
+        "Diepte Water": diepteLayer
     };
 
-    L.control.layers(overlays, optionalOverlays, {
+    L.control.layers({}, optionalOverlays, {
         sortLayers: true
     }).addTo(map);
 
@@ -123,7 +129,12 @@ let scheepvaartsignalisatie = require('../northSeaPortGeoJson/scheepvaartsignali
         await shipinfo.getLocations(map);
     });
 
-    map.on('baselayerchange', () => {
+    map.on('overlayremove', () => {
+        ligplaats.checkLayer(map);
+        bedrijven.checkLayer(map);
+    });
+
+    map.on('overlayadd', () => {
         ligplaats.checkLayer(map);
         bedrijven.checkLayer(map);
     });

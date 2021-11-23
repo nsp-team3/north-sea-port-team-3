@@ -22,6 +22,7 @@
             <ul role="tablist">
                 <li><a href="#home" role="tab"><i class="fa fa-ship active"></i></a></li>
                 <li><a href="#ligplaatsTab" role="tab"><i class="fa fa-anchor"></i></a></li>
+                <li><a href="#legendaTab" role="tab"><i class="fa fa-table"></i></a></li>
             </ul>
 
             <!-- bottom aligned tabs -->
@@ -73,6 +74,15 @@
 
                     </table>
 
+                </div>
+            </div>
+
+            <div class="leaflet-sidebar-pane" id="legendaTab">
+                <h1 class="leaflet-sidebar-header">
+                    Legenda diepte
+                </h1>
+                <div id="main-legendaInfo" >
+                    <img src="/img/diepteLegenda.png" alt=":(">
                 </div>
             </div>
 
