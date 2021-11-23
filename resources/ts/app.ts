@@ -121,18 +121,20 @@ let scheepvaartsignalisatie = require('../northSeaPortGeoJson/scheepvaartsignali
 
     map.on('dragend', async () => {
         await shipinfo.getLocations(map);
-    })
+    });
 
     map.on('baselayerchange', () => {
         ligplaats.checkLayer(map);
         bedrijven.checkLayer(map);
     });
 
-    window.addEventListener("keypress", (e) => {
+    window.addEventListener("keypress", async (e) => {
         if (e.key === "e") {
-            AIS.filterVessels(map, {
+           const test = await AIS.filterVessels(map, {
                 includePorts: true,
             });
+            console.log(test);
+            console.log(test[0].requestTime);
         }
     });
 })();
