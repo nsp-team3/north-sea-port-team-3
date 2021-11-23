@@ -38,7 +38,7 @@ let scheepvaartsignalisatie = require('../northSeaPortGeoJson/scheepvaartsignali
         layers: 'bodemhoogte_zeeland',
         format: 'image/png',
         transparent: true,
-        attribution: "Bodemdiepte Zeeland (actueel). https://maps.rijkswaterstaat.nl/dataregister-publicatie/srv/api/records/e0422848-ca9c-443e-b674-16a295bcff23"
+        attribution: '<a href="https://maps.rijkswaterstaat.nl/dataregister-publicatie/srv/api/records/e0422848-ca9c-443e-b674-16a295bcff23">Bodemdiepte Zeeland (actueel).</a>'
     });
 
     let map: L.Map = L.map('map', {
