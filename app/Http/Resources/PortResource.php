@@ -31,7 +31,7 @@ class PortResource extends JsonResource
             $response = $client->request('GET', "https://www.myshiptracking.com/ports/id-" . $validData['id']);
         } catch (Exception $e) {
             return json_encode([
-                "error" => "Could not find port with id " . $validData['id'] . "."
+                "error" => "Could not find port with id: " . $validData['id']
             ]);
         }
 
@@ -41,7 +41,8 @@ class PortResource extends JsonResource
         preg_match('/<td class="vessels_table_key">Country<\/td><td>\[(.*?)\] (.*?)<\/td>/', $body, $countryMatch);
         preg_match('/<td class="vessels_table_key">Longitude<\/td><td>(.*?)°<\/td>/', $body, $longitudeMatch);
         preg_match('/<td class="vessels_table_key">Latitude<\/td><td>(.*?)°<\/td>/', $body, $latitudeMatch);
-        preg_match('/<tr><td class="vessels_table_key">Name<\/td><td><strong>(.*?)<\/strong><\/td><\/tr>/', $body, $nameMatch);
+        preg_match('/<td class="vessels_table_key">Name<\/td><td><strong>(.*?)<\/strong><\/td>/', $body, $nameMatch);
+        preg_match('/<td class="vessels_table_key">Area size<\/td><td>(.*?)<\/td>/', $body, $sizeMatch);
 
         return json_encode([
             "id" => intval($validData['id']),
@@ -49,7 +50,8 @@ class PortResource extends JsonResource
             "countryCode" => $countryMatch[1],
             "country" => $countryMatch[2],
             "longitude" => doubleval($longitudeMatch[1]),
-            "latitude" => doubleval($latitudeMatch[1])
+            "latitude" => doubleval($latitudeMatch[1]),
+            "size" => $sizeMatch[1]
         ]);
     }
 

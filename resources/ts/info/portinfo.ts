@@ -3,6 +3,14 @@ import * as Leaflet from "leaflet";
 import PortInfoResponse from "../types/PortInfoResponse";
 
 export default class PortInfo {
+    private static portSizeToZoomLevel: {[index: string]: number} = {
+        "XSmall": 18,
+        "Small": 17,
+        "Medium": 16,
+        "Large": 15,
+        "XLarge": 14
+    };
+
     public static async show(map: Leaflet.Map, port: Port){
         document.getElementById("main-search").style.display = "none";
         document.getElementById("main-shipinfo").style.display = "block";
@@ -12,7 +20,7 @@ export default class PortInfo {
         const info: PortInfoResponse | void = await port.getInfo();
 
         if (info) {
-            map.flyTo(new Leaflet.LatLng(info.latitude, info.longitude), 16);
+            map.flyTo(new Leaflet.LatLng(info.latitude, info.longitude), PortInfo.portSizeToZoomLevel[info.size]);
         }
 
         await this.loadTableData(port, info);
@@ -39,13 +47,11 @@ export default class PortInfo {
 
         if (info) {
             // TODO: Might replace this with a button, so you're taken to these coordinates.
-            this.addInfoRow(table, "Longitude", info.longitude);
-            this.addInfoRow(table, "Latitude", info.latitude);
+            this.addInfoRow(table, "Location", `Latitude: ${info.latitude}\nLongitude: ${info.longitude}`);
         }
 
         port.ETA ? this.addInfoRow(table, "ETA", port.ETA) : null;
         port.departTime ? this.addInfoRow(table, "Time of departure", port.departTime) : null;
         port.arrivalTime ? this.addInfoRow(table, "Time of arrival", port.arrivalTime) : null;
-        
     }
 }

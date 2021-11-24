@@ -63,7 +63,7 @@ export default class ShipInfo {
                 document.getElementById("main-shipinfo").style.display = "none";
                 document.getElementById("main-search").style.display = "block";
                 ShipInfo.circle.clearLayers();
-            })
+            });
         });
     }
 
