@@ -21,7 +21,7 @@ export class AIS {
         return new Vessel(rawInfo);
     }
 
-    public static filterVessels = async (map: Leaflet.Map, vesselFilters: VesselFilters) : Promise<SimpleVesselInfo[]> => {
+    public static searchVessels = async (map: Leaflet.Map, vesselFilters: VesselFilters) : Promise<SimpleVesselInfo[]> => {
         const bounds = map.getBounds();
         const sw = bounds.getSouthWest();
         const ne = bounds.getNorthEast();

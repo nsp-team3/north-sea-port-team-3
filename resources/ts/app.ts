@@ -104,7 +104,7 @@ const testClickFunction = (map: L.Map) => {
     // TODO: Remove this test garbage.
     window.addEventListener("keypress", async (e) => {
         if (e.key === "e") {
-            const test = await AIS.filterVessels(map, {
+            const test = await AIS.searchVessels(map, {
                 // includePorts: true,
                 // destination: "vlissingen",
                 currentPortId: 1145,

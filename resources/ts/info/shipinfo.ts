@@ -8,6 +8,7 @@ import { Port } from "../api/Port";
 
 export default class ShipInfo {
     private static VESSEL_COLORS: string[] = ["#6b6b6c", "#0fa8b7", "#ac7b22", "#2856fe", "#0c9338", "#d60202", "#e716f4", "#ede115", "#e716f4", "#e716f4", "#e716f4"];
+    private static BASE_URL: string = "/api/search";
 
     public static async show(mmsi: number, map: Leaflet.Map, zoom: boolean) {
         const selectedVessel: Vessel = await AIS.getVessel(mmsi);
@@ -25,49 +26,31 @@ export default class ShipInfo {
 
     public static async enableSearch(map: Leaflet.Map) {
         const searchfield = <HTMLInputElement>document.getElementById("searchfield");
-        searchfield.addEventListener("input", (e) => {
-            const params = new URLSearchParams({
-                req: searchfield.value,
-                res: "all"
-            })
-            const url = `${location.protocol}//${location.hostname}${location.port?':'+location.port:''}`;
-            const request = new Request(`${url}/search?${params}`);
-            fetch(request)
-                .then(response => {
-                    if (response.status === 200) {
-                        response.text().then(body => {
-                            const searchresults = <HTMLDivElement>document.getElementById("searchresults");
-                            const parser = new DOMParser();
-                            const xmlDoc = parser.parseFromString(body, "text/xml");
-                            const results = xmlDoc.getElementsByTagName("RESULTS");
-                            if (results.length !== 0) {
-                                const result = <HTMLElement>results[0];
-                                /**
-                                 * from <RES><ID>316000000</ID><NAME>TEST</NAME><D>Not available</D><TYPE>0</TYPE><FLAG>CA</FLAG><LAT>0.00000</LAT><LNG>0.00000</LNG></RES>
-                                 * to <RES><NAME>UAIS TEST HO</NAME><D>Not available</D><ID>442010045</ID><FLAG>00</FLAG></RES>
-                                 */
-                                result.childNodes.forEach(element => {
-                                    element.insertBefore(element.childNodes[0], element.childNodes[3]);
-                                    element.firstChild.textContent = element.firstChild.textContent.toLowerCase();
-                                    element.lastChild.remove();
-                                    element.lastChild.remove();
-                                    element.lastChild.previousSibling.remove();
-                                    const mmsi: number = Number(element.lastChild.previousSibling.textContent);
-                                    element.addEventListener("click", () => {
-                                        this.show(mmsi, map, true);
-                                    });
-                                });
-
-                                searchresults.replaceChildren(result);
-                            }
-                        })
-                    } else {
-                        throw new Error("Something went wrong on api server!");
-                    }
-                }).catch(error => {
-                    console.error(error);
+        searchfield.addEventListener("input", async (e) => {
+            const res = await fetch(`${ShipInfo.BASE_URL}?query=${searchfield.value}`);
+            if (res.status !== 200) {
+                return;
+            }
+            const body = await res.text();
+            const searchresults = <HTMLDivElement>document.getElementById("searchresults");
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(body, "text/xml");
+            const results = xmlDoc.getElementsByTagName("RESULTS");
+            if (results.length !== 0) {
+                const result = <HTMLElement>results[0];
+                result.childNodes.forEach(element => {
+                    element.insertBefore(element.childNodes[0], element.childNodes[3]);
+                    element.firstChild.textContent = element.firstChild.textContent.toLowerCase();
+                    element.lastChild.remove();
+                    element.lastChild.remove();
+                    element.lastChild.previousSibling.remove();
+                    const mmsi: number = Number(element.lastChild.previousSibling.textContent);
+                    element.addEventListener("click", () => {
+                        this.show(mmsi, map, true);
+                    });
                 });
-
+                searchresults.replaceChildren(result);
+            }
         });
     }
 

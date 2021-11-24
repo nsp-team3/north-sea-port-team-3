@@ -3,9 +3,10 @@
 import PortType from "../types/enums/PortType";
 import RawVesselInfo from "../types/RawVesselInfo";
 import { parseHtmlDate } from "./Util";
+import PortInfoResponse from "../types/PortInfoResponse";
 
 export class Port {
-    private static BASE_URL = "https://www.myshiptracking.com/ports";
+    private static BASE_URL = "/api/ports";
     private _type: PortType;
     private _rawVesselInfo: RawVesselInfo;
 
@@ -14,20 +15,11 @@ export class Port {
         this._rawVesselInfo = rawVesselInfo;
     }
 
-    public async getInfo(): Promise<void> {
-        // TODO: Create proxy in laravel to perform this request.
-        const res = await fetch(`${Port.BASE_URL}/${this.url}`, {
-
-        });
-        if (res.status !== 200) {
-            return;
+    public async getInfo(): Promise<PortInfoResponse | void> {
+        const res = await fetch(`${Port.BASE_URL}?id=${this.id}`);
+        if (res.status === 200) {
+            return await res.json();
         }
-
-        const body = await res.text();
-        const longtitudeMatch = body.match(/<tr>.*?<td class="vessels_table_key">Longitude<\/td>.*?<td>(.*?)°<\/td>.*?<\/tr>/);
-        const latitudeMatch = body.match(/<tr>.*?<td class="vessels_table_key">Latitude<\/td>.*?<td>(.*?)°<\/td>.*?<\/tr>/);
-        console.log(longtitudeMatch);
-        console.log(latitudeMatch);
     }
 
     public get id(): number | void {
