@@ -32,6 +32,8 @@ const testClickFunction = (map: L.Map) => {
         attribution: `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors`
     }).addTo(map);
 
+    //const cleanMap = L.tileLayer('https://tile.jawg.io/be014ddc-e423-43d8-8e15-0ddb1ac99d84/{z}/{x}/{y}{r}.png?access-token=iWfpe7piHdKAYayIe6bRGELuU156lg34z2nVINNr755xTL4AbHcaKBXXhTwHxHdW', {}).addTo(map);
+
     const openSeaMap = L.tileLayer("https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png", {
         attribution: `Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors`
     });
@@ -49,7 +51,7 @@ const testClickFunction = (map: L.Map) => {
         container: "sidebar", // the DOM container or #ID of a predefined sidebar container that should be used
         position: "right",     // left or right
     });
-    
+
     const ligplaats = new Ligplaats(sidebar);
     await Promise.all([
         Windsnelheid.getWindInfo(),
