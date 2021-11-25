@@ -5,7 +5,7 @@ import { Vessel } from "../api/Vessel";
 import LocationInfo from "../types/LocationInfo";
 import PortInfo from "./portinfo";
 import { Port } from "../api/Port";
-import { format } from 'date-fns'
+import { format } from "date-fns";
 
 export default class ShipInfo {
     private static VESSEL_COLORS: string[] = ["#6b6b6c", "#0fa8b7", "#ac7b22", "#2856fe", "#0c9338", "#d60202", "#e716f4", "#ede115", "#e716f4", "#e716f4", "#e716f4"];
