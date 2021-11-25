@@ -56,7 +56,7 @@ const testClickFunction = (map: L.Map) => {
     await Promise.all([
         Windsnelheid.getWindInfo(),
         ShipInfo.enableSearch(map),
-        ShipInfo.getLocations(map),
+        ShipInfo.getLocations(map, sidebar),
         ShipInfo.enableBackButton(),
         ligplaats.enableSearch(map),
         ligplaats.enableBackButton()
@@ -86,11 +86,11 @@ const testClickFunction = (map: L.Map) => {
     map.on("zoomend", () => {
         ligplaats.checkZoom(map);
         Bedrijven.checkZoom(map);
-        ShipInfo.getLocations(map);
+        ShipInfo.getLocations(map, sidebar);
     });
 
     map.on("dragend", () => {
-        ShipInfo.getLocations(map);
+        ShipInfo.getLocations(map, sidebar);
     });
 
     map.on("overlayremove", () => {
@@ -106,7 +106,7 @@ const testClickFunction = (map: L.Map) => {
     (async() => {
         updateShips();
         function updateShips() {
-            ShipInfo.getLocations(map);
+            ShipInfo.getLocations(map, sidebar);
             setTimeout(updateShips, 15000);
         }
     })();

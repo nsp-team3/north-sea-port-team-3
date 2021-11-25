@@ -27,17 +27,22 @@ export default class ShipInfo {
 
     public static async enableSearch(map: Leaflet.Map) {
         const searchfield = <HTMLInputElement>document.getElementById("searchfield");
-        searchfield.addEventListener("input", async (e) => {
-            if (!searchfield.value || searchfield.value.length < 3){
+        searchfield.addEventListener("input", async () => {
+            const searchResultsElement = <HTMLDivElement>document.getElementById("searchresults");
+            if (searchfield.value.length < 3) {
+                searchResultsElement.innerHTML = "";
                 return;
             }
+
             const res = await fetch(`${ShipInfo.BASE_URL}?query=${searchfield.value}`).catch(console.error);
             if (!res || res.status !== 200) {
                 return;
             }
+
             const body = await res.text();
             const searchResults = ShipInfo.parseXML(body);
-            const searchResultsElement = <HTMLDivElement>document.getElementById("searchresults");
+            searchResultsElement.innerHTML = ""
+
             if (searchResults.length === 0) {
                 return;
             }
@@ -45,10 +50,10 @@ export default class ShipInfo {
             searchResults.forEach((searchResult) => {
                 const div = document.createElement("div");
                 div.addEventListener("click", () => {
-                    if(searchResult.mmsi){
-                    this.show(searchResult.mmsi, map, true, undefined);
+                    if (searchResult.mmsi){
+                        this.show(searchResult.mmsi, map, true, undefined);
                     } else if(searchResult.portId){
-                      //TODO: PortInfo.show(map)
+                        //TODO: PortInfo.show(map)
                     }
                 });
 
@@ -112,7 +117,7 @@ export default class ShipInfo {
     public static circle = Leaflet.layerGroup();
     public static main = Leaflet.layerGroup();
 
-    public static async getLocations(map: Leaflet.Map) {
+    public static async getLocations(map: Leaflet.Map, sidebar: Leaflet.Control.Sidebar) {
         let bounds = map.getBounds();
         const sw = bounds.getSouthWest();
         const ne = bounds.getNorthEast();
@@ -143,10 +148,10 @@ export default class ShipInfo {
             }),
             _: String(new Date().getTime())
         });
-        await ShipInfo.requestVesselLocations(params, map);
+        await ShipInfo.requestVesselLocations(params, map, sidebar);
     }
 
-    private static async requestVesselLocations(params: URLSearchParams, map: Leaflet.Map) {
+    private static async requestVesselLocations(params: URLSearchParams, map: Leaflet.Map, sidebar: Leaflet.Control.Sidebar) {
         const response = await fetch(`https://services.myshiptracking.com/requests/vesselsonmaptempw.php?${params}`);
         if (response.status === 200) {
             const body = await response.text();
@@ -154,7 +159,7 @@ export default class ShipInfo {
             const allInfo = body.split("\n");
             allInfo.shift();
             allInfo.pop();
-            allInfo.map((line) => {
+            allInfo.forEach((line) => {
                 const shipInfo = line.split("\t");
                 if (shipInfo[5] !== undefined && ShipInfo.VESSEL_COLORS[Number(shipInfo[16])] !== undefined) {
                     const location = Leaflet.latLng(Number(shipInfo[5]), Number(shipInfo[6]));
@@ -179,37 +184,21 @@ export default class ShipInfo {
                         heading: Number(shipInfo[4]) * Math.PI / 180,
                         updateTimestamp: shipInfo[12]
                     });
+
                     ship.on("click", (context) => {
+                        // TODO: Open sidebar
+                        sidebar.open("home");
+                        
                         this.circle.clearLayers();
                         this.show(Number(context.sourceTarget.options.trackId), map, false, Number(context.sourceTarget.options.updateTimestamp));
                     });
+
                     ship.addTo(this.main);
                 }
-            }
-            );
+            });
         } else {
             throw new Error("Something went wrong on the api server!");
         }
-        //TODO: shipinfo spam
-        // console.log({
-            // aisType: shipInfo[0],
-            // imo: shipInfo[1],
-            // name: shipInfo[2],
-            // SOG: shipInfo[3], //speed
-            // COG: shipInfo[4], //direction
-            // S1: shipInfo[7],
-            // S2: shipInfo[8],
-            // S3: shipInfo[9],
-            // S4: shipInfo[10],
-            // ARV_Text: shipInfo[11],
-            // ARV: new Date(shipInfo[11]),
-            // rtime: shipInfo[12],
-            // DEST: shipInfo[13],
-            // eta: shipInfo[14],
-            // pid: shipInfo[15],
-            // type: shipInfo[16],
-            // offset: shipInfo[17]
-        // })
     }
 
     private static addInfoRow(table: HTMLTableElement, key: string, value: string | number | Date | void): HTMLTableRowElement {
