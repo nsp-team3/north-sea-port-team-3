@@ -118,8 +118,8 @@ const testClickFunction = (map: L.Map) => {
                 // includePorts: true,
                 // destination: "vlissingen",
                 currentPortId: 1145,
-                // originPortId: 166,
-                // destinationPortId: 1236
+                originPortId: 166,
+                destinationPortId: 1236
             });
             console.log(test);
         }

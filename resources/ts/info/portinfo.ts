@@ -17,7 +17,7 @@ export default class PortInfo {
         document.getElementById("main-title").textContent = "Haven informatie";
         document.getElementById("shipname").textContent = port.name || "Unknown";
 
-        const info: PortInfoResponse | void = await port.getInfo();
+        const info: PortInfoResponse | void = await Port.getInfo(port.id);
 
         if (info) {
             map.flyTo(new Leaflet.LatLng(info.latitude, info.longitude), PortInfo.portSizeToZoomLevel[info.size]);

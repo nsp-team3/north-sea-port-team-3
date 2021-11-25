@@ -15,8 +15,8 @@ export class Port {
         this._rawVesselInfo = rawVesselInfo;
     }
 
-    public async getInfo(): Promise<PortInfoResponse | void> {
-        const res = await fetch(`${Port.BASE_URL}?id=${this.id}`);
+    public static async getInfo(id?: number | void): Promise<PortInfoResponse | void> {
+        const res = await fetch(`${Port.BASE_URL}?id=${id}`);
         if (res.status === 200) {
             return await res.json();
         }

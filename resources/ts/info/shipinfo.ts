@@ -28,31 +28,72 @@ export default class ShipInfo {
     public static async enableSearch(map: Leaflet.Map) {
         const searchfield = <HTMLInputElement>document.getElementById("searchfield");
         searchfield.addEventListener("input", async (e) => {
-            const res = await fetch(`${ShipInfo.BASE_URL}?query=${searchfield.value}`);
-            if (res.status !== 200) {
+            if (!searchfield.value || searchfield.value.length < 3){
+                return;
+            }
+            const res = await fetch(`${ShipInfo.BASE_URL}?query=${searchfield.value}`).catch(console.error);
+            if (!res || res.status !== 200) {
                 return;
             }
             const body = await res.text();
-            const searchresults = <HTMLDivElement>document.getElementById("searchresults");
-            const parser = new DOMParser();
-            const xmlDoc = parser.parseFromString(body, "text/xml");
-            const results = xmlDoc.getElementsByTagName("RESULTS");
-            if (results.length !== 0) {
-                const result = <HTMLElement>results[0];
-                result.childNodes.forEach(element => {
-                    element.insertBefore(element.childNodes[0], element.childNodes[3]);
-                    element.firstChild.textContent = element.firstChild.textContent.toLowerCase();
-                    element.lastChild.remove();
-                    element.lastChild.remove();
-                    element.lastChild.previousSibling.remove();
-                    const mmsi: number = Number(element.lastChild.previousSibling.textContent);
-                    element.addEventListener("click", () => {
-                        this.show(mmsi, map, true, undefined);
-                    });
-                });
-                searchresults.replaceChildren(result);
+            const searchResults = ShipInfo.parseXML(body);
+            const searchResultsElement = <HTMLDivElement>document.getElementById("searchresults");
+            if (searchResults.length === 0) {
+                return;
             }
+
+            searchResults.forEach((searchResult) => {
+                const div = document.createElement("div");
+                div.addEventListener("click", () => {
+                    if(searchResult.mmsi){
+                    this.show(searchResult.mmsi, map, true, undefined);
+                    } else if(searchResult.portId){
+                      //TODO: PortInfo.show(map)
+                    }
+                });
+
+                const title = document.createElement("h6");
+                title.innerText = searchResult.name;
+                
+                const info = document.createElement("p");
+                info.innerHTML = `${searchResult.typeText} ${searchResult.flag} (${searchResult.mmsi || searchResult.portId})`;
+
+                div.append(title, info);
+                searchResultsElement.append(div);
+
+            
+            });
         });
+    }
+
+    private static parseXML(xml: string){
+        const resultsMatch = xml.match(/<RES>.*?<\/RES>/g);
+        if (!resultsMatch) {
+            return undefined;
+        }
+
+        return resultsMatch.map((e) => {
+            const resultInfoMatch = e.match(/<RES><ID>([0-9]*)<\/ID><NAME>(.*?)<\/NAME><D>(.*?)<\/D><TYPE>([0-9]*)<\/TYPE><FLAG>([a-zA-Z]+)<\/FLAG><LAT>.*?<\/LAT><LNG>.*?<\/LNG><\/RES>/);
+            if (resultInfoMatch) {
+                const info = {
+                    mmsi: Number(resultInfoMatch[1]),
+                    name: resultInfoMatch[2],
+                    typeText: resultInfoMatch[3],
+                    type: Number(resultInfoMatch[4]),
+                    flag: resultInfoMatch[5],
+                    portId: 0
+                }
+                if (info.type === 0) {
+                    info.portId = info.mmsi;
+                    delete info.mmsi;
+                } else {
+                    delete info.portId;
+                }
+
+                return info;
+            }
+            return undefined;
+        }).filter((e) => e !== undefined);
     }
 
     public static async enableBackButton() {
