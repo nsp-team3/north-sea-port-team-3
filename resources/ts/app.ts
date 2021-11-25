@@ -103,6 +103,14 @@ const testClickFunction = (map: L.Map) => {
         Bedrijven.checkLayer(map);
     });
 
+    (async() => {
+        updateShips();
+        function updateShips() {
+            ShipInfo.getLocations(map);
+            setTimeout(updateShips, 15000);
+        }
+    })();
+
     // TODO: Remove this test garbage.
     window.addEventListener("keypress", async (e) => {
         if (e.key === "e") {

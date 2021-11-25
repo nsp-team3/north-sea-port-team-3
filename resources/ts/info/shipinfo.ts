@@ -5,23 +5,24 @@ import { Vessel } from "../api/Vessel";
 import LocationInfo from "../types/LocationInfo";
 import PortInfo from "./portinfo";
 import { Port } from "../api/Port";
+import { format } from 'date-fns'
 
 export default class ShipInfo {
     private static VESSEL_COLORS: string[] = ["#6b6b6c", "#0fa8b7", "#ac7b22", "#2856fe", "#0c9338", "#d60202", "#e716f4", "#ede115", "#e716f4", "#e716f4", "#e716f4"];
     private static BASE_URL: string = "/api/search";
 
-    public static async show(mmsi: number, map: Leaflet.Map, zoom: boolean) {
+    private static async show(mmsi: number, map: Leaflet.Map, zoom: boolean, updateTimestamp: number) {
         const selectedVessel: Vessel = await AIS.getVessel(mmsi);
         document.getElementById("main-search").style.display = "none";
         document.getElementById("main-shipinfo").style.display = "block";
         document.getElementById("main-title").textContent = "Scheepsinformatie";
         document.getElementById("shipname").textContent = selectedVessel.name;
-        ShipInfo.loadTableData(map, selectedVessel);
+        ShipInfo.loadTableData(map, selectedVessel, updateTimestamp);
         const location: LocationInfo = await selectedVessel.getLocation() as LocationInfo;
         if (zoom) {
             map.flyTo(new Leaflet.LatLng(location.latitude, location.longtitude), 16);
         }
-        Leaflet.circle([location.latitude, location.longtitude], {radius: 20}).addTo(this.circle);
+        Leaflet.circleMarker([location.latitude, location.longtitude], {radius: 12, attribution: String(mmsi)}).addTo(this.circle);
     }
 
     public static async enableSearch(map: Leaflet.Map) {
@@ -46,7 +47,7 @@ export default class ShipInfo {
                     element.lastChild.previousSibling.remove();
                     const mmsi: number = Number(element.lastChild.previousSibling.textContent);
                     element.addEventListener("click", () => {
-                        this.show(mmsi, map, true);
+                        this.show(mmsi, map, true, undefined);
                     });
                 });
                 searchresults.replaceChildren(result);
@@ -116,6 +117,13 @@ export default class ShipInfo {
                 const shipInfo = line.split("\t");
                 if (shipInfo[5] !== undefined && ShipInfo.VESSEL_COLORS[Number(shipInfo[16])] !== undefined) {
                     const location = Leaflet.latLng(Number(shipInfo[5]), Number(shipInfo[6]));
+
+                    // update marker position
+                    if (this.circle.getLayers().length !== 0 && this.circle.getLayers()[0].getAttribution() == shipInfo[1]) {
+                        this.circle.clearLayers();
+                        Leaflet.circleMarker(location, {radius: 12, attribution: shipInfo[1]}).addTo(this.circle);
+                    }
+
                     const ship = Leaflet.trackSymbol(location, {
                         trackId: shipInfo[1],
                         fill: true,
@@ -128,10 +136,11 @@ export default class ShipInfo {
                         speed: shipInfo[3],
                         course: Number(shipInfo[4]) * Math.PI / 180,
                         heading: Number(shipInfo[4]) * Math.PI / 180,
+                        updateTimestamp: shipInfo[12]
                     });
                     ship.on("click", (context) => {
                         this.circle.clearLayers();
-                        this.show(Number(context.sourceTarget.options.trackId), map, false);
+                        this.show(Number(context.sourceTarget.options.trackId), map, false, Number(context.sourceTarget.options.updateTimestamp));
                     });
                     ship.addTo(this.main);
                 }
@@ -173,14 +182,22 @@ export default class ShipInfo {
         return row;
     }
 
-    private static loadTableData(map: Leaflet.Map, vessel: Vessel) {
+    private static loadTableData(map: Leaflet.Map, vessel: Vessel, updateTimestamp: number) {
         const table = <HTMLTableElement>document.getElementById("shipinfo-content");
         table.innerHTML = "";
+
+        let updateString;
+        if (updateTimestamp !== undefined) {
+            const updateTime = new Date(updateTimestamp * 1000)
+            // console.log(formatDistanceStrict(updateTime, new Date(), { addSuffix: true })); // 3 seconds ago - date-fns
+            updateString = format(updateTime, "HH:mm, dd MMM");
+        }
 
         this.addInfoRow(table, "IMO", vessel.imo ? vessel.imo : "Unknown");
         this.addInfoRow(table, "MMSI", vessel.mmsi);
         this.addInfoRow(table, "Type", vessel.typeText);
         this.addInfoRow(table, "Status", vessel.statusText);
+        this.addInfoRow(table, "Location timestamp", updateString? updateString : "Unknown");
         this.addInfoRow(table, "Country of origin", `${vessel.country} [${vessel.flag}]`);
         this.addInfoRow(table, "ETA", vessel.ETA ? vessel.ETA.toLocaleString() : "Unknown");
         this.addInfoRow(table, "Velocity", `${vessel.course}° at ${vessel.speed} knots`);
