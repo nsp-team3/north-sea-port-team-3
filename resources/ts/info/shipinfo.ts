@@ -17,11 +17,17 @@ export default class ShipInfo {
         document.getElementById("main-shipinfo").style.display = "block";
         document.getElementById("main-title").textContent = "Scheepsinformatie";
         document.getElementById("shipname").textContent = selectedVessel.name;
+        const image = document.getElementById("ship-image") as HTMLImageElement;
+        image.src = "";
+        image.src = `https://www.myshiptracking.com/requests/getimage-normal/${mmsi}.jpg`;
+
         ShipInfo.loadTableData(map, selectedVessel, updateTimestamp);
+
         const location: LocationInfo = await selectedVessel.getLocation() as LocationInfo;
         if (zoom) {
             map.flyTo(new Leaflet.LatLng(location.latitude, location.longtitude), 16);
         }
+
         Leaflet.circleMarker([location.latitude, location.longtitude], {radius: 12, attribution: String(mmsi)}).addTo(this.circle);
     }
 
@@ -49,6 +55,19 @@ export default class ShipInfo {
 
             searchResults.forEach((searchResult) => {
                 const div = document.createElement("div");
+                div.classList.add("list-group-item", "list-group-item-action", "my-2");
+
+                const title = document.createElement("strong");
+                title.classList.add("mb-1");
+                title.innerText = `${searchResult.name} (${searchResult.flag})`;
+                
+                const info = document.createElement("p");
+                info.classList.add("mb-1", "small");
+                info.innerHTML = `${searchResult.typeText} (${searchResult.mmsi || searchResult.portId})`;
+
+                div.append(title, info);
+                searchResultsElement.append(div);
+
                 div.addEventListener("click", () => {
                     if (searchResult.mmsi){
                         this.show(searchResult.mmsi, map, true, undefined);
@@ -56,17 +75,6 @@ export default class ShipInfo {
                         //TODO: PortInfo.show(map)
                     }
                 });
-
-                const title = document.createElement("h6");
-                title.innerText = searchResult.name;
-                
-                const info = document.createElement("p");
-                info.innerHTML = `${searchResult.typeText} ${searchResult.flag} (${searchResult.mmsi || searchResult.portId})`;
-
-                div.append(title, info);
-                searchResultsElement.append(div);
-
-            
             });
         });
     }
@@ -152,53 +160,52 @@ export default class ShipInfo {
     }
 
     private static async requestVesselLocations(params: URLSearchParams, map: Leaflet.Map, sidebar: Leaflet.Control.Sidebar) {
-        const response = await fetch(`https://services.myshiptracking.com/requests/vesselsonmaptempw.php?${params}`);
-        if (response.status === 200) {
-            const body = await response.text();
-            this.main.clearLayers();
-            const allInfo = body.split("\n");
-            allInfo.shift();
-            allInfo.pop();
-            allInfo.forEach((line) => {
-                const shipInfo = line.split("\t");
-                if (shipInfo[5] !== undefined && ShipInfo.VESSEL_COLORS[Number(shipInfo[16])] !== undefined) {
-                    const location = Leaflet.latLng(Number(shipInfo[5]), Number(shipInfo[6]));
-
-                    // update marker position
-                    if (this.circle.getLayers().length !== 0 && this.circle.getLayers()[0].getAttribution() == shipInfo[1]) {
-                        this.circle.clearLayers();
-                        Leaflet.circleMarker(location, {radius: 12, attribution: shipInfo[1]}).addTo(this.circle);
-                    }
-
-                    const ship = Leaflet.trackSymbol(location, {
-                        trackId: shipInfo[1],
-                        fill: true,
-                        fillColor: ShipInfo.VESSEL_COLORS[Number(shipInfo[16])],
-                        fillOpacity: 1.0,
-                        stroke: true,
-                        color: "#000000",
-                        opacity: 1.0,
-                        weight: 1.0,
-                        speed: shipInfo[3],
-                        course: Number(shipInfo[4]) * Math.PI / 180,
-                        heading: Number(shipInfo[4]) * Math.PI / 180,
-                        updateTimestamp: shipInfo[12]
-                    });
-
-                    ship.on("click", (context) => {
-                        // TODO: Open sidebar
-                        sidebar.open("home");
-                        
-                        this.circle.clearLayers();
-                        this.show(Number(context.sourceTarget.options.trackId), map, false, Number(context.sourceTarget.options.updateTimestamp));
-                    });
-
-                    ship.addTo(this.main);
-                }
-            });
-        } else {
-            throw new Error("Something went wrong on the api server!");
+        const response = await fetch(`https://services.myshiptracking.com/requests/vesselsonmaptempw.php?${params}`).catch(console.error);
+        if (!response || response.status !== 200) {
+            throw new Error("Something went wrong with the vessel locations api!");
         }
+        const body = await response.text();
+        this.main.clearLayers();
+        const allInfo = body.split("\n");
+        allInfo.shift();
+        allInfo.pop();
+        allInfo.forEach((line: string) => {
+            const shipInfo = line.split("\t");
+            if (shipInfo[5] !== undefined && ShipInfo.VESSEL_COLORS[Number(shipInfo[16])] !== undefined) {
+                const location = Leaflet.latLng(Number(shipInfo[5]), Number(shipInfo[6]));
+
+                // update marker position
+                if (this.circle.getLayers().length !== 0 && this.circle.getLayers()[0].getAttribution() == shipInfo[1]) {
+                    this.circle.clearLayers();
+                    Leaflet.circleMarker(location, {radius: 12, attribution: shipInfo[1]}).addTo(this.circle);
+                }
+
+                const ship = Leaflet.trackSymbol(location, {
+                    trackId: shipInfo[1],
+                    fill: true,
+                    fillColor: ShipInfo.VESSEL_COLORS[Number(shipInfo[16])],
+                    fillOpacity: 1.0,
+                    stroke: true,
+                    color: "#000000",
+                    opacity: 1.0,
+                    weight: 1.0,
+                    speed: shipInfo[3],
+                    course: Number(shipInfo[4]) * Math.PI / 180,
+                    heading: Number(shipInfo[4]) * Math.PI / 180,
+                    updateTimestamp: shipInfo[12]
+                });
+
+                ship.on("click", (context) => {
+                    // TODO: Open sidebar
+                    sidebar.open("home");
+                    
+                    this.circle.clearLayers();
+                    this.show(Number(context.sourceTarget.options.trackId), map, false, Number(context.sourceTarget.options.updateTimestamp));
+                });
+
+                ship.addTo(this.main);
+            }
+        });
     }
 
     private static addInfoRow(table: HTMLTableElement, key: string, value: string | number | Date | void): HTMLTableRowElement {
