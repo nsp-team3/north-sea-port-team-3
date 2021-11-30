@@ -10,6 +10,7 @@ import Bedrijven from "./views/bedrijven";
 import { Ligplaats } from "./views/ligplaats";
 import Windsnelheid from "./views/windsnelheid";
 import AIS from "./api/AIS";
+import bruggen from "./views/bruggen";
 
 const testClickFunction = (map: L.Map) => {
     console.log(map.getCenter());
@@ -59,7 +60,8 @@ const testClickFunction = (map: L.Map) => {
         ShipInfo.getLocations(map, sidebar),
         ShipInfo.enableBackButton(),
         ligplaats.enableSearch(map),
-        ligplaats.enableBackButton()
+        ligplaats.enableBackButton(),
+        bruggen.getBruggen(map)
     ]);
 
     const optionalOverlays = {
@@ -68,7 +70,8 @@ const testClickFunction = (map: L.Map) => {
         "Windsnelheid": Windsnelheid.main,
         "Ship info": ShipInfo.main,
         "Open sea maps": openSeaMap,
-        "Diepte Water": diepteLayer
+        "Diepte Water": diepteLayer,
+        "Bruggen": bruggen.main
     };
 
     ShipInfo.circle.addTo(map);
@@ -110,6 +113,16 @@ const testClickFunction = (map: L.Map) => {
             setTimeout(updateShips, 15000);
         }
     })();
+
+    (async() => {
+        updateBruggen();
+        function updateBruggen() {
+            bruggen.getBruggen(map);
+            setTimeout(updateBruggen, 15000);
+        }
+    })();
+
+
 
     // TODO: Remove this test garbage.
     window.addEventListener("keypress", async (e) => {
