@@ -51,7 +51,7 @@
                     <table id="shipinfo-content" class="table">
 
                     </table>
-                    <img id="ship-image" style="max-width: 100%; height: auto;" alt="Could not find an image for this vessel.">
+                    {{-- <img id="ship-image" style="max-width: 100%; height: auto;" alt="Could not find an image for this vessel."> --}}
                 </div>
             </div>
 

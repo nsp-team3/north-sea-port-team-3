@@ -24,7 +24,7 @@ export default class ShipInfo {
             }
 
             const searchResults = await AIS.search(searchfield.value, { excludePorts: true });
-            
+
             ShipInfo.displaySearchResults(searchResultsElement, map, searchResults);
         });
     }
@@ -89,7 +89,7 @@ export default class ShipInfo {
                     Number(vesselInfo.longitude),
                     Number(vesselInfo.latitude)
                 );
-                
+
                 // update marker position
                 if (this.circle.getLayers().length !== 0 && this.circle.getLayers()[0].getAttribution() == String(vesselInfo.mmsi)) {
                     this.circle.clearLayers();
@@ -115,7 +115,7 @@ export default class ShipInfo {
                 ship.on("click", (context) => {
                     // TODO: Open sidebar
                     sidebar.open("home");
-                    
+
                     this.circle.clearLayers();
                     this.showVesselOnMap(Number(context.sourceTarget.options.trackId), map, false, Number(context.sourceTarget.options.updateTimestamp));
                 });
@@ -181,15 +181,39 @@ export default class ShipInfo {
         this.addInfoRow(table, "Draught", vessel.draught ? `${vessel.draught}m` : "Unknown");
         this.addInfoRow(table, "Safe depth range", (typeof vessel.minDepth === "number" && typeof vessel.maxDepth === "number") ? `${vessel.minDepth}m to ${vessel.maxDepth}m` : "Unknown");
         this.addInfoRow(table, "Last draught", vessel.lastDraught ? `${vessel.lastDraught}m (${vessel.lastDraughtChange ? vessel.lastDraughtChange.toLocaleString() : ''})` : "Unknown");
-        this.addPortRow(table, "Last port", vessel.lastPort, map);
-        this.addPortRow(table, "Current port", vessel.port, map);
-        this.addPortRow(table, "Next port", vessel.nextPort, map);
+        this.addPortRow(table, "Last port", vessel.lastPort, map, vessel.mmsi);
+        this.addPortRow(table, "Current port", vessel.port, map, vessel.mmsi);
+        this.addPortRow(table, "Next port", vessel.nextPort, map, vessel.mmsi);
+        this.addImage(table, "Image", vessel.mmsi);
     }
 
-    private static addPortRow(table: HTMLTableElement, title: string, port: Port, map: Leaflet.Map){
+    private static addPortRow(table: HTMLTableElement, title: string, port: Port, map: Leaflet.Map, mmsi: number){
         const portRow = this.addInfoRow(table, title , port.name || "Unknown");
         portRow.addEventListener("click", () => {
-            PortInfo.show(map, port);
+            PortInfo.show(map, port, mmsi);
         });
+    }
+
+    private static addImage(table: HTMLTableElement, key: string, mmsi: number): HTMLTableRowElement {
+        let imageSrcString = "";
+        imageSrcString = `https://www.myshiptracking.com/requests/getimage-normal/${mmsi}.jpg`
+
+        const row = table.insertRow();
+
+        let rowHTML =
+        /*html*/
+        `
+        <tr>
+            <td colspan="2">
+                <img id="ship-image" style="max-width: 100%; height: auto;"
+                src="${imageSrcString}"
+                alt="Could not find an image for this vessel.">
+            </td>
+        </tr>
+        `
+
+        row.innerHTML = rowHTML;
+
+        return row;
     }
 }
