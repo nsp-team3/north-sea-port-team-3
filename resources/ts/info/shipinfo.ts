@@ -77,55 +77,56 @@ export default class ShipInfo {
     }
 
     public static async showVessels(map: Leaflet.Map, sidebar: Leaflet.Control.Sidebar): Promise<void> {
-        await ShipInfo.requestVesselLocations(map, sidebar);
+        const nearbyVessels = await ShipInfo.getNearbyVessels(map, sidebar);
+        this.main.clearLayers();
+        nearbyVessels.forEach((vesselInfo) => ShipInfo.drawVesselOnMap(map, sidebar, vesselInfo));
     }
 
-    private static async requestVesselLocations(map: Leaflet.Map, sidebar: Leaflet.Control.Sidebar) {
+    private static async getNearbyVessels(map: Leaflet.Map, sidebar: Leaflet.Control.Sidebar) {
         const nearbyVessels: SimpleVesselInfo[] = await AIS.getNearbyVessels(map, { includePorts: false });
-
-        nearbyVessels.forEach((vesselInfo: SimpleVesselInfo) => {
-            if (vesselInfo.latitude && vesselInfo.longitude && ShipInfo.VESSEL_COLORS[vesselInfo.vesselType]) {
-                const location = Leaflet.latLng(
-                    Number(vesselInfo.longitude),
-                    Number(vesselInfo.latitude)
-                );
-                
-                // update marker position
-                if (this.circle.getLayers().length !== 0 && this.circle.getLayers()[0].getAttribution() == String(vesselInfo.mmsi)) {
-                    this.circle.clearLayers();
-                    Leaflet.circleMarker(location, {radius: 12, attribution: String(vesselInfo.mmsi)}).addTo(this.circle);
-                }
-
-                const ship = Leaflet.trackSymbol(location, {
-                    trackId: vesselInfo.mmsi,
-                    fill: true,
-                    fillColor: ShipInfo.VESSEL_COLORS[vesselInfo.vesselType],
-                    fillOpacity: 1.0,
-                    stroke: true,
-                    color: "#000000",
-                    opacity: 1.0,
-                    weight: 1.0,
-                    speed: vesselInfo.speed,
-                    course: vesselInfo.direction * Math.PI / 180,
-                    heading: vesselInfo.direction * Math.PI / 180,
-                    updateTimestamp: vesselInfo.requestTime
-                });
-
-
-                ship.on("click", (context) => {
-                    // TODO: Open sidebar
-                    sidebar.open("home");
-                    
-                    this.circle.clearLayers();
-                    this.showVesselOnMap(Number(context.sourceTarget.options.trackId), map, false, Number(context.sourceTarget.options.updateTimestamp));
-                });
-
-                ship.addTo(this.main);
-            }
-        });
+        return nearbyVessels.filter((vesselInfo: SimpleVesselInfo) => vesselInfo.latitude && vesselInfo.longitude && ShipInfo.VESSEL_COLORS[vesselInfo.vesselType]);
     }
 
-    private static async showVesselOnMap(mmsi: number, map: Leaflet.Map, zoom: boolean, updateTimestamp: number) {
+    private static drawVesselOnMap(map: L.Map, sidebar: L.Control.Sidebar, vesselInfo: SimpleVesselInfo) {
+        const location = Leaflet.latLng(
+            Number(vesselInfo.latitude),
+            Number(vesselInfo.longitude)
+        );
+
+        // update marker position
+        if (this.circle.getLayers().length !== 0 && this.circle.getLayers()[0].getAttribution() === String(vesselInfo.mmsi)) {
+            this.circle.clearLayers();
+            Leaflet.circleMarker(location, {radius: 12, attribution: String(vesselInfo.mmsi)}).addTo(this.circle);
+        }
+
+        const ship = Leaflet.trackSymbol(location, {
+            trackId: vesselInfo.mmsi,
+            fill: true,
+            fillColor: ShipInfo.VESSEL_COLORS[vesselInfo.vesselType],
+            fillOpacity: 1.0,
+            stroke: true,
+            color: "#000000",
+            opacity: 1.0,
+            weight: 1.0,
+            speed: vesselInfo.speed,
+            course: vesselInfo.direction * Math.PI / 180,
+            heading: vesselInfo.direction * Math.PI / 180,
+            updateTimestamp: vesselInfo.requestTime
+        });
+
+
+        ship.on("click", (context) => {
+            // TODO: Open sidebar
+            sidebar.open("home");
+            
+            this.circle.clearLayers();
+            this.showVesselOnMap(vesselInfo.mmsi, map, false, vesselInfo.requestTime);
+        });
+
+        ship.addTo(this.main);
+    }
+
+    private static async showVesselOnMap(mmsi: number, map: Leaflet.Map, zoom: boolean, updateTimestamp: Date) {
         const selectedVessel: Vessel = await AIS.getVessel(mmsi);
         document.getElementById("main-search").style.display = "none";
         document.getElementById("main-shipinfo").style.display = "block";
@@ -146,33 +147,15 @@ export default class ShipInfo {
         Leaflet.circleMarker([location.latitude, location.longtitude], {radius: 12, attribution: String(mmsi)}).addTo(this.circle);
     }
 
-    private static addInfoRow(table: HTMLTableElement, key: string, value: string | number | Date | void): HTMLTableRowElement {
-        const row = table.insertRow();
-        const nameCell = row.insertCell(0);
-        const valueCell = row.insertCell(1);
-
-        nameCell.innerHTML = `<b>${key}</b>`;
-        valueCell.innerHTML = String(value);
-
-        return row;
-    }
-
-    private static loadTableData(map: Leaflet.Map, vessel: Vessel, updateTimestamp: number) {
-        const table = <HTMLTableElement>document.getElementById("shipinfo-content");
+    private static loadTableData(map: Leaflet.Map, vessel: Vessel, updateTimestamp: Date) {
+        const table = document.getElementById("shipinfo-content") as HTMLTableElement;
         table.innerHTML = "";
-
-        let updateString;
-        if (updateTimestamp !== undefined) {
-            const updateTime = new Date(updateTimestamp * 1000)
-            // console.log(formatDistanceStrict(updateTime, new Date(), { addSuffix: true })); // 3 seconds ago - date-fns
-            updateString = format(updateTime, "HH:mm, dd MMM");
-        }
 
         this.addInfoRow(table, "IMO", vessel.imo ? vessel.imo : "Unknown");
         this.addInfoRow(table, "MMSI", vessel.mmsi);
         this.addInfoRow(table, "Type", vessel.typeText);
         this.addInfoRow(table, "Status", vessel.statusText);
-        this.addInfoRow(table, "Location timestamp", updateString? updateString : "Unknown");
+        this.addInfoRow(table, "Location timestamp", updateTimestamp? format(updateTimestamp, "HH:mm, dd MMM") : "Unknown");
         this.addInfoRow(table, "Country of origin", `${vessel.country} [${vessel.flag}]`);
         this.addInfoRow(table, "ETA", vessel.ETA ? vessel.ETA.toLocaleString() : "Unknown");
         this.addInfoRow(table, "Velocity", `${vessel.course}° at ${vessel.speed} knots`);
@@ -186,10 +169,19 @@ export default class ShipInfo {
         this.addPortRow(table, "Next port", vessel.nextPort, map);
     }
 
+    private static addInfoRow(table: HTMLTableElement, key: string, value: string | number | Date | void): HTMLTableRowElement {
+        const row = table.insertRow();
+        const nameCell = row.insertCell(0);
+        const valueCell = row.insertCell(1);
+
+        nameCell.innerHTML = `<b>${key}</b>`;
+        valueCell.innerHTML = String(value);
+
+        return row;
+    }
+
     private static addPortRow(table: HTMLTableElement, title: string, port: Port, map: Leaflet.Map){
         const portRow = this.addInfoRow(table, title , port.name || "Unknown");
-        portRow.addEventListener("click", () => {
-            PortInfo.show(map, port);
-        });
+        portRow.addEventListener("click", () => PortInfo.show(map, port));
     }
 }

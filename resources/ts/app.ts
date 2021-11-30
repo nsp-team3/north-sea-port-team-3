@@ -12,9 +12,9 @@ import Windsnelheid from "./views/windsnelheid";
 import AIS from "./api/AIS";
 
 const testClickFunction = (map: L.Map) => {
-    console.log(map.getCenter());
-    console.log(map.getZoom());
-    console.log(map.getBounds());
+    // console.log(map.getCenter());
+    // console.log(map.getZoom());
+    // console.log(map.getBounds());
     // let test = ShipInfo.main.getLayer(244690791);
     // var popupContent = `I am here!`;
     // test.bindPopup(popupContent);
@@ -103,25 +103,8 @@ const testClickFunction = (map: L.Map) => {
         Bedrijven.checkLayer(map);
     });
 
-    (async() => {
-        updateShips();
-        function updateShips() {
-            ShipInfo.showVessels(map, sidebar);
-            setTimeout(updateShips, 15000);
-        }
-    })();
-
-    // TODO: Remove this test garbage.
-    window.addEventListener("keypress", async (e) => {
-        if (e.key === "e") {
-            const test = await AIS.getNearbyVessels(map, {
-                // includePorts: true,
-                // destination: "vlissingen",
-                currentPortId: 1145,
-                originPortId: 166,
-                destinationPortId: 1236
-            });
-            console.log(test);
-        }
-    });
+    ShipInfo.showVessels(map, sidebar);
+    setInterval(() => {
+        ShipInfo.showVessels(map, sidebar);
+    }, 15000);
 })();
