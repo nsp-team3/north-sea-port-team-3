@@ -132,10 +132,6 @@ export default class ShipInfo {
         document.getElementById("main-title").textContent = "Scheepsinformatie";
         document.getElementById("shipname").textContent = selectedVessel.name;
 
-        const image = document.getElementById("ship-image") as HTMLImageElement;
-        image.src = ""; // Clear the image to prevent displaying the wrong image below a different ship.
-        image.src = `https://www.myshiptracking.com/requests/getimage-normal/${mmsi}.jpg`;
-
         ShipInfo.loadTableData(map, selectedVessel, updateTimestamp);
 
         const location: LocationInfo = await selectedVessel.getLocation() as LocationInfo;
@@ -181,16 +177,16 @@ export default class ShipInfo {
         this.addInfoRow(table, "Draught", vessel.draught ? `${vessel.draught}m` : "Unknown");
         this.addInfoRow(table, "Safe depth range", (typeof vessel.minDepth === "number" && typeof vessel.maxDepth === "number") ? `${vessel.minDepth}m to ${vessel.maxDepth}m` : "Unknown");
         this.addInfoRow(table, "Last draught", vessel.lastDraught ? `${vessel.lastDraught}m (${vessel.lastDraughtChange ? vessel.lastDraughtChange.toLocaleString() : ''})` : "Unknown");
-        this.addPortRow(table, "Last port", vessel.lastPort, map, vessel.mmsi);
-        this.addPortRow(table, "Current port", vessel.port, map, vessel.mmsi);
-        this.addPortRow(table, "Next port", vessel.nextPort, map, vessel.mmsi);
+        this.addPortRow(table, "Last port", vessel.lastPort, map);
+        this.addPortRow(table, "Current port", vessel.port, map);
+        this.addPortRow(table, "Next port", vessel.nextPort, map);
         this.addImage(table, "Image", vessel.mmsi);
     }
 
-    private static addPortRow(table: HTMLTableElement, title: string, port: Port, map: Leaflet.Map, mmsi: number){
+    private static addPortRow(table: HTMLTableElement, title: string, port: Port, map: Leaflet.Map){
         const portRow = this.addInfoRow(table, title , port.name || "Unknown");
         portRow.addEventListener("click", () => {
-            PortInfo.show(map, port, mmsi);
+            PortInfo.show(map, port);
         });
     }
 

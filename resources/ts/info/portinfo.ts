@@ -12,7 +12,7 @@ export default class PortInfo {
         "XLarge": 14
     };
 
-    public static async show(map: Leaflet.Map, port: Port, mmsi: number){
+    public static async show(map: Leaflet.Map, port: Port){
         document.getElementById("main-search").style.display = "none";
         document.getElementById("main-shipinfo").style.display = "block";
         document.getElementById("main-title").textContent = "Haven informatie";
