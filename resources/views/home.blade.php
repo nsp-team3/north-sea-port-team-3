@@ -22,6 +22,7 @@
             <ul role="tablist">
                 <li><a href="#home" role="tab"><i class="fa fa-ship active"></i></a></li>
                 <li><a href="#ligplaatsTab" role="tab"><i class="fa fa-anchor"></i></a></li>
+                <li><a href="#portsTab" role="tab"><i class="fa fa-home"></i></a></li>
                 <li><a href="#legendaTab" role="tab"><i class="fa fa-table"></i></a></li>
             </ul>
 
@@ -54,8 +55,6 @@
                 </div>
             </div>
 
-
-
             <div class="leaflet-sidebar-pane" id="ligplaatsTab">
                 <h1 class="leaflet-sidebar-header">
                     <span id="main-ligplaatstitle">Ligplaats Zoeken</span>
@@ -73,7 +72,26 @@
                     <table id="ligplaatsinfo-content" class="table">
 
                     </table>
+                </div>
+            </div>
 
+            <div class="leaflet-sidebar-pane" id="portsTab">
+                <h1 class="leaflet-sidebar-header">
+                    <span id="main-portstitle">Haven zoeken</span>
+                    <span class="leaflet-sidebar-close"><i class="fa fa-caret-right"></i></span>
+                </h1>
+                <div id="main-portssearch">
+                    <input type="text" id="searchfieldPorts" class="searchfield" placeholder="Zoeken...">
+                    <div id="searchresultsPorts"></div>
+                </div>
+                <div id="main-portinfo" style="display: none">
+                    <div class="title">
+                        <i class="fa fa-arrow-circle-left back-button"></i>
+                        <h4 id="portname"></h4>
+                    </div>
+                    <table id="portinfo-content" class="table">
+
+                    </table>
                 </div>
             </div>
 

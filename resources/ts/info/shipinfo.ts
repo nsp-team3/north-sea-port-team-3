@@ -6,19 +6,134 @@ import LocationInfo from "../types/LocationInfo";
 import PortInfo from "./portinfo";
 import { Port } from "../api/Port";
 import { format } from "date-fns";
+import SimpleVesselInfo from "../types/SimpleVesselInfo";
+import { SearchResult } from "../types/SearchTypes";
 
 export default class ShipInfo {
-    private static VESSEL_COLORS: string[] = ["#6b6b6c", "#0fa8b7", "#ac7b22", "#2856fe", "#0c9338", "#d60202", "#e716f4", "#ede115", "#e716f4", "#e716f4", "#e716f4"];
-    private static BASE_URL: string = "/api/search";
+    public static readonly circle = Leaflet.layerGroup();
+    public static readonly main = Leaflet.layerGroup();
+    private static readonly VESSEL_COLORS: string[] = ["#6b6b6c", "#0fa8b7", "#ac7b22", "#2856fe", "#0c9338", "#d60202", "#e716f4", "#ede115", "#e716f4", "#e716f4", "#e716f4"];
 
-    private static async show(mmsi: number, map: Leaflet.Map, zoom: boolean, updateTimestamp: number) {
+    public static async enableSearch(map: Leaflet.Map) {
+        const searchfield = document.getElementById("searchfield") as HTMLInputElement;
+        searchfield.addEventListener("input", async () => {
+            const searchResultsElement = document.getElementById("searchresults") as HTMLDivElement;
+            if (searchfield.value.length < 3) {
+                searchResultsElement.innerHTML = "";
+                return;
+            }
+
+            const searchResults = await AIS.search(searchfield.value, { excludePorts: true });
+            
+            ShipInfo.displaySearchResults(searchResultsElement, map, searchResults);
+        });
+    }
+
+    private static displaySearchResults(element: HTMLDivElement, map: L.Map, searchResults: SearchResult[]): void {
+        element.innerHTML = ""
+
+        if (searchResults.length === 0) {
+            return;
+        }
+
+        searchResults.forEach((searchResult) => ShipInfo.displaySearchResult(searchResult, element, map));
+    }
+
+    private static displaySearchResult(searchResult: SearchResult, element: HTMLDivElement, map: Leaflet.Map) {
+        const div = document.createElement("div");
+        div.classList.add("list-group-item", "list-group-item-action", "my-2");
+
+        const title = document.createElement("strong");
+        title.classList.add("mb-1");
+        title.innerText = `${searchResult.name} (${searchResult.flag})`;
+
+        const info = document.createElement("p");
+        info.classList.add("mb-1", "small");
+        info.innerHTML = `${searchResult.typeText} (${searchResult.mmsi || searchResult.portId})`;
+
+        div.append(title, info);
+        element.append(div);
+
+        div.addEventListener("click", () => {
+            if (searchResult.mmsi) {
+                this.showVesselOnMap(searchResult.mmsi, map, true, undefined);
+            } else if (searchResult.portId) {
+                //TODO: PortInfo.show(map)
+            }
+        });
+    }
+
+    public static enableBackButton(): void {
+        const searchResults = document.querySelectorAll(".back-button");
+        searchResults.forEach((element: HTMLSpanElement) => {
+            element.addEventListener("click", () => {
+                const tabName = document.getElementById("main-title") as HTMLSpanElement;
+                tabName.textContent = "Schip zoeken";
+                document.getElementById("main-shipinfo").style.display = "none";
+                document.getElementById("main-search").style.display = "block";
+                ShipInfo.circle.clearLayers();
+            });
+        });
+    }
+
+    public static async showVessels(map: Leaflet.Map, sidebar: Leaflet.Control.Sidebar): Promise<void> {
+        await ShipInfo.requestVesselLocations(map, sidebar);
+    }
+
+    private static async requestVesselLocations(map: Leaflet.Map, sidebar: Leaflet.Control.Sidebar) {
+        const nearbyVessels: SimpleVesselInfo[] = await AIS.getNearbyVessels(map, { includePorts: false });
+
+        nearbyVessels.forEach((vesselInfo: SimpleVesselInfo) => {
+            if (vesselInfo.latitude && vesselInfo.longitude && ShipInfo.VESSEL_COLORS[vesselInfo.vesselType]) {
+                const location = Leaflet.latLng(
+                    Number(vesselInfo.longitude),
+                    Number(vesselInfo.latitude)
+                );
+                
+                // update marker position
+                if (this.circle.getLayers().length !== 0 && this.circle.getLayers()[0].getAttribution() == String(vesselInfo.mmsi)) {
+                    this.circle.clearLayers();
+                    Leaflet.circleMarker(location, {radius: 12, attribution: String(vesselInfo.mmsi)}).addTo(this.circle);
+                }
+
+                const ship = Leaflet.trackSymbol(location, {
+                    trackId: vesselInfo.mmsi,
+                    fill: true,
+                    fillColor: ShipInfo.VESSEL_COLORS[vesselInfo.vesselType],
+                    fillOpacity: 1.0,
+                    stroke: true,
+                    color: "#000000",
+                    opacity: 1.0,
+                    weight: 1.0,
+                    speed: vesselInfo.speed,
+                    course: vesselInfo.direction * Math.PI / 180,
+                    heading: vesselInfo.direction * Math.PI / 180,
+                    updateTimestamp: vesselInfo.requestTime
+                });
+
+
+                ship.on("click", (context) => {
+                    // TODO: Open sidebar
+                    sidebar.open("home");
+                    
+                    this.circle.clearLayers();
+                    this.showVesselOnMap(Number(context.sourceTarget.options.trackId), map, false, Number(context.sourceTarget.options.updateTimestamp));
+                });
+
+                ship.addTo(this.main);
+            }
+        });
+    }
+
+    private static async showVesselOnMap(mmsi: number, map: Leaflet.Map, zoom: boolean, updateTimestamp: number) {
         const selectedVessel: Vessel = await AIS.getVessel(mmsi);
         document.getElementById("main-search").style.display = "none";
         document.getElementById("main-shipinfo").style.display = "block";
         document.getElementById("main-title").textContent = "Scheepsinformatie";
         document.getElementById("shipname").textContent = selectedVessel.name;
+
         const image = document.getElementById("ship-image") as HTMLImageElement;
-        image.src = "";
+        image.src = ""; // Clear the image to prevent displaying the wrong image below a different ship.
         image.src = `https://www.myshiptracking.com/requests/getimage-normal/${mmsi}.jpg`;
 
         ShipInfo.loadTableData(map, selectedVessel, updateTimestamp);
@@ -29,183 +144,6 @@ export default class ShipInfo {
         }
 
         Leaflet.circleMarker([location.latitude, location.longtitude], {radius: 12, attribution: String(mmsi)}).addTo(this.circle);
-    }
-
-    public static async enableSearch(map: Leaflet.Map) {
-        const searchfield = <HTMLInputElement>document.getElementById("searchfield");
-        searchfield.addEventListener("input", async () => {
-            const searchResultsElement = <HTMLDivElement>document.getElementById("searchresults");
-            if (searchfield.value.length < 3) {
-                searchResultsElement.innerHTML = "";
-                return;
-            }
-
-            const res = await fetch(`${ShipInfo.BASE_URL}?query=${searchfield.value}`).catch(console.error);
-            if (!res || res.status !== 200) {
-                return;
-            }
-
-            const body = await res.text();
-            const searchResults = ShipInfo.parseXML(body);
-            searchResultsElement.innerHTML = ""
-
-            if (searchResults.length === 0) {
-                return;
-            }
-
-            searchResults.forEach((searchResult) => {
-                const div = document.createElement("div");
-                div.classList.add("list-group-item", "list-group-item-action", "my-2");
-
-                const title = document.createElement("strong");
-                title.classList.add("mb-1");
-                title.innerText = `${searchResult.name} (${searchResult.flag})`;
-                
-                const info = document.createElement("p");
-                info.classList.add("mb-1", "small");
-                info.innerHTML = `${searchResult.typeText} (${searchResult.mmsi || searchResult.portId})`;
-
-                div.append(title, info);
-                searchResultsElement.append(div);
-
-                div.addEventListener("click", () => {
-                    if (searchResult.mmsi){
-                        this.show(searchResult.mmsi, map, true, undefined);
-                    } else if(searchResult.portId){
-                        //TODO: PortInfo.show(map)
-                    }
-                });
-            });
-        });
-    }
-
-    private static parseXML(xml: string){
-        const resultsMatch = xml.match(/<RES>.*?<\/RES>/g);
-        if (!resultsMatch) {
-            return undefined;
-        }
-
-        return resultsMatch.map((e) => {
-            const resultInfoMatch = e.match(/<RES><ID>([0-9]*)<\/ID><NAME>(.*?)<\/NAME><D>(.*?)<\/D><TYPE>([0-9]*)<\/TYPE><FLAG>([a-zA-Z]+)<\/FLAG><LAT>.*?<\/LAT><LNG>.*?<\/LNG><\/RES>/);
-            if (resultInfoMatch) {
-                const info = {
-                    mmsi: Number(resultInfoMatch[1]),
-                    name: resultInfoMatch[2],
-                    typeText: resultInfoMatch[3],
-                    type: Number(resultInfoMatch[4]),
-                    flag: resultInfoMatch[5],
-                    portId: 0
-                }
-                if (info.type === 0) {
-                    info.portId = info.mmsi;
-                    delete info.mmsi;
-                } else {
-                    delete info.portId;
-                }
-
-                return info;
-            }
-            return undefined;
-        }).filter((e) => e !== undefined);
-    }
-
-    public static async enableBackButton() {
-        const searchResults = document.querySelectorAll(".back-button");
-        searchResults.forEach((element: HTMLSpanElement) => {
-            element.addEventListener("click", () => {
-                let tabName = <HTMLSpanElement>document.getElementById("main-title");
-                tabName.textContent = "Schip zoeken";
-                document.getElementById("main-shipinfo").style.display = "none";
-                document.getElementById("main-search").style.display = "block";
-                ShipInfo.circle.clearLayers();
-            });
-        });
-    }
-
-    public static circle = Leaflet.layerGroup();
-    public static main = Leaflet.layerGroup();
-
-    public static async getLocations(map: Leaflet.Map, sidebar: Leaflet.Control.Sidebar) {
-        let bounds = map.getBounds();
-        const sw = bounds.getSouthWest();
-        const ne = bounds.getNorthEast();
-        const params = new URLSearchParams({
-            type: "json",
-            minlat: String(sw.lat),
-            maxlat: String(ne.lat),
-            minlon: String(sw.lng),
-            maxlon: String(ne.lng),
-            zoom: String(Math.round(map.getZoom())),
-            selid: "null",
-            seltype: "null",
-            timecode: "0",
-            slmp: "",
-            filters: JSON.stringify({
-                "vtypes": ",0,3,4,6,7,8,9,10,11,12,13",
-                "minsog": 0,
-                "maxsog": 60,
-                "minsz": 0,
-                "maxsz": 500,
-                "minyr": 1950,
-                "maxyr": 2021,
-                "flag": "",
-                "status": "",
-                "mapflt_from": "",
-                "mapflt_dest": "",
-                "ports": "1"
-            }),
-            _: String(new Date().getTime())
-        });
-        await ShipInfo.requestVesselLocations(params, map, sidebar);
-    }
-
-    private static async requestVesselLocations(params: URLSearchParams, map: Leaflet.Map, sidebar: Leaflet.Control.Sidebar) {
-        const response = await fetch(`https://services.myshiptracking.com/requests/vesselsonmaptempw.php?${params}`).catch(console.error);
-        if (!response || response.status !== 200) {
-            throw new Error("Something went wrong with the vessel locations api!");
-        }
-        const body = await response.text();
-        this.main.clearLayers();
-        const allInfo = body.split("\n");
-        allInfo.shift();
-        allInfo.pop();
-        allInfo.forEach((line: string) => {
-            const shipInfo = line.split("\t");
-            if (shipInfo[5] !== undefined && ShipInfo.VESSEL_COLORS[Number(shipInfo[16])] !== undefined) {
-                const location = Leaflet.latLng(Number(shipInfo[5]), Number(shipInfo[6]));
-
-                // update marker position
-                if (this.circle.getLayers().length !== 0 && this.circle.getLayers()[0].getAttribution() == shipInfo[1]) {
-                    this.circle.clearLayers();
-                    Leaflet.circleMarker(location, {radius: 12, attribution: shipInfo[1]}).addTo(this.circle);
-                }
-
-                const ship = Leaflet.trackSymbol(location, {
-                    trackId: shipInfo[1],
-                    fill: true,
-                    fillColor: ShipInfo.VESSEL_COLORS[Number(shipInfo[16])],
-                    fillOpacity: 1.0,
-                    stroke: true,
-                    color: "#000000",
-                    opacity: 1.0,
-                    weight: 1.0,
-                    speed: shipInfo[3],
-                    course: Number(shipInfo[4]) * Math.PI / 180,
-                    heading: Number(shipInfo[4]) * Math.PI / 180,
-                    updateTimestamp: shipInfo[12]
-                });
-
-                ship.on("click", (context) => {
-                    // TODO: Open sidebar
-                    sidebar.open("home");
-                    
-                    this.circle.clearLayers();
-                    this.show(Number(context.sourceTarget.options.trackId), map, false, Number(context.sourceTarget.options.updateTimestamp));
-                });
-
-                ship.addTo(this.main);
-            }
-        });
     }
 
     private static addInfoRow(table: HTMLTableElement, key: string, value: string | number | Date | void): HTMLTableRowElement {
