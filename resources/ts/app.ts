@@ -13,9 +13,9 @@ import AIS from "./api/AIS";
 import bruggen from "./views/bruggen";
 
 const testClickFunction = (map: L.Map) => {
-    console.log(map.getCenter());
-    console.log(map.getZoom());
-    console.log(map.getBounds());
+    // console.log(map.getCenter());
+    // console.log(map.getZoom());
+    // console.log(map.getBounds());
     // let test = ShipInfo.main.getLayer(244690791);
     // var popupContent = `I am here!`;
     // test.bindPopup(popupContent);
@@ -57,7 +57,7 @@ const testClickFunction = (map: L.Map) => {
     await Promise.all([
         Windsnelheid.getWindInfo(),
         ShipInfo.enableSearch(map),
-        ShipInfo.getLocations(map, sidebar),
+        ShipInfo.showVessels(map, sidebar),
         ShipInfo.enableBackButton(),
         ligplaats.enableSearch(map),
         ligplaats.enableBackButton(),
@@ -89,11 +89,11 @@ const testClickFunction = (map: L.Map) => {
     map.on("zoomend", () => {
         ligplaats.checkZoom(map);
         Bedrijven.checkZoom(map);
-        ShipInfo.getLocations(map, sidebar);
+        ShipInfo.showVessels(map, sidebar);
     });
 
     map.on("dragend", () => {
-        ShipInfo.getLocations(map, sidebar);
+        ShipInfo.showVessels(map, sidebar);
     });
 
     map.on("overlayremove", () => {
@@ -105,36 +105,12 @@ const testClickFunction = (map: L.Map) => {
         ligplaats.checkLayer(map);
         Bedrijven.checkLayer(map);
     });
+    
+    bruggen.getBruggen(map);
 
-    (async() => {
-        updateShips();
-        function updateShips() {
-            ShipInfo.getLocations(map, sidebar);
-            setTimeout(updateShips, 15000);
-        }
-    })();
-
-    (async() => {
-        updateBruggen();
-        function updateBruggen() {
-            bruggen.getBruggen(map);
-            setTimeout(updateBruggen, 15000);
-        }
-    })();
-
-
-
-    // TODO: Remove this test garbage.
-    window.addEventListener("keypress", async (e) => {
-        if (e.key === "e") {
-            const test = await AIS.searchVessels(map, {
-                // includePorts: true,
-                // destination: "vlissingen",
-                currentPortId: 1145,
-                originPortId: 166,
-                destinationPortId: 1236
-            });
-            console.log(test);
-        }
-    });
+    ShipInfo.showVessels(map, sidebar);
+    setInterval(() => {
+        ShipInfo.showVessels(map, sidebar);
+        bruggen.getBruggen(map);
+    }, 15000);
 })();

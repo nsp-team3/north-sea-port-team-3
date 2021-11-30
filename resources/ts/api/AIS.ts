@@ -4,10 +4,11 @@ import * as Leaflet from "leaflet";
 import { Vessel } from "./Vessel";
 import VesselFilters from "../types/VesselFilters";
 import SimpleVesselInfo from "../types/SimpleVesselInfo";
-import { parseHtmlDate } from "./Util";
+import { SearchFilters, SearchResult } from "../types/SearchTypes";
 
 export class AIS {
     private static BASE_URL = "https://services.myshiptracking.com/requests";
+    private static SEARCH_URL: string = "/api/search";
 
     public static getVessel = async (mmsi: number): Promise<Vessel> => {
         const params = new URLSearchParams({
@@ -21,10 +22,68 @@ export class AIS {
         return new Vessel(rawInfo);
     }
 
-    public static searchVessels = async (map: Leaflet.Map, vesselFilters: VesselFilters) : Promise<SimpleVesselInfo[]> => {
+    public static search = async (query: string, searchFilters?: SearchFilters): Promise<SearchResult[]> => {
+        const res = await fetch(`${AIS.SEARCH_URL}?query=${query}`).catch(console.error);
+        if (!res || res.status !== 200) {
+            return [];
+        }
+
+        const body = await res.text();
+        return AIS.filterSearchResults(AIS.parseSearchXML(body), searchFilters);
+    }
+
+    private static filterSearchResults = (searchResults: SearchResult[], searchFilters?: SearchFilters): SearchResult[] => {
+        if (!searchFilters) {
+            return searchResults;
+        }
+
+        if (searchFilters.excludePorts) {
+            searchResults = searchResults.filter((searchResult) => searchResult.portId === undefined);
+        }
+        
+        if (searchFilters.excludeVessels) {
+            searchResults = searchResults.filter((searchResult) => searchResult.mmsi === undefined);
+        }
+
+        return searchResults;
+    }
+
+    private static parseSearchXML(xml: string): SearchResult[] {
+        const resultsMatch = xml.match(/<RES>.*?<\/RES>/g);
+        if (!resultsMatch) {
+            return [];
+        }
+
+        return resultsMatch.map((e) => {
+            const resultInfoMatch = e.match(/<RES><ID>([0-9]*)<\/ID><NAME>(.*?)<\/NAME><D>(.*?)<\/D><TYPE>([0-9]*)<\/TYPE><FLAG>([a-zA-Z]+)<\/FLAG><LAT>.*?<\/LAT><LNG>.*?<\/LNG><\/RES>/);
+            if (resultInfoMatch) {
+                const info = {
+                    mmsi: Number(resultInfoMatch[1]),
+                    name: resultInfoMatch[2],
+                    typeText: resultInfoMatch[3],
+                    type: Number(resultInfoMatch[4]),
+                    flag: resultInfoMatch[5],
+                    portId: 0
+                }
+
+                if (info.type === 0) {
+                    info.portId = info.mmsi;
+                    delete info.mmsi;
+                } else {
+                    delete info.portId;
+                }
+
+                return info;
+            }
+            return undefined;
+        }).filter((e) => e !== undefined);
+    }
+
+    public static getNearbyVessels = async (map: Leaflet.Map, vesselFilters: VesselFilters = {}) : Promise<SimpleVesselInfo[]> => {
         const bounds = map.getBounds();
         const sw = bounds.getSouthWest();
         const ne = bounds.getNorthEast();
+
         const vesselTypes: string = (vesselFilters.vesselTypes !== undefined) ? vesselFilters.vesselTypes.join(",") : ",0,3,4,6,7,8,9,10,11,12,13";
 
         const params = new URLSearchParams({
@@ -87,8 +146,8 @@ export class AIS {
             name: shipInfo[2],
             speed: Number(shipInfo[3]),
             direction: Number(shipInfo[4]),
-            longitude: Number(shipInfo[5]),
-            latitude: Number(shipInfo[6]),
+            latitude: Number(shipInfo[5]),
+            longitude: Number(shipInfo[6]),
             requestTime: new Date(Number(shipInfo[12] + "000")),
             portId: Number(shipInfo[15]),
             vesselType: Number(shipInfo[16]),
