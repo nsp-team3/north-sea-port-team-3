@@ -1,6 +1,7 @@
 import { Port } from "../api/Port";
 import * as Leaflet from "leaflet";
 import PortInfoResponse from "../types/PortInfoResponse";
+import ShipInfo from "./shipinfo";
 
 export default class PortInfo {
     private static portSizeToZoomLevel: {[index: string]: number} = {
@@ -16,6 +17,7 @@ export default class PortInfo {
         document.getElementById("main-shipinfo").style.display = "block";
         document.getElementById("main-title").textContent = "Haven informatie";
         document.getElementById("shipname").textContent = port.name || "Unknown";
+        document.getElementById("ship-image").innerHTML = '';
 
         const info: PortInfoResponse | void = await Port.getInfo(port.id);
 

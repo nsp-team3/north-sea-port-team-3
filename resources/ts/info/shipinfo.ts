@@ -24,7 +24,7 @@ export default class ShipInfo {
             }
 
             const searchResults = await AIS.search(searchfield.value, { excludePorts: true });
-            
+
             ShipInfo.displaySearchResults(searchResultsElement, map, searchResults);
         });
     }
@@ -133,10 +133,6 @@ export default class ShipInfo {
         document.getElementById("main-title").textContent = "Scheepsinformatie";
         document.getElementById("shipname").textContent = selectedVessel.name;
 
-        const image = document.getElementById("ship-image") as HTMLImageElement;
-        image.src = ""; // Clear the image to prevent displaying the wrong image below a different ship.
-        image.src = `https://www.myshiptracking.com/requests/getimage-normal/${mmsi}.jpg`;
-
         ShipInfo.loadTableData(map, selectedVessel, updateTimestamp);
 
         const location: LocationInfo = await selectedVessel.getLocation() as LocationInfo;
@@ -167,6 +163,7 @@ export default class ShipInfo {
         this.addPortRow(table, "Last port", vessel.lastPort, map);
         this.addPortRow(table, "Current port", vessel.port, map);
         this.addPortRow(table, "Next port", vessel.nextPort, map);
+        this.addImage(table, "Image", vessel.mmsi);
     }
 
     private static addInfoRow(table: HTMLTableElement, key: string, value: string | number | Date | void): HTMLTableRowElement {
@@ -183,5 +180,28 @@ export default class ShipInfo {
     private static addPortRow(table: HTMLTableElement, title: string, port: Port, map: Leaflet.Map){
         const portRow = this.addInfoRow(table, title , port.name || "Unknown");
         portRow.addEventListener("click", () => PortInfo.show(map, port));
+    }
+
+    private static addImage(table: HTMLTableElement, key: string, mmsi: number): HTMLTableRowElement {
+        let imageSrcString = "";
+        imageSrcString = `https://www.myshiptracking.com/requests/getimage-normal/${mmsi}.jpg`
+
+        const row = table.insertRow();
+
+        let rowHTML =
+        /*html*/
+        `
+        <tr>
+            <td colspan="2">
+                <img id="ship-image" style="max-width: 100%; height: auto;"
+                src="${imageSrcString}"
+                alt="Could not find an image for this vessel.">
+            </td>
+        </tr>
+        `
+
+        row.innerHTML = rowHTML;
+
+        return row;
     }
 }
