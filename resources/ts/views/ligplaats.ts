@@ -75,7 +75,6 @@ export class Ligplaats {
         }
     });
 
-
     public async enableSearch(map: L.Map) {
         const searchfield = <HTMLInputElement>document.getElementById("searchfieldLigplaats");
         const searchresults = <HTMLDivElement>document.getElementById("searchresultsLigplaats");
@@ -109,12 +108,28 @@ export class Ligplaats {
     public main = L.layerGroup([this.ligplaatsenLayer, this.gebouwenLayer, this.steigersLayer]);
 
     private showInTable(properties: any) {
+        Ligplaats.enableBackButton();
         document.getElementById("main-ligplaatssearch").style.display = "none";
         document.getElementById("main-ligplaatsinfo").style.display = "block";
         document.getElementById("main-ligplaatstitle").textContent = "Ligplaats informatie";
         document.getElementById("ligplaatsname").textContent = `${properties.type} ${properties.ligplaatsNr}`;
         this.loadTableData(properties);
         this.sidebar.open('ligplaatsTab');
+    }
+
+    public static enableBackButton() {
+        document.querySelectorAll(".back-button").forEach((element: HTMLSpanElement) => {
+            element.parentNode.replaceChild(element.cloneNode(true), element);
+        });
+
+        document.querySelectorAll(".back-button").forEach((element: HTMLSpanElement) => {
+            element.addEventListener("click", () => {
+                let tabName = <HTMLSpanElement>document.getElementById("main-ligplaatstitle");
+                tabName.textContent = "Ligplaats zoeken";
+                document.getElementById("main-ligplaatsinfo").style.display = "none";
+                document.getElementById("main-ligplaatssearch").style.display = "block";
+            })
+        });
     }
 
     private addInfoRow(table: HTMLTableElement, key: string, value: string | number | Date | void): HTMLTableRowElement {
@@ -126,18 +141,6 @@ export class Ligplaats {
         valueCell.innerHTML = String(value);
 
         return row;
-    }
-
-    public async enableBackButton() {
-        const searchResults = document.querySelectorAll(".back-button");
-        searchResults.forEach((element: HTMLSpanElement) => {
-            element.addEventListener("click", () => {
-                let tabName = <HTMLSpanElement>document.getElementById("main-ligplaatstitle");
-                tabName.textContent = "Ligplaats zoeken";
-                document.getElementById("main-ligplaatsinfo").style.display = "none";
-                document.getElementById("main-ligplaatssearch").style.display = "block";
-            })
-        });
     }
 
     private loadTableData(ligplaats: any) {

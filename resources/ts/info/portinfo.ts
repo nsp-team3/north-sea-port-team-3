@@ -12,7 +12,11 @@ export default class PortInfo {
         "XLarge": 14
     };
 
-    public static async show(map: Leaflet.Map, port: Port){
+    public static async show(map: Leaflet.Map, port: Port, vesselMsi: number){
+        if (vesselMsi !== null) {
+            ShipInfo.changeBackButton(vesselMsi, map);
+        }
+
         document.getElementById("main-search").style.display = "none";
         document.getElementById("main-shipinfo").style.display = "block";
         document.getElementById("main-title").textContent = "Haven informatie";

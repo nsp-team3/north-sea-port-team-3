@@ -57,9 +57,7 @@ const testClickFunction = (map: L.Map) => {
         Windsnelheid.getWindInfo(),
         ShipInfo.enableSearch(map),
         ShipInfo.showVessels(map, sidebar),
-        ShipInfo.enableBackButton(),
         ligplaats.enableSearch(map),
-        ligplaats.enableBackButton(),
         Bruggen.getBruggen(map)
     ]);
 
@@ -104,7 +102,7 @@ const testClickFunction = (map: L.Map) => {
         ligplaats.checkLayer(map);
         Bedrijven.checkLayer(map);
     });
-    
+
     Bruggen.getBruggen(map);
 
     ShipInfo.showVessels(map, sidebar);
