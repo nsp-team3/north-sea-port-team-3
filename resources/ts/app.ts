@@ -9,7 +9,6 @@ import ShipInfo from "./info/shipinfo";
 import Bedrijven from "./views/bedrijven";
 import { Ligplaats } from "./views/ligplaats";
 import Windsnelheid from "./views/windsnelheid";
-import AIS from "./api/AIS";
 
 const testClickFunction = (map: L.Map) => {
     // console.log(map.getCenter());
