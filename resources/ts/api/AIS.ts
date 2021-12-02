@@ -5,10 +5,12 @@ import { Vessel } from "./Vessel";
 import VesselFilters from "../types/VesselFilters";
 import SimpleVesselInfo from "../types/SimpleVesselInfo";
 import { SearchFilters, SearchResult } from "../types/SearchTypes";
+import PortInfoResponse from "../types/PortInfoResponse";
 
 export class AIS {
-    private static BASE_URL = "https://services.myshiptracking.com/requests";
-    private static SEARCH_URL: string = "/api/search";
+    private static readonly BASE_URL = "https://services.myshiptracking.com/requests";
+    private static readonly PORT_URL = "/api/ports";
+    private static readonly SEARCH_URL: string = "/api/search";
 
     public static getVessel = async (mmsi: number): Promise<Vessel> => {
         const params = new URLSearchParams({
@@ -20,6 +22,13 @@ export class AIS {
         const rawInfo = await res.json();
 
         return new Vessel(rawInfo);
+    }
+
+    public static async getPort(id?: number | void): Promise<PortInfoResponse | void> {
+        const res = await fetch(`${AIS.PORT_URL}?id=${id}`);
+        if (res.status === 200) {
+            return await res.json();
+        }
     }
 
     public static search = async (query: string, searchFilters?: SearchFilters): Promise<SearchResult[]> => {
@@ -66,7 +75,7 @@ export class AIS {
             }),
             _: String(new Date().getTime())
         });
-        const res = await fetch(`https://services.myshiptracking.com/requests/vesselsonmaptempw.php?${params}`);
+        const res = await fetch(`${this.BASE_URL}/vesselsonmaptempw.php?${params}`);
         const body = await res.text();
         const foundVessels = AIS.parseSearchResponse(body);
 
@@ -77,12 +86,14 @@ export class AIS {
             const matchesDestination = vesselFilters.destination ? destination && destination.toLowerCase().includes("Vlissingen".toLowerCase()) : true;
             
             return matchesPortId && matchesDestination;
-        })
+        });
 
         return filteredVessels;
     }
 
     private static filterSearchResults = (searchResults: SearchResult[], searchFilters?: SearchFilters): SearchResult[] => {
+        searchResults = searchResults.filter((searchResult) => searchResult.portId ? searchResult.portId < 1000000 : true);
+
         if (!searchFilters) {
             return searchResults;
         }

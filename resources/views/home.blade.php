@@ -11,6 +11,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
     <link rel="manifest" href="/favicon/site.webmanifest">
+    <script src="/js/app.js"></script>
 </head>
 <body>
     <!-- optionally define the sidebar content via HTML markup -->
@@ -20,10 +21,10 @@
         <div class="leaflet-sidebar-tabs">
             <!-- top aligned tabs -->
             <ul role="tablist">
-                <li><a href="#home" role="tab"><i class="fa fa-ship active"></i></a></li>
-                <li><a href="#ligplaatsTab" role="tab"><i class="fa fa-anchor"></i></a></li>
-                <li><a href="#portsTab" role="tab"><i class="fa fa-home"></i></a></li>
-                <li><a href="#legendaTab" role="tab"><i class="fa fa-table"></i></a></li>
+                <li><a href="#vesselsTab" role="tab"><i class="fa fa-ship active"></i></a></li>
+                <li><a href="#portsTab" role="tab"><i class="fa fa-anchor"></i></a></li>
+                <li><a href="#berthsTab" role="tab"><i class="fa fa-anchor"></i></a></li>
+                <li><a href="#legendsTab" role="tab"><i class="fa fa-table"></i></a></li>
             </ul>
 
             <!-- bottom aligned tabs -->
@@ -34,73 +35,72 @@
 
         <!-- panel content -->
         <div class="leaflet-sidebar-content">
-            <div class="leaflet-sidebar-pane" id="home">
+            <div class="leaflet-sidebar-pane" id="vesselsTab">
                 <h1 class="leaflet-sidebar-header">
-                    <span id="main-title">Schip zoeken</span>
-                    <span class="leaflet-sidebar-close"><i class="fa fa-caret-right"></i></span>
+                    <span id="main-title">Search vessels</span>
+                    <span class="leaflet-sidebar-close">
+                        <i class="fa fa-caret-right"></i>
+                    </span>
                 </h1>
                 <div id="main-search">
-                    <input type="text" id="searchfield" class="searchfield" placeholder="Zoeken...">
-                    <div id="searchresults"></div>
+                    <input type="text" id="vessel-search" class="searchfield" placeholder="Enter vessel name...">
+                    <div id="vessel-search-results"></div>
                 </div>
-                <div id="main-shipinfo" style="display: none">
+                <div id="main-vessel-info" style="display: none">
                     <div class="title">
-                        <i class="fa fa-arrow-circle-left back-button"></i>
-                        <h4 id="shipname"></h4>
+                        <i id="vessel-back-button" class="fa fa-arrow-circle-left back-button"></i>
+                        <h4 id="vessel-name"></h4>
                     </div>
-                    <table id="shipinfo-content" class="table">
-
-                    </table>
-                    {{-- <img id="ship-image" style="max-width: 100%; height: auto;" alt="Could not find an image for this vessel."> --}}
-                </div>
-            </div>
-
-            <div class="leaflet-sidebar-pane" id="ligplaatsTab">
-                <h1 class="leaflet-sidebar-header">
-                    <span id="main-ligplaatstitle">Ligplaats Zoeken</span>
-                    <span class="leaflet-sidebar-close"><i class="fa fa-caret-right"></i></span>
-                </h1>
-                <div id="main-ligplaatssearch">
-                    <input type="text" id="searchfieldLigplaats" class="searchfield" placeholder="Zoeken...">
-                    <div id="searchresultsLigplaats"></div>
-                </div>
-                <div id="main-ligplaatsinfo" style="display: none">
-                    <div class="title">
-                        <i class="fa fa-arrow-circle-left back-button"></i>
-                        <h4 id="ligplaatsname"></h4>
-                    </div>
-                    <table id="ligplaatsinfo-content" class="table">
-
-                    </table>
+                    <table id="vessel-info-content" class="table"></table>
                 </div>
             </div>
 
             <div class="leaflet-sidebar-pane" id="portsTab">
                 <h1 class="leaflet-sidebar-header">
-                    <span id="main-portstitle">Haven zoeken</span>
-                    <span class="leaflet-sidebar-close"><i class="fa fa-caret-right"></i></span>
+                    <span id="main-title">Search ports</span>
+                    <span class="leaflet-sidebar-close">
+                        <i class="fa fa-caret-right"></i>
+                    </span>
                 </h1>
-                <div id="main-portssearch">
-                    <input type="text" id="searchfieldPorts" class="searchfield" placeholder="Zoeken...">
-                    <div id="searchresultsPorts"></div>
+                <div id="main-search">
+                    <input type="text" id="port-search" class="searchfield" placeholder="Enter port name...">
+                    <div id="port-search-results"></div>
                 </div>
-                <div id="main-portinfo" style="display: none">
+                <div id="main-port-info" style="display: none">
                     <div class="title">
-                        <i class="fa fa-arrow-circle-left back-button"></i>
-                        <h4 id="portname"></h4>
+                        <i id="port-back-button" class="fa fa-arrow-circle-left back-button"></i>
+                        <h4 id="port-name"></h4>
                     </div>
-                    <table id="portinfo-content" class="table">
-
-                    </table>
+                    <table id="port-info-content" class="table"></table>
                 </div>
             </div>
 
-            <div class="leaflet-sidebar-pane" id="legendaTab">
+            <div class="leaflet-sidebar-pane" id="berthsTab">
                 <h1 class="leaflet-sidebar-header">
-                    Legenda diepte
+                    <span id="main-title">Search berths</span>
+                    <span class="leaflet-sidebar-close">
+                        <i class="fa fa-caret-right"></i>
+                    </span>
                 </h1>
-                <div id="main-legendaInfo" >
-                    <img src="/img/diepteLegenda.png" alt=":(">
+                <div id="main-search">
+                    <input type="text" id="berth-search" class="searchfield" placeholder="Enter berth id...">
+                    <div id="berth-search-results"></div>
+                </div>
+                <div id="main-berth-info" style="display: none">
+                    <div class="title">
+                        <i id="berth-back-button" class="fa fa-arrow-circle-left back-button"></i>
+                        <h4 id="berth-name"></h4>
+                    </div>
+                    <table id="berth-info-content" class="table"></table>
+                </div>
+            </div>
+
+            <div class="leaflet-sidebar-pane" id="legendsTab">
+                <h1 class="leaflet-sidebar-header">
+                    Legenda
+                </h1>
+                <div id="main-legendInfo">
+                    <img src="/img/depthLegend.png" alt=":(">
                 </div>
             </div>
 
@@ -111,6 +111,5 @@
     </div>
 
     <div id="map"></div>
-    <script src="/js/app.js"></script>
 </body>
 </html>

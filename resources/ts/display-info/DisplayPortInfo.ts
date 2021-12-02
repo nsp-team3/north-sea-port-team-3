@@ -1,63 +1,34 @@
-import { Port } from "../api/Port";
-import * as Leaflet from "leaflet";
+import AIS from "../api/AIS";
+import Search from "../search/Search";
 import PortInfoResponse from "../types/PortInfoResponse";
-import DisplayVesselInfo from "./DisplayVesselInfo"
+import { SearchResult } from "../types/SearchTypes";
+import DisplayInfo from "./DisplayInfo";
 
-export default class DisplayPortInfo {
-    private static portSizeToZoomLevel: {[index: string]: number} = {
-        "XSmall": 18,
-        "Small": 17,
-        "Medium": 16,
-        "Large": 15,
-        "XLarge": 14
-    };
-
-    public static async show(map: Leaflet.Map, port: Port, vesselMsi: number){
-        if (vesselMsi !== null) {
-            DisplayVesselInfo.changeBackButton(vesselMsi, map);
-        }
-
-        document.getElementById("main-search").style.display = "none";
-        document.getElementById("main-shipinfo").style.display = "block";
-        document.getElementById("main-title").textContent = "Haven informatie";
-        document.getElementById("shipname").textContent = port.name || "Unknown";
-        document.getElementById("ship-image").innerHTML = '';
-
-        const info: PortInfoResponse | void = await Port.getInfo(port.id);
-
-        if (info) {
-            map.flyTo(new Leaflet.LatLng(info.latitude, info.longitude), DisplayPortInfo.portSizeToZoomLevel[info.size]);
-        }
-
-        await this.loadTableData(port, info);
+export default class DisplayPortInfo extends DisplayInfo {
+    public constructor(mainDivId: string, titleId: string, infoTableId: string, backButtonId: string) {
+        super(mainDivId, titleId, infoTableId, backButtonId);
     }
 
-    private static addInfoRow(table: HTMLTableElement, key: string, value: string | number | Date | void): HTMLTableRowElement {
-        const row = table.insertRow();
-        const nameCell = row.insertCell(0);
-        const valueCell = row.insertCell(1);
-
-        nameCell.innerHTML = `<b>${key}</b>`;
-        valueCell.innerHTML = String(value);
-
-        return row;
+    public async show(searchResult: SearchResult, previous: Search | DisplayInfo): Promise<void> {
+        this.clearTable();
+        const port: PortInfoResponse | void = await AIS.getPort(searchResult.portId);
+        if (!port) {
+            console.error(`Could not find port with id: ${searchResult.portId}!`);
+            return;
+        }
+        this.setTitle(port.name);
+        this.loadTableData(port);
+        if (previous instanceof Search) {
+            this.previousSearch = previous;
+        } else if (previous instanceof DisplayInfo) {
+            this.previousInfo = previous;
+        }
+        this.showDiv();
     }
 
-    private static async loadTableData(port: Port, info: PortInfoResponse | void) {
-        const table = <HTMLTableElement>document.getElementById("shipinfo-content");
-        table.innerHTML = "";
-
-        this.addInfoRow(table, "Name", port.name ? `${port.name} (${port.id})`: "Unknown");
-        this.addInfoRow(table, "Country", port.country ? `${port.country} (${port.countryCode})` : "Unknown");
-
-
-        if (info) {
-            // TODO: Might replace this with a button, so you're taken to these coordinates.
-            this.addInfoRow(table, "Location", `Latitude: ${info.latitude}\nLongitude: ${info.longitude}`);
-        }
-
-        port.ETA ? this.addInfoRow(table, "ETA", port.ETA) : null;
-        port.departTime ? this.addInfoRow(table, "Time of departure", port.departTime) : null;
-        port.arrivalTime ? this.addInfoRow(table, "Time of arrival", port.arrivalTime) : null;
+    protected loadTableData(port: PortInfoResponse): void {
+        this.addInfoRow("Id", port.id ? String(port.id): "Unknown");
+        this.addInfoRow("Country", port.country ? `${port.country} (${port.countryCode})` : "Unknown");
+        this.addInfoRow("Coordinates", port.latitude ? `${port.latitude}, ${port.longitude}` : "Unknown");
     }
 }

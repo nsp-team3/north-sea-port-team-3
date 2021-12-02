@@ -5,23 +5,16 @@ import "leaflet-velocity";
 import "leaflet-mouse-position";
 import "./libs/smoothWheelZoom";
 
-import DisplayVesselInfo from "./display-info/DisplayVesselInfo";
-import Companies from "./views/Companies";
-import Dock from "./views/Dock";
-import Windsnelheid from "./views/WindSpeed";
-import Bridges from "./views/Bridges";
+// import DisplayVesselInfo from "./display-info/DisplayVesselInfo";
+import Companies from "./layers/Companies";
+import Dock from "./layers/Dock";
+import Windsnelheid from "./layers/WindSpeed";
+import Bridges from "./layers/Bridges";
+import VesselSearch from "./search/VesselSearch";
+import PortSearch from "./search/PortSearch";
+import BerthSearch from "./search/BerthSearch";
 
-const testClickFunction = (map: L.Map) => {
-    // console.log(map.getCenter());
-    // console.log(map.getZoom());
-    // console.log(map.getBounds());
-    // let test = ShipInfo.main.getLayer(244690791);
-    // var popupContent = `I am here!`;
-    // test.bindPopup(popupContent);
-    // test.openPopup()
-}
-
-(async() => {
+const onPageLoaded = async() => {
     const map = L.map("map", {
         scrollWheelZoom: false,
         smoothWheelZoom: true,
@@ -32,7 +25,7 @@ const testClickFunction = (map: L.Map) => {
         attribution: `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors`
     }).addTo(map);
 
-    //const cleanMap = L.tileLayer('https://tile.jawg.io/be014ddc-e423-43d8-8e15-0ddb1ac99d84/{z}/{x}/{y}{r}.png?access-token=iWfpe7piHdKAYayIe6bRGELuU156lg34z2nVINNr755xTL4AbHcaKBXXhTwHxHdW', {}).addTo(map);
+    // const cleanMap = L.tileLayer('https://tile.jawg.io/be014ddc-e423-43d8-8e15-0ddb1ac99d84/{z}/{x}/{y}{r}.png?access-token=iWfpe7piHdKAYayIe6bRGELuU156lg34z2nVINNr755xTL4AbHcaKBXXhTwHxHdW', {}).addTo(map);
 
     const openSeaMap = L.tileLayer("https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png", {
         attribution: `Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors`
@@ -52,64 +45,58 @@ const testClickFunction = (map: L.Map) => {
         position: "right"     // left or right
     });
 
-    const ligplaats = new Dock(sidebar);
-    await Promise.all([
-        Windsnelheid.getWindInfo(),
-        DisplayVesselInfo.enableSearch(map),
-        DisplayVesselInfo.showVessels(map, sidebar),
-        DisplayVesselInfo.enableBackButton(),
-        ligplaats.enableSearch(map),
-        ligplaats.enableBackButton(),
-        Bridges.getBruggen(map)
-    ]);
+    const docks = new Dock(sidebar);
+    new VesselSearch(map, "vessel-search");
+    new PortSearch(map, "port-search");
+    new BerthSearch(map, "berth-search");
+
+    await Bridges.getBridges(map);
 
     const optionalOverlays = {
         "Bedrijven": Companies.bedrijvenGroup,
-        "Ligplaatsen": ligplaats.main,
+        "Ligplaatsen": docks.main,
         "Windsnelheid": Windsnelheid.main,
-        "Ship info": DisplayVesselInfo.main,
+        // "Ship info": DisplayVesselInfo.main, //TODO: Replace this with a layer class in the views directory.
         "Open sea maps": openSeaMap,
         "Diepte Water": diepteLayer,
         "Bruggen": Bridges.main
     };
 
-    DisplayVesselInfo.circle.addTo(map);
+    // DisplayVesselInfo.circle.addTo(map);
     L.control.scale().addTo(map);
     L.control.mousePosition().addTo(map);
-    sidebar.addTo(map).open("home");
+    sidebar.addTo(map).open("vesselsTab");
     L.control.layers({}, optionalOverlays, {
         sortLayers: true
     }).addTo(map);
 
-    map.on("click", () => {
-        testClickFunction(map);
-    });
-
     map.on("zoomend", () => {
-        ligplaats.checkZoom(map);
+        docks.checkZoom(map);
         Companies.checkZoom(map);
-        DisplayVesselInfo.showVessels(map, sidebar);
+        // DisplayVesselInfo.showVessels(map, sidebar);
     });
 
     map.on("dragend", () => {
-        DisplayVesselInfo.showVessels(map, sidebar);
+        // DisplayVesselInfo.showVessels(map, sidebar);
     });
 
     map.on("overlayremove", () => {
-        ligplaats.checkLayer(map);
+        docks.checkLayer(map);
         Companies.checkLayer(map);
     });
 
     map.on("overlayadd", () => {
-        ligplaats.checkLayer(map);
+        docks.checkLayer(map);
         Companies.checkLayer(map);
     });
     
-    Bridges.getBruggen(map);
+    Bridges.getBridges(map);
 
-    DisplayVesselInfo.showVessels(map, sidebar);
+    // DisplayVesselInfo.showVessels(map, sidebar);
     setInterval(() => {
-        DisplayVesselInfo.showVessels(map, sidebar);
-        Bridges.getBruggen(map);
+        // DisplayVesselInfo.showVessels(map, sidebar);
+        Bridges.getBridges(map);
     }, 15000);
-})();
+}
+
+window.addEventListener("load", onPageLoaded);
