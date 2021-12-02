@@ -82,6 +82,41 @@ export default class DisplayVesselInfo {
         });
     }
 
+    /**
+     * change back button action
+     * @param mssi mssi of a ship, undefined if none
+     * @param map leaflet map
+     */
+    public static changeBackButton(mssi: number, map: Leaflet.Map): void {
+        // replace all backbutton elements to remove all eventlisteners on them
+        document.querySelectorAll(".back-button").forEach((element: HTMLSpanElement) => {
+            element.parentNode.replaceChild(element.cloneNode(true), element);
+        });
+
+        // add the new event listeners
+        document.querySelectorAll(".back-button").forEach((element: HTMLSpanElement) => {
+            element.addEventListener("click", () => {
+                if (mssi !== null) {
+                    DisplayVesselInfo.showVesselOnMap(mssi, map, true, undefined);
+                } else {
+                    DisplayVesselInfo.shipBackButton();
+                }
+            });
+        });
+
+    }
+
+    /**
+     * back to search
+     */
+    public static shipBackButton(): void {
+        const tabName = document.getElementById("main-title") as HTMLSpanElement;
+        tabName.textContent = "Schip zoeken";
+        document.getElementById("main-shipinfo").style.display = "none";
+        document.getElementById("main-search").style.display = "block";
+        DisplayVesselInfo.circle.clearLayers();
+    }
+
     private static async getNearbyVessels(map: Leaflet.Map, sidebar: Leaflet.Control.Sidebar) {
         const nearbyVessels: SimpleVesselInfo[] = await AIS.getNearbyVessels(map, { includePorts: false });
         return nearbyVessels.filter((vesselInfo: SimpleVesselInfo) => vesselInfo.latitude && vesselInfo.longitude && DisplayVesselInfo.VESSEL_COLORS[vesselInfo.vesselType]);
@@ -118,7 +153,7 @@ export default class DisplayVesselInfo {
         ship.on("click", (context) => {
             // TODO: Open sidebar
             sidebar.open("home");
-            
+
             this.circle.clearLayers();
             this.showVesselOnMap(vesselInfo.mmsi, map, false, vesselInfo.requestTime);
         });
@@ -126,7 +161,9 @@ export default class DisplayVesselInfo {
         ship.addTo(this.main);
     }
 
-    private static async showVesselOnMap(mmsi: number, map: Leaflet.Map, zoom: boolean, updateTimestamp: Date) {
+    public static async showVesselOnMap(mmsi: number, map: Leaflet.Map, zoom: boolean, updateTimestamp: Date) {
+        DisplayVesselInfo.changeBackButton(null, map);
+
         const selectedVessel: Vessel = await AIS.getVessel(mmsi);
         document.getElementById("main-search").style.display = "none";
         document.getElementById("main-shipinfo").style.display = "block";
@@ -160,9 +197,9 @@ export default class DisplayVesselInfo {
         this.addInfoRow(table, "Draught", vessel.draught ? `${vessel.draught}m` : "Unknown");
         this.addInfoRow(table, "Safe depth range", (typeof vessel.minDepth === "number" && typeof vessel.maxDepth === "number") ? `${vessel.minDepth}m to ${vessel.maxDepth}m` : "Unknown");
         this.addInfoRow(table, "Last draught", vessel.lastDraught ? `${vessel.lastDraught}m (${vessel.lastDraughtChange ? vessel.lastDraughtChange.toLocaleString() : ''})` : "Unknown");
-        this.addPortRow(table, "Last port", vessel.lastPort, map);
-        this.addPortRow(table, "Current port", vessel.port, map);
-        this.addPortRow(table, "Next port", vessel.nextPort, map);
+        this.addPortRow(table, "Last port", vessel.lastPort, map, vessel.mmsi);
+        this.addPortRow(table, "Current port", vessel.port, map, vessel.mmsi);
+        this.addPortRow(table, "Next port", vessel.nextPort, map, vessel.mmsi);
         this.addImage(table, "Image", vessel.mmsi);
     }
 
@@ -177,9 +214,9 @@ export default class DisplayVesselInfo {
         return row;
     }
 
-    private static addPortRow(table: HTMLTableElement, title: string, port: Port, map: Leaflet.Map){
+    private static addPortRow(table: HTMLTableElement, title: string, port: Port, map: Leaflet.Map, mmsi: number){
         const portRow = this.addInfoRow(table, title , port.name || "Unknown");
-        portRow.addEventListener("click", () => DisplayPortInfo.show(map, port));
+        portRow.addEventListener("click", () => DisplayPortInfo.show(map, port, mmsi));
     }
 
     private static addImage(table: HTMLTableElement, key: string, mmsi: number): HTMLTableRowElement {

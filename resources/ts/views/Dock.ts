@@ -151,12 +151,28 @@ export default class Dock {
     }
 
     private showInTable(properties: any) {
+        Dock.enableBackButton();
         document.getElementById("main-ligplaatssearch").style.display = "none";
         document.getElementById("main-ligplaatsinfo").style.display = "block";
         document.getElementById("main-ligplaatstitle").textContent = "Ligplaats informatie";
         document.getElementById("ligplaatsname").textContent = `${properties.type} ${properties.ligplaatsNr}`;
         this.loadTableData(properties);
         this.sidebar.open('ligplaatsTab');
+    }
+
+    public static enableBackButton() {
+        document.querySelectorAll(".back-button").forEach((element: HTMLSpanElement) => {
+            element.parentNode.replaceChild(element.cloneNode(true), element);
+        });
+
+        document.querySelectorAll(".back-button").forEach((element: HTMLSpanElement) => {
+            element.addEventListener("click", () => {
+                let tabName = <HTMLSpanElement>document.getElementById("main-ligplaatstitle");
+                tabName.textContent = "Ligplaats zoeken";
+                document.getElementById("main-ligplaatsinfo").style.display = "none";
+                document.getElementById("main-ligplaatssearch").style.display = "block";
+            })
+        });
     }
 
     private addInfoRow(table: HTMLTableElement, key: string, value: string | number | Date | void): HTMLTableRowElement {

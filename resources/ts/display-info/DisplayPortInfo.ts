@@ -1,6 +1,7 @@
 import { Port } from "../api/Port";
 import * as Leaflet from "leaflet";
 import PortInfoResponse from "../types/PortInfoResponse";
+import DisplayVesselInfo from "./DisplayVesselInfo"
 
 export default class DisplayPortInfo {
     private static portSizeToZoomLevel: {[index: string]: number} = {
@@ -11,7 +12,11 @@ export default class DisplayPortInfo {
         "XLarge": 14
     };
 
-    public static async show(map: Leaflet.Map, port: Port){
+    public static async show(map: Leaflet.Map, port: Port, vesselMsi: number){
+        if (vesselMsi !== null) {
+            DisplayVesselInfo.changeBackButton(vesselMsi, map);
+        }
+
         document.getElementById("main-search").style.display = "none";
         document.getElementById("main-shipinfo").style.display = "block";
         document.getElementById("main-title").textContent = "Haven informatie";
