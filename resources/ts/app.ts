@@ -9,6 +9,7 @@ import ShipInfo from "./info/shipinfo";
 import Bedrijven from "./views/bedrijven";
 import { Ligplaats } from "./views/ligplaats";
 import Windsnelheid from "./views/windsnelheid";
+import Bruggen from "./views/bruggen";
 
 const testClickFunction = (map: L.Map) => {
     // console.log(map.getCenter());
@@ -58,7 +59,8 @@ const testClickFunction = (map: L.Map) => {
         ShipInfo.showVessels(map, sidebar),
         ShipInfo.enableBackButton(),
         ligplaats.enableSearch(map),
-        ligplaats.enableBackButton()
+        ligplaats.enableBackButton(),
+        Bruggen.getBruggen(map)
     ]);
 
     const optionalOverlays = {
@@ -67,7 +69,8 @@ const testClickFunction = (map: L.Map) => {
         "Windsnelheid": Windsnelheid.main,
         "Ship info": ShipInfo.main,
         "Open sea maps": openSeaMap,
-        "Diepte Water": diepteLayer
+        "Diepte Water": diepteLayer,
+        "Bruggen": Bruggen.main
     };
 
     ShipInfo.circle.addTo(map);
@@ -101,9 +104,12 @@ const testClickFunction = (map: L.Map) => {
         ligplaats.checkLayer(map);
         Bedrijven.checkLayer(map);
     });
+    
+    Bruggen.getBruggen(map);
 
     ShipInfo.showVessels(map, sidebar);
     setInterval(() => {
         ShipInfo.showVessels(map, sidebar);
+        Bruggen.getBruggen(map);
     }, 15000);
 })();
