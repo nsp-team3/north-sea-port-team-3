@@ -32,53 +32,6 @@ export class AIS {
         return AIS.filterSearchResults(AIS.parseSearchXML(body), searchFilters);
     }
 
-    private static filterSearchResults = (searchResults: SearchResult[], searchFilters?: SearchFilters): SearchResult[] => {
-        if (!searchFilters) {
-            return searchResults;
-        }
-
-        if (searchFilters.excludePorts) {
-            searchResults = searchResults.filter((searchResult) => searchResult.portId === undefined);
-        }
-        
-        if (searchFilters.excludeVessels) {
-            searchResults = searchResults.filter((searchResult) => searchResult.mmsi === undefined);
-        }
-
-        return searchResults;
-    }
-
-    private static parseSearchXML(xml: string): SearchResult[] {
-        const resultsMatch = xml.match(/<RES>.*?<\/RES>/g);
-        if (!resultsMatch) {
-            return [];
-        }
-
-        return resultsMatch.map((e) => {
-            const resultInfoMatch = e.match(/<RES><ID>([0-9]*)<\/ID><NAME>(.*?)<\/NAME><D>(.*?)<\/D><TYPE>([0-9]*)<\/TYPE><FLAG>([a-zA-Z]+)<\/FLAG><LAT>.*?<\/LAT><LNG>.*?<\/LNG><\/RES>/);
-            if (resultInfoMatch) {
-                const info = {
-                    mmsi: Number(resultInfoMatch[1]),
-                    name: resultInfoMatch[2],
-                    typeText: resultInfoMatch[3],
-                    type: Number(resultInfoMatch[4]),
-                    flag: resultInfoMatch[5],
-                    portId: 0
-                }
-
-                if (info.type === 0) {
-                    info.portId = info.mmsi;
-                    delete info.mmsi;
-                } else {
-                    delete info.portId;
-                }
-
-                return info;
-            }
-            return undefined;
-        }).filter((e) => e !== undefined);
-    }
-
     public static getNearbyVessels = async (map: Leaflet.Map, vesselFilters: VesselFilters = {}) : Promise<SimpleVesselInfo[]> => {
         const bounds = map.getBounds();
         const sw = bounds.getSouthWest();
@@ -129,6 +82,53 @@ export class AIS {
         return filteredVessels;
     }
 
+    private static filterSearchResults = (searchResults: SearchResult[], searchFilters?: SearchFilters): SearchResult[] => {
+        if (!searchFilters) {
+            return searchResults;
+        }
+
+        if (searchFilters.excludePorts) {
+            searchResults = searchResults.filter((searchResult) => searchResult.portId === undefined);
+        }
+        
+        if (searchFilters.excludeVessels) {
+            searchResults = searchResults.filter((searchResult) => searchResult.mmsi === undefined);
+        }
+
+        return searchResults;
+    }
+
+    private static parseSearchXML(xml: string): SearchResult[] {
+        const resultsMatch = xml.match(/<RES>.*?<\/RES>/g);
+        if (!resultsMatch) {
+            return [];
+        }
+
+        return resultsMatch.map((e) => {
+            const resultInfoMatch = e.match(/<RES><ID>([0-9]*)<\/ID><NAME>(.*?)<\/NAME><D>(.*?)<\/D><TYPE>([0-9]*)<\/TYPE><FLAG>([a-zA-Z]+)<\/FLAG><LAT>.*?<\/LAT><LNG>.*?<\/LNG><\/RES>/);
+            if (resultInfoMatch) {
+                const info = {
+                    mmsi: Number(resultInfoMatch[1]),
+                    name: resultInfoMatch[2],
+                    typeText: resultInfoMatch[3],
+                    type: Number(resultInfoMatch[4]),
+                    flag: resultInfoMatch[5],
+                    portId: 0
+                }
+
+                if (info.type === 0) {
+                    info.portId = info.mmsi;
+                    delete info.mmsi;
+                } else {
+                    delete info.portId;
+                }
+
+                return info;
+            }
+            return undefined;
+        }).filter((e) => e !== undefined);
+    }
+
     private static parseSearchResponse = (body: string): SimpleVesselInfo[] => {
         const allInfo = body.split("\n");
         allInfo.shift();
@@ -167,7 +167,6 @@ export class AIS {
 
         return simpleInfo;
     }
-
 }
 
 export default AIS;

@@ -5,11 +5,11 @@ import "leaflet-velocity";
 import "leaflet-mouse-position";
 import "./libs/smoothWheelZoom";
 
-import ShipInfo from "./info/shipinfo";
-import Bedrijven from "./views/bedrijven";
-import { Ligplaats } from "./views/ligplaats";
-import Windsnelheid from "./views/windsnelheid";
-import Bruggen from "./views/bruggen";
+import DisplayVesselInfo from "./display-info/DisplayVesselInfo";
+import Companies from "./views/Companies";
+import Dock from "./views/Dock";
+import Windsnelheid from "./views/WindSpeed";
+import Bridges from "./views/Bridges";
 
 const testClickFunction = (map: L.Map) => {
     // console.log(map.getCenter());
@@ -49,31 +49,31 @@ const testClickFunction = (map: L.Map) => {
         autopan: false,       // whether to maintain the centered map point when opening the sidebar
         closeButton: true,    // whether t add a close button to the panes
         container: "sidebar", // the DOM container or #ID of a predefined sidebar container that should be used
-        position: "right",     // left or right
+        position: "right"     // left or right
     });
 
-    const ligplaats = new Ligplaats(sidebar);
+    const ligplaats = new Dock(sidebar);
     await Promise.all([
         Windsnelheid.getWindInfo(),
-        ShipInfo.enableSearch(map),
-        ShipInfo.showVessels(map, sidebar),
-        ShipInfo.enableBackButton(),
+        DisplayVesselInfo.enableSearch(map),
+        DisplayVesselInfo.showVessels(map, sidebar),
+        DisplayVesselInfo.enableBackButton(),
         ligplaats.enableSearch(map),
         ligplaats.enableBackButton(),
-        Bruggen.getBruggen(map)
+        Bridges.getBruggen(map)
     ]);
 
     const optionalOverlays = {
-        "Bedrijven": Bedrijven.bedrijvenGroup,
+        "Bedrijven": Companies.bedrijvenGroup,
         "Ligplaatsen": ligplaats.main,
         "Windsnelheid": Windsnelheid.main,
-        "Ship info": ShipInfo.main,
+        "Ship info": DisplayVesselInfo.main,
         "Open sea maps": openSeaMap,
         "Diepte Water": diepteLayer,
-        "Bruggen": Bruggen.main
+        "Bruggen": Bridges.main
     };
 
-    ShipInfo.circle.addTo(map);
+    DisplayVesselInfo.circle.addTo(map);
     L.control.scale().addTo(map);
     L.control.mousePosition().addTo(map);
     sidebar.addTo(map).open("home");
@@ -87,29 +87,29 @@ const testClickFunction = (map: L.Map) => {
 
     map.on("zoomend", () => {
         ligplaats.checkZoom(map);
-        Bedrijven.checkZoom(map);
-        ShipInfo.showVessels(map, sidebar);
+        Companies.checkZoom(map);
+        DisplayVesselInfo.showVessels(map, sidebar);
     });
 
     map.on("dragend", () => {
-        ShipInfo.showVessels(map, sidebar);
+        DisplayVesselInfo.showVessels(map, sidebar);
     });
 
     map.on("overlayremove", () => {
         ligplaats.checkLayer(map);
-        Bedrijven.checkLayer(map);
+        Companies.checkLayer(map);
     });
 
     map.on("overlayadd", () => {
         ligplaats.checkLayer(map);
-        Bedrijven.checkLayer(map);
+        Companies.checkLayer(map);
     });
     
-    Bruggen.getBruggen(map);
+    Bridges.getBruggen(map);
 
-    ShipInfo.showVessels(map, sidebar);
+    DisplayVesselInfo.showVessels(map, sidebar);
     setInterval(() => {
-        ShipInfo.showVessels(map, sidebar);
-        Bruggen.getBruggen(map);
+        DisplayVesselInfo.showVessels(map, sidebar);
+        Bridges.getBruggen(map);
     }, 15000);
 })();
