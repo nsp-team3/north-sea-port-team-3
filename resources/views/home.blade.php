@@ -83,7 +83,7 @@
                     </span>
                 </h1>
                 <div id="main-search">
-                    <input type="text" id="berth-search" class="searchfield" placeholder="Enter berth id...">
+                    <input type="text" id="berth-search" class="searchfield" placeholder="Enter berth name...">
                     <div id="berth-search-results"></div>
                 </div>
                 <div id="main-berth-info" style="display: none">

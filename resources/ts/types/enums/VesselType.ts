@@ -9,7 +9,7 @@ enum VesselType {
     Fishing = 10,
     BaseStation = 11,
     AirCraft = 12,
-    NavigationAid = 13,
+    NavigationAid = 13
 }
 
 export default VesselType;

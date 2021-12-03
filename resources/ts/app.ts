@@ -6,13 +6,10 @@ import "leaflet-mouse-position";
 import "./libs/smoothWheelZoom";
 
 // import DisplayVesselInfo from "./display-info/DisplayVesselInfo";
-import Companies from "./layers/Companies";
-import Dock from "./layers/Dock";
-import Windsnelheid from "./layers/WindSpeed";
-import Bridges from "./layers/Bridges";
-import VesselSearch from "./search/VesselSearch";
-import PortSearch from "./search/PortSearch";
-import BerthSearch from "./search/BerthSearch";
+import { Bridges, Companies, Berth, Windspeed } from "./layers/LayerExports";
+import { VesselSearch, PortSearch, BerthSearch } from "./search/SearchExports";
+import VesselLayer from "./layers/VesselLayer";
+import { DisplayBerthInfo, DisplayPortInfo, DisplayVesselInfo } from "./display-info/DisplayInfoExports";
 
 const onPageLoaded = async() => {
     const map = L.map("map", {
@@ -45,18 +42,36 @@ const onPageLoaded = async() => {
         position: "right"     // left or right
     });
 
-    const docks = new Dock(sidebar);
-    new VesselSearch(map, "vessel-search");
-    new PortSearch(map, "port-search");
-    new BerthSearch(map, "berth-search");
+    const berths = new Berth(sidebar);
 
-    await Bridges.getBridges(map);
+    const vesselLayer = new VesselLayer(map, sidebar);
+
+    new VesselSearch(map, "vessel-search", new DisplayVesselInfo(
+        "main-vessel-info",
+        "vessel-name",
+        "vessel-info-content",
+        "vessel-back-button"
+    ));
+
+    new PortSearch(map, "port-search", new DisplayPortInfo(
+        "main-port-info",
+        "port-name",
+        "port-info-content",
+        "port-back-button"
+    ));
+    
+    new BerthSearch(map, "berth-search", new DisplayBerthInfo(
+        "main-berth-info",
+        "berth-name",
+        "berth-info-content",
+        "berth-back-button"
+    ));
 
     const optionalOverlays = {
         "Bedrijven": Companies.bedrijvenGroup,
-        "Ligplaatsen": docks.main,
-        "Windsnelheid": Windsnelheid.main,
-        // "Ship info": DisplayVesselInfo.main, //TODO: Replace this with a layer class in the views directory.
+        "Ligplaatsen": berths.main,
+        "Windsnelheid": Windspeed.main,
+        "Schepen": vesselLayer.main,
         "Open sea maps": openSeaMap,
         "Diepte Water": diepteLayer,
         "Bruggen": Bridges.main
@@ -71,30 +86,30 @@ const onPageLoaded = async() => {
     }).addTo(map);
 
     map.on("zoomend", () => {
-        docks.checkZoom(map);
+        vesselLayer.show();
+
+        berths.checkZoom(map);
         Companies.checkZoom(map);
-        // DisplayVesselInfo.showVessels(map, sidebar);
     });
 
     map.on("dragend", () => {
-        // DisplayVesselInfo.showVessels(map, sidebar);
+        vesselLayer.show();
     });
 
     map.on("overlayremove", () => {
-        docks.checkLayer(map);
+        berths.checkLayer(map);
         Companies.checkLayer(map);
     });
 
     map.on("overlayadd", () => {
-        docks.checkLayer(map);
+        berths.checkLayer(map);
         Companies.checkLayer(map);
     });
-    
+
     Bridges.getBridges(map);
 
-    // DisplayVesselInfo.showVessels(map, sidebar);
     setInterval(() => {
-        // DisplayVesselInfo.showVessels(map, sidebar);
+        vesselLayer.show();
         Bridges.getBridges(map);
     }, 15000);
 }

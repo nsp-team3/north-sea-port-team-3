@@ -1,4 +1,5 @@
 import AIS from "../api/AIS";
+import DisplayInfo from "../display-info/DisplayInfo";
 import DisplayVesselInfo from "../display-info/DisplayVesselInfo";
 import { SearchResult } from "../types/SearchTypes";
 import Search from "./Search";
@@ -7,15 +8,9 @@ export default class VesselSearch extends Search {
     protected SEARCH_FILTERS = { excludePorts: true };
     protected MIN_INPUT_LENGTH = 3;
     protected RESULTS_ELEMENT = document.getElementById("vessel-search-results") as HTMLDivElement;
-    protected DISPLAY_INFO = new DisplayVesselInfo(
-        "main-vessel-info",
-        "vessel-name",
-        "vessel-info-content",
-        "vessel-back-button"
-    );
 
-    public constructor(map: L.Map, searchBarId: string) {
-        super(map, searchBarId);
+    public constructor(map: L.Map, searchBarId: string, displayInfo: DisplayVesselInfo) {
+        super(map, searchBarId, displayInfo);
     }
 
     protected async getSearchResults(query: string): Promise<SearchResult[]> {

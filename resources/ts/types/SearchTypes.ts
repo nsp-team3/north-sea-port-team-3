@@ -8,15 +8,17 @@ export type SearchResult = {
 }
 
 export type BerthSearchResult = {
-    id: number;
+    id?: number;
     name: string;
-    maxDepth: number;
+    owner: string;
+    enigmaCode: string;
+    externalCode: string;
+    maxDepth?: number;
     type: string;
     region: string;
-    coordinates: any;
     center: L.LatLng;
-    width: number;
-    length: number;
+    width?: number;
+    length?: number;
     dock: number;
 }
 

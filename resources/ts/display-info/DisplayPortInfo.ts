@@ -16,13 +16,10 @@ export default class DisplayPortInfo extends DisplayInfo {
             console.error(`Could not find port with id: ${searchResult.portId}!`);
             return;
         }
+        
         this.setTitle(port.name);
         this.loadTableData(port);
-        if (previous instanceof Search) {
-            this.previousSearch = previous;
-        } else if (previous instanceof DisplayInfo) {
-            this.previousInfo = previous;
-        }
+        this.setPrevious(previous);
         this.showDiv();
     }
 

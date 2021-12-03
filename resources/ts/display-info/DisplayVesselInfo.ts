@@ -3,6 +3,7 @@ import { Port } from "../api/Port";
 import { Vessel } from "../api/Vessel";
 import Search from "../search/Search";
 import { SearchResult } from "../types/SearchTypes";
+import SimpleVesselInfo from "../types/SimpleVesselInfo";
 import DisplayInfo from "./DisplayInfo";
 
 export default class DisplayVesselInfo extends DisplayInfo {
@@ -10,12 +11,12 @@ export default class DisplayVesselInfo extends DisplayInfo {
         super(mainDivId, titleId, infoTableId, backButtonId);
     }
 
-    public async show(searchResult: SearchResult, search: Search, lastSignal?: Date): Promise<void> {
+    public async show(searchResult: SearchResult | SimpleVesselInfo, previous?: Search): Promise<void> {
         this.clearTable();
         const vessel: Vessel = await AIS.getVessel(searchResult.mmsi);
         this.setTitle(vessel.name);
-        this.loadTableData(vessel, lastSignal);
-        this.previousSearch = search;
+        this.loadTableData(vessel, (searchResult as SimpleVesselInfo).requestTime);
+        this.setPrevious(previous);
         this.showDiv();
     }
 

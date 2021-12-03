@@ -1,5 +1,4 @@
 import Search from "../search/Search";
-import { SearchResult } from "../types/SearchTypes";
 
 export default abstract class DisplayInfo {
     protected mainDiv: HTMLDivElement;
@@ -8,10 +7,6 @@ export default abstract class DisplayInfo {
     protected backButton: HTMLButtonElement;
     protected previousSearch?: Search;
     protected previousInfo?: DisplayInfo;
-
-    public abstract show(searchResult: SearchResult, search: Search): void;
-
-    protected abstract loadTableData(info: any): void;
     
     public constructor(mainDivId: string, titleId: string, infoTableId: string, backButtonId: string) {
         this.mainDiv = document.getElementById(mainDivId) as HTMLDivElement;
@@ -21,12 +16,16 @@ export default abstract class DisplayInfo {
         this.enableBackButton();
     }
 
-    // public toggle(): void {
-    //     const backButtons = document.querySelectorAll(".back-button");
-    //     backButtons.forEach((backButton) => backButton.addEventListener("click", () => {
-    //         this.onBackButtonPressed();
-    //     }));
-    // }
+    public abstract show(searchResult: any, previous?: Search | DisplayInfo, map?: L.Map): void;
+    protected abstract loadTableData(info: any): void;
+
+    protected setPrevious(previous: Search | DisplayInfo): void {
+        if (previous instanceof Search) {
+            this.previousSearch = previous;
+        } else if (previous instanceof DisplayInfo) {
+            this.previousInfo = previous;
+        }
+    }
 
     protected showDiv(): void {
         this.mainDiv.style.display = "block";
@@ -43,19 +42,14 @@ export default abstract class DisplayInfo {
     }
 
     protected onBackButtonPressed(): void {
-        console.log("Back button pressed!");
         this.hideDiv();
-        
         if (this.previousSearch) {
             this.previousSearch.showDiv();
+            this.clearPrevious();
         } else if (this.previousInfo) {
             this.previousInfo.showDiv();
-        } else {
-            console.error("Could not find previous search!");
+            this.clearPrevious();
         }
-
-        this.previousSearch = undefined;
-        this.previousInfo = undefined;
     }
 
     protected setTitle(title: string): void {
@@ -75,5 +69,10 @@ export default abstract class DisplayInfo {
         valueCell.innerHTML = value;
 
         return row;
+    }
+
+    private clearPrevious(): void {
+        this.previousSearch = undefined;
+        this.previousInfo = undefined;
     }
 }

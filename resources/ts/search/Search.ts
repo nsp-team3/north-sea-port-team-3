@@ -4,17 +4,18 @@ import { SearchResult } from "../types/SearchTypes";
 export default abstract class Search {
     protected abstract MIN_INPUT_LENGTH: number;
     protected abstract RESULTS_ELEMENT: HTMLDivElement;
-    protected abstract DISPLAY_INFO: DisplayInfo;
     
     protected abstract displayResult(searchResult: SearchResult): HTMLElement;
     protected abstract getSearchResults(query: string): Promise<any>;
     
     protected map: L.Map;
     protected searchBar: HTMLInputElement;
+    protected displayInfo: DisplayInfo;
 
-    public constructor(map: L.Map, searchBarId: string) {
+    public constructor(map: L.Map, searchBarId: string, displayInfo: DisplayInfo) {
         this.map = map;
         this.searchBar = document.getElementById(searchBarId) as HTMLInputElement;
+        this.displayInfo = displayInfo;
         this.enableSearch();
     }
 
@@ -56,6 +57,6 @@ export default abstract class Search {
 
     protected onResultClicked(searchResult: SearchResult): void {
         this.hideDiv();
-        this.DISPLAY_INFO.show(searchResult, this);
+        this.displayInfo.show(searchResult, this);
     }
 }

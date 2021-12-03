@@ -7,15 +7,9 @@ export default class PortSearch extends Search {
     protected SEARCH_FILTERS = { excludeVessels: true };
     protected MIN_INPUT_LENGTH = 2;
     protected RESULTS_ELEMENT = document.getElementById("port-search-results") as HTMLDivElement;
-    protected DISPLAY_INFO = new DisplayPortInfo(
-        "main-port-info",
-        "port-name",
-        "port-info-content",
-        "port-back-button"
-    );
     
-    public constructor(map: L.Map, searchBarId: string) {
-        super(map, searchBarId);
+    public constructor(map: L.Map, searchBarId: string, displayInfo: DisplayPortInfo) {
+        super(map, searchBarId, displayInfo);
     }
 
     protected async getSearchResults(query: string): Promise<SearchResult[]> {

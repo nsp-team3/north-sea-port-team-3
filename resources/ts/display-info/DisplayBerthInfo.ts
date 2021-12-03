@@ -7,11 +7,11 @@ export default class DisplayBerthInfo extends DisplayInfo {
         super(mainDivId, titleId, infoTableId, backButtonId);
     }
 
-    public async show(searchResult: any, search: Search): Promise<void> {
+    public async show(searchResult: any, search?: Search): Promise<void> {
         this.clearTable();
         this.setTitle(searchResult.name);
         this.loadTableData(searchResult);
-        this.previousSearch = search;
+        this.setPrevious(search);
         this.showDiv();
     }
 
