@@ -90,6 +90,11 @@ const onPageLoaded = async() => {
         Bridges.getBridges(map);
         berths.checkZoom(map);
         Companies.checkZoom(map);
+        if (map.getZoom() < 11) {
+            map.removeLayer(Bridges.main);
+        } else {
+            map.addLayer(Bridges.main);
+        }
     });
 
     map.on("dragend", () => {
