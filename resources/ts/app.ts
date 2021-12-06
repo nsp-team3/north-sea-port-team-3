@@ -59,7 +59,7 @@ const onPageLoaded = async() => {
         "port-info-content",
         "port-back-button"
     ));
-    
+
     new BerthSearch(map, "berth-search", new DisplayBerthInfo(
         "main-berth-info",
         "berth-name",
@@ -87,12 +87,13 @@ const onPageLoaded = async() => {
 
     map.on("zoomend", () => {
         vesselLayer.show();
-
+        Bridges.getBridges(map);
         berths.checkZoom(map);
         Companies.checkZoom(map);
     });
 
     map.on("dragend", () => {
+        Bridges.getBridges(map);
         vesselLayer.show();
     });
 

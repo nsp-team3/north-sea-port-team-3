@@ -2,7 +2,7 @@
 
 use App\Http\Resources\PortResource;
 use App\Http\Resources\SearchResource;
-use App\Http\Resources\BrugTokenResource;
+use App\Http\Resources\BridgesResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +29,6 @@ Route::get('/search', function (Request $request) {
     return SearchResource::search($request);
 });
 
-Route::get('/brugtoken', function (Request $request) {
-    return BrugTokenResource::getToken($request);
+Route::post('/bridges/', function (Request $request) {
+    return BridgesResource::getBridges($request);
 });
