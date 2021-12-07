@@ -36,13 +36,13 @@
         <div class="leaflet-sidebar-content">
             <div class="leaflet-sidebar-pane" id="vesselsTab">
                 <h1 class="leaflet-sidebar-header">
-                    <span id="main-title">Search vessels</span>
+                    <span id="main-title">Schip zoeken</span>
                     <span class="leaflet-sidebar-close">
                         <i class="fa fa-caret-right"></i>
                     </span>
                 </h1>
                 <div id="main-search">
-                    <input type="text" id="vessel-search" class="searchfield" placeholder="Enter vessel name...">
+                    <input type="text" id="vessel-search" class="searchfield" placeholder="Scheepsnaam / IMO nummer...">
                     <div id="vessel-search-results"></div>
                 </div>
                 <div id="main-vessel-info" style="display: none">
@@ -56,13 +56,13 @@
 
             <div class="leaflet-sidebar-pane" id="portsTab">
                 <h1 class="leaflet-sidebar-header">
-                    <span id="main-title">Search ports</span>
+                    <span id="main-title">Haven zoeken</span>
                     <span class="leaflet-sidebar-close">
                         <i class="fa fa-caret-right"></i>
                     </span>
                 </h1>
                 <div id="main-search">
-                    <input type="text" id="port-search" class="searchfield" placeholder="Enter port name...">
+                    <input type="text" id="port-search" class="searchfield" placeholder="Haven naam/nummer...">
                     <div id="port-search-results"></div>
                 </div>
                 <div id="main-port-info" style="display: none">
@@ -76,13 +76,13 @@
 
             <div class="leaflet-sidebar-pane" id="berthsTab">
                 <h1 class="leaflet-sidebar-header">
-                    <span id="main-title">Search berths</span>
+                    <span id="main-title">Ligplaats zoeken</span>
                     <span class="leaflet-sidebar-close">
                         <i class="fa fa-caret-right"></i>
                     </span>
                 </h1>
                 <div id="main-search">
-                    <input type="text" id="berth-search" class="searchfield" placeholder="Enter berth name...">
+                    <input type="text" id="berth-search" class="searchfield" placeholder="Ligplaats naam/nummer...">
                     <div id="berth-search-results"></div>
                 </div>
                 <div id="main-berth-info" style="display: none">

@@ -5,6 +5,7 @@ import AIS from "../api/AIS";
 import { DisplayVesselInfo } from "../display-info/DisplayInfoExports";
 import SimpleVesselInfo from "../types/SimpleVesselInfo";
 import Layer from "./Layer";
+import VesselType from "../types/enums/VesselType";
 
 export default class VesselLayer extends Layer {
     private static readonly VESSEL_COLORS = {
