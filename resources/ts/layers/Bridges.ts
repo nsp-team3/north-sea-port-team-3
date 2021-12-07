@@ -60,7 +60,7 @@ export default class Bridges {
             }
         }
 
-        // hoogte toevoegen wanneer beschikbaar
+        // hoogte/breedte toevoegen wanneer beschikbaar
         if ("" != bridge.hoogte) {
             data = "<p><b>Doorvaarthoogte</b>: " + bridge.hoogte + " meter <br><b>breedte:</b> " + bridge.breedte + " meter."
         } else {
