@@ -36,47 +36,48 @@ export default class Bridges {
         marker.on("click", (event: L.LeafletMouseEvent) => this.handleBridgeClick(event, bridge, map));
     }
 
+    private static async bridgePicture(bridge: any) {
+        const params = new URLSearchParams({
+            locatie: bridge.extradata,
+            name: bridge.name,
+            os: "web",
+        });
+        if (bridge.icoo == "sluis") {
+            params.append("soort", "sluis")
+        } else {
+            params.append("soort", "brug")
+        }
+        const res = await fetch(`/api/detailedbridge?${params}`).catch(console.error);
+        if (res) {
+            const html = await res.text();
+            const doc = new DOMParser().parseFromString(html, 'text/html');
+            const image = doc.querySelector('img');
+            if (image !== null) {
+                return image.outerHTML;
+            }
+        }
+        return "";
+    }
+
     private static async handleBridgeClick(event: L.LeafletMouseEvent, bridge: any, map: L.Map): Promise<void> {
         let data = "Geen gegevens."
-        let image = null;
 
-        // foto ophalen wanneer het een foto heeft (alleen bruggen en sluizen kunnen de api gebruiken)
-        if (["sluit", "brug_open"].includes(bridge.icoo)) {
-            const params = new URLSearchParams({
-                locatie: bridge.extradata,
-                name: bridge.name,
-                os: "web",
-            });
-            if (bridge.icoo == "sluis") {
-                params.append("soort", "sluis")
-            } else {
-                params.append("soort", "brug")
-            }
-            const res = await fetch(`/api/detailedbridge?${params}`).catch(console.error);
-            if (res) {
-                const html = await res.text();
-	            const doc = new DOMParser().parseFromString(html, 'text/html');
-                image = doc.querySelector('img');
-            }
+        // telefoonnummber toevoegen wanneer beschikbaar
+        if (bridge.lnk.length > 4) {
+            data = "<h6>" + bridge.name + "</h6><b>Telefoonnummer: </b>" + bridge.lnk
+        } else {
+            data = "<h6>" + bridge.name + "</h6>Geen bijzonderheden"
         }
 
         // hoogte/breedte toevoegen wanneer beschikbaar
         if ("" != bridge.hoogte) {
-            data = "<p><b>Doorvaarthoogte</b>: " + bridge.hoogte + " meter <br><b>breedte:</b> " + bridge.breedte + " meter."
+            data += "<p><b>Doorvaarthoogte</b>: " + bridge.hoogte + " meter <br><b>breedte:</b> " + bridge.breedte + " meter."
         } else {
-            data = "<p>Doorvaarhoogte en -breedte onbekend";
+            data += "<p>Doorvaarhoogte en -breedte onbekend";
         }
 
-        // telefoonnummber toevoegen wanneer beschikbaar
-        if (bridge.lnk.length > 4) {
-            data = "<h6>" + bridge.name + "</h6><b>Telefoonnummer: </b>" + bridge.lnk + data
-        } else {
-            data = "<h6>" + bridge.name + "</h6>Geen bijzonderheden" + data
-        }
-
-        // foto toevoegen wanneer beschikbaar
-        if (image !== null) {
-            data+=image.outerHTML
+        if (["sluit", "brug_open"].includes(bridge.icoo)) {
+            data += await Bridges.bridgePicture(bridge);
         }
 
         L.popup()
