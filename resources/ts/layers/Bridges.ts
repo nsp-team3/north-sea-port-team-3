@@ -76,9 +76,9 @@ export default class Bridges {
 
         // hoogte/breedte toevoegen wanneer beschikbaar
         if ("" != bridge.hoogte) {
-            data += "<p><b>Doorvaarthoogte</b>: " + bridge.hoogte + " meter <br><b>breedte:</b> " + bridge.breedte + " meter."
+            data += "<br><b>Doorvaarthoogte</b>: " + bridge.hoogte + " meter <br><b>Breedte:</b> " + bridge.breedte + " meter."
         } else {
-            data += "<p>Doorvaarhoogte en -breedte onbekend";
+            data += "<br>Doorvaarhoogte en -breedte onbekend";
         }
 
         if (["sluit", "brug_open"].includes(bridge.icoo)) {
