@@ -5,7 +5,6 @@ import "leaflet-velocity";
 import "leaflet-mouse-position";
 import "./libs/smoothWheelZoom";
 
-// import DisplayVesselInfo from "./display-info/DisplayVesselInfo";
 import { Bridges, Companies, Berth, Windspeed } from "./layers/LayerExports";
 import { VesselSearch, PortSearch, BerthSearch } from "./search/SearchExports";
 import VesselLayer from "./layers/VesselLayer";
@@ -77,19 +76,24 @@ const onPageLoaded = async() => {
         "Bruggen": Bridges.main
     };
 
-    // DisplayVesselInfo.circle.addTo(map);
     L.control.scale().addTo(map);
     L.control.mousePosition().addTo(map);
     sidebar.addTo(map).open("vesselsTab");
     L.control.layers({}, optionalOverlays, {
         sortLayers: true
     }).addTo(map);
+    Bridges.main.removeFrom(map);
 
     map.on("zoomend", () => {
         vesselLayer.show();
         Bridges.getBridges(map);
         berths.checkZoom(map);
         Companies.checkZoom(map);
+        if (map.getZoom() < 11) {
+            Bridges.main.removeFrom(map);
+        } else {
+            Bridges.main.addTo(map);
+        }
     });
 
     map.on("dragend", () => {

@@ -25,13 +25,18 @@ export default class Bridges {
         }
     }
 
-    private static displayBridge(bridge: any, map: L.Map) {
-        var myIcon = L.icon({
+    private static displayBridge(bridge: any, map: L.Map): void {
+        const myIcon = L.icon({
             iconUrl: `https://waterkaart.net/items/images/iconen/${bridge.icoo}.png`,
             iconSize: [24, 14],
             className: bridge.RWS_Id,
         });
-        const marker = L.marker([bridge.lat, bridge.lng], { icon: myIcon });
+        const marker = L.marker([
+            bridge.lat,
+            bridge.lng
+        ], {
+            icon: myIcon
+        });
         marker.addTo(Bridges.main);
         marker.on("click", (event: L.LeafletMouseEvent) => this.handleBridgeClick(event, bridge, map));
     }
