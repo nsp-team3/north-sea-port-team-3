@@ -32,3 +32,7 @@ Route::get('/search', function (Request $request) {
 Route::post('/bridges/', function (Request $request) {
     return BridgesResource::getBridges($request);
 });
+
+Route::get('/detailedbridge', function (Request $request) {
+    return BridgesResource::detailed($request);
+});

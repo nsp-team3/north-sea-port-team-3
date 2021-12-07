@@ -49,8 +49,11 @@ class BridgesResource extends JsonResource
 
         return $response->getBody(); //json
     }
+
+    public static function detailed($request)
+    {
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('GET', "https://waterkaart.net/items/php/bruggen-en-sluizen-v2.php?". $request->getQueryString());
+        return $response->getBody();
+    }
 }
-
-
-
-
