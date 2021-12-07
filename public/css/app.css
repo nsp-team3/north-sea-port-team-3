@@ -11639,3 +11639,31 @@ body {
 #main-shipinfo tr:first-child {
   background: #f2f2f2;
 }
+
+div.sidebar-legenda-menu {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  /* For cells of equal size */
+}
+
+div.sidebar-legenda-menu span {
+  display: table-cell;
+  text-align: center;
+}
+
+.legenda-element {
+  margin: 10px;
+  background-color: #0074d9;
+  font-size: 14px;
+  width: 60px;
+  height: 30px;
+  color: white;
+  padding: 5px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.legenda-element:hover {
+  background-color: #0088ff;
+}

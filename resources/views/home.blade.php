@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +14,7 @@
     <link rel="manifest" href="/favicon/site.webmanifest">
     <script src="/js/app.js"></script>
 </head>
+
 <body>
     <!-- optionally define the sidebar content via HTML markup -->
     <div id="sidebar" class="leaflet-sidebar collapsed">
@@ -28,7 +30,7 @@
 
             <!-- bottom aligned tabs -->
             <ul role="tablist">
-                <li><a href="#legendsTab" role="tab"><i class="fa fa-table"></i></a></li>
+                <li><a href="#legendasTab" role="tab"><i class="fa fa-table"></i></a></li>
             </ul>
         </div>
 
@@ -94,21 +96,43 @@
                 </div>
             </div>
 
-            <div class="leaflet-sidebar-pane" id="legendsTab">
-                <h1 class="leaflet-sidebar-header">
-                    Legenda
-                </h1>
-                <div id="main-legendInfo">
-                    <img src="/img/depthLegend.png" alt=":(">
+            <div class="leaflet-sidebar-pane" id="legendasTab">
+
+                <div class="leaflet-sidebar-header sidebar-legenda-menu">
+                    <span onclick="showLegendaElement('depthLegenda')" class="legenda-element">Diepte</span>
+                    <span onclick="showLegendaElement('schipLegenda')" class="legenda-element">Schepen</span>
+                </div>
+
+                <div id="depthLegenda" style="display: none">
+                    <img src="/img/depthLegend.png" alt="image not found">
+                </div>
+                <div id="schipLegenda" style="display: none">
+                    <img src="/img/schiplegenda.png" alt="image not found">
                 </div>
             </div>
 
             <div class="leaflet-sidebar-pane" id="messages">
-                <h1 class="leaflet-sidebar-header">Messages<span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+                <h1 class="leaflet-sidebar-header">Messages<span class="leaflet-sidebar-close"><i
+                            class="fa fa-caret-left"></i></span></h1>
             </div>
         </div>
     </div>
 
     <div id="map"></div>
+
+    <script>
+        function showLegendaElement(id) {
+
+            let elements = ['depthLegenda', 'schipLegenda'];
+            let selectedElement = elements.indexOf(id);
+            let shownElement = document.getElementById(id);
+            shownElement.style.display = '';
+            elements.splice(selectedElement, 1);
+            elements.forEach(element => {
+                document.getElementById(element).style.display = 'none';
+            });
+        }
+    </script>
 </body>
+
 </html>
