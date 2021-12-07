@@ -24,13 +24,12 @@
                 <li><a href="#vesselsTab" role="tab"><i class="fa fa-ship active"></i></a></li>
                 <li><a href="#portsTab" role="tab"><i class="fa fa-anchor"></i></a></li>
                 <li><a href="#berthsTab" role="tab"><i class="fa fa-anchor"></i></a></li>
-                <li><a href="#legendsTab" role="tab"><i class="fa fa-table"></i></a></li>
             </ul>
 
             <!-- bottom aligned tabs -->
-            {{-- <ul role="tablist">
-                <li><a href="https://github.com/nickpeihl/leaflet-sidebar-v2"><i class="fa fa-github"></i></a></li>
-            </ul> --}}
+            <ul role="tablist">
+                <li><a href="#legendsTab" role="tab"><i class="fa fa-table"></i></a></li>
+            </ul>
         </div>
 
         <!-- panel content -->
