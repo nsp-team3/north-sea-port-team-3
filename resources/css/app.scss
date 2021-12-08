@@ -122,3 +122,20 @@ div.sidebar-legenda-menu span {
   .legenda-element:hover {
     background-color: #0088ff;
   }
+
+#schipLegenda {
+    table {
+        margin-top: .3rem;
+        input {
+            margin-top: .3rem;
+            margin-right: .3rem;
+        }
+        td:nth-child(2) {
+            font-size: 1rem;
+        }
+        img {
+            margin-right: .4rem;
+            height: 23px;
+        }
+    }
+}

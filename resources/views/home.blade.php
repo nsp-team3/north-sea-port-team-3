@@ -107,7 +107,96 @@
                     <img src="/img/depthLegend.png" alt="image not found">
                 </div>
                 <div id="schipLegenda" style="display: none">
-                    <img src="/img/schiplegenda.png" alt="image not found">
+                    <table>
+                        <tr>
+                            <td>
+                                <input type="checkbox" id="onbekend" name="onbekend" checked>
+                            </td>
+                            <td>
+                                <img src="/img/boten/onbekend.png" alt="Grijs schepen">
+                            </td>
+                            <td>
+                                Onbekend
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox" id="sleepboot" name="sleepboot" checked>
+                            </td>
+                            <td>
+                                <img src="/img/boten/sleepboot.png" alt="Blauw schepen">
+                            </td>
+                            <td>
+                                Sleepboot
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox" id="hogesnelheid" name="hogesnelheid" checked>
+                            </td>
+                            <td>
+                                <img src="/img/boten/hogesnelheid.png" alt="Oranje schepen">
+                            </td>
+                            <td>
+                                Hogesnelheid
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox" id="passagier" name="passagier" checked>
+                            </td>
+                            <td>
+                                <img src="/img/boten/passagier.png" alt="Blauwe schepen">
+                            </td>
+                            <td>
+                                Passagier
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox" id="vracht" name="vracht" checked>
+                            </td>
+                            <td>
+                                <img src="/img/boten/vracht.png" alt="Groene schepen">
+                            </td>
+                            <td>
+                                Vracht
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox" id="tanker" name="tanker" checked>
+                            </td>
+                            <td>
+                                <img src="/img/boten/tanker.png" alt="Rode schepen">
+                            </td>
+                            <td>
+                                Tanker
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox" id="yacht" name="yacht" checked>
+                            </td>
+                            <td>
+                                <img src="/img/boten/yacht.png" alt="Roze schepen">
+                            </td>
+                            <td>
+                                Yacht, Overige
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox" id="visschepen" name="visschepen" checked>
+                            </td>
+                            <td>
+                                <img src="/img/boten/visschepen.png" alt="Gele schepen">
+                            </td>
+                            <td>
+                                Visschepen
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
 

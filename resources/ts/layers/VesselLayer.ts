@@ -8,6 +8,27 @@ import Layer from "./Layer";
 import VesselType from "../types/enums/VesselType";
 
 export default class VesselLayer extends Layer {
+    private vessels: VesselType[] = [
+        VesselType.Unavailable,
+        VesselType.NavigationAid,
+        VesselType.HighSpeed,
+        VesselType.Passenger,
+        VesselType.Cargo,
+        VesselType.Tanker,
+        VesselType.Yacht,
+        VesselType.Fishing,
+    ];
+    private static readonly vesselTypes: { [id: string]: VesselType; } = {
+        "onbekend": VesselType.Unavailable,
+        "sleepboot": VesselType.NavigationAid,
+        "hogesnelheid": VesselType.HighSpeed,
+        "passagier": VesselType.Passenger,
+        "vracht": VesselType.Cargo,
+        "tanker": VesselType.Tanker,
+        "yacht": VesselType.Yacht,
+        "visschepen": VesselType.Fishing,
+    }
+
     private static readonly VESSEL_COLORS = {
         "0": "#6b6b6c",
         "3": "#0fa8b7",
@@ -29,15 +50,32 @@ export default class VesselLayer extends Layer {
     );
     protected _sidebar: L.Control.Sidebar;
     protected _circleGroup: L.LayerGroup;
-    
+
     public constructor(map: L.Map, sidebar: L.Control.Sidebar) {
         super(map);
         this._sidebar = sidebar;
         this._circleGroup = new Leaflet.LayerGroup();
         this.show();
+        this.getSelectedVessels();
+    }
+
+    private getSelectedVessels(): void {
+        const schipLegend = document.getElementById("schipLegenda");
+        schipLegend.querySelectorAll("input").forEach(element => {
+            element.addEventListener("click", (event: MouseEvent) => {
+                const target = event.target as HTMLInputElement;
+                if (target.checked) {
+                    this.vessels.push(VesselLayer.vesselTypes[target.id]);
+                } else {
+                    this.vessels = this.vessels.filter(e => e !== VesselLayer.vesselTypes[target.id]);
+                }
+                this.show();
+            })
+        });
     }
 
     public async show(): Promise<void> {
+        console.log(this.vessels)
         const nearbyVessels: SimpleVesselInfo[] = await AIS.getNearbyVessels(this._map);
         this._layerGroup.clearLayers();
         nearbyVessels.forEach((vesselInfo: SimpleVesselInfo) => this.draw(vesselInfo));
@@ -53,6 +91,11 @@ export default class VesselLayer extends Layer {
     }
 
     private draw(vesselInfo: SimpleVesselInfo): void {
+        const allowedVesselTypes = this.vessels;
+        if (!allowedVesselTypes.includes(vesselInfo.vesselType)) {
+            return;
+        }
+
         const location = Leaflet.latLng(
             Number(vesselInfo.latitude),
             Number(vesselInfo.longitude)
