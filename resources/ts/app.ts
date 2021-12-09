@@ -78,17 +78,18 @@ const onPageLoaded = async() => {
 
 
     map.on("zoomstart", () => {
-        windspeedLayer.hide();
-        vesselLayer.hide();
+        bridgesLayer.hide();
         openSeaMapLayer.hide();
+        vesselLayer.hide();
+        windspeedLayer.hide();
     });
 
     map.on("zoomend", () => {
-        windspeedLayer.show();
-        vesselLayer.show();
-        openSeaMapLayer.show();
         bridgesLayer.show();
         berths.checkZoom(map);
+        openSeaMapLayer.show();
+        vesselLayer.show();
+        windspeedLayer.show();
         Companies.checkZoom(map);
     });
 
