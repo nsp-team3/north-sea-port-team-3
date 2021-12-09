@@ -5,9 +5,8 @@ import "leaflet-velocity";
 import "leaflet-mouse-position";
 import "./libs/smoothWheelZoom";
 
-import { Bridges, Companies, Berth, Windspeed } from "./layers/LayerExports";
+import { Bridges, Companies, Berth, VesselLayer, WindspeedLayer } from "./layers/LayerExports";
 import { VesselSearch, PortSearch, BerthSearch } from "./search/SearchExports";
-import VesselLayer from "./layers/VesselLayer";
 import { DisplayBerthInfo, DisplayPortInfo, DisplayVesselInfo } from "./display-info/DisplayInfoExports";
 
 const onPageLoaded = async() => {
@@ -44,6 +43,7 @@ const onPageLoaded = async() => {
     const berths = new Berth(sidebar);
 
     const vesselLayer = new VesselLayer(map, sidebar);
+    const windspeedLayer = new WindspeedLayer(map);
 
     new VesselSearch(map, "vessel-search", new DisplayVesselInfo(
         "main-vessel-info",
@@ -69,7 +69,7 @@ const onPageLoaded = async() => {
     const optionalOverlays = {
         "Bedrijven": Companies.bedrijvenGroup,
         "Ligplaatsen": berths.main,
-        "Windsnelheid": Windspeed.main,
+        "Windsnelheid": windspeedLayer.main,
         "Schepen": vesselLayer.main,
         "Open sea maps": openSeaMap,
         "Diepte Water": diepteLayer,

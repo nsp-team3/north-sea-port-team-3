@@ -1,6 +1,6 @@
 import * as L from "leaflet";
 
-export default class Windspeed {
+export default class LegacyWindspeed {
     public static main = L.layerGroup();
 
     public static async getWindInfo() {
@@ -29,7 +29,7 @@ export default class Windspeed {
                 // velocityScale: 0.005,  // modifier for particle animations, arbitrarily defaults to 0.005
                 // colorScale: []         // define your own array of hex/rgb colors
             });
-            weerInfo.addTo(Windspeed.main);
+            weerInfo.addTo(LegacyWindspeed.main);
         } else {
             throw new Error('Something went wrong on api server!');
         }

@@ -1,6 +1,4 @@
 import * as Leaflet from "leaflet";
-import AIS from "../api/AIS";
-import SimpleVesselInfo from "../types/SimpleVesselInfo";
 
 export default abstract class Layer {
     protected _map: L.Map;
