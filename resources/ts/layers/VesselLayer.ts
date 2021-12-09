@@ -26,6 +26,8 @@ export default class VesselLayer extends Layer {
         "vessel-info-content",
         "vessel-back-button"
     );
+    private _nestedVesselLayer: L.LayerGroup;
+
     protected _sidebar: L.Control.Sidebar;
     protected _circleGroup: L.LayerGroup;
     
@@ -33,14 +35,22 @@ export default class VesselLayer extends Layer {
         super(map);
         this._sidebar = sidebar;
         this._circleGroup = new Leaflet.LayerGroup();
+        this._nestedVesselLayer = new Leaflet.LayerGroup();
+        this._nestedVesselLayer.addTo(this._layerGroup);
         this.show();
     }
 
     public async show(): Promise<void> {
         const nearbyVessels: SimpleVesselInfo[] = await AIS.getNearbyVessels(this._map);
         this._layerGroup.clearLayers();
-        nearbyVessels.forEach((vesselInfo: SimpleVesselInfo) => this.draw(vesselInfo));
+        this._nestedVesselLayer.clearLayers();
         this._circleGroup.addTo(this._layerGroup);
+        nearbyVessels.forEach((vesselInfo: SimpleVesselInfo) => this.draw(vesselInfo));
+        this._nestedVesselLayer.addTo(this._layerGroup);
+    }
+
+    public hide(): void {
+        this._layerGroup.removeLayer(this._nestedVesselLayer);
     }
 
     public focusVessel(vesselInfo: SimpleVesselInfo, autoZoom?: boolean): void {
@@ -70,7 +80,7 @@ export default class VesselLayer extends Layer {
             this.focusVessel(vesselInfo, false);
         });
 
-        vessel.addTo(this._layerGroup);
+        vessel.addTo(this._nestedVesselLayer);
     }
 
     private drawVesselCircle(vesselInfo: SimpleVesselInfo): void {

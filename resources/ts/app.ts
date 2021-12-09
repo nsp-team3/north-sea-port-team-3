@@ -87,16 +87,27 @@ const onPageLoaded = async() => {
 
     Bridges.main.removeFrom(map);
 
+    map.on("zoomstart", () => {
+        windspeedLayer.hide();
+        vesselLayer.hide();
+    });
+
     map.on("zoomend", () => {
+        windspeedLayer.show();
         vesselLayer.show();
         Bridges.getBridges(map);
         berths.checkZoom(map);
         Companies.checkZoom(map);
     });
 
+    map.on("dragstart", () => {
+        windspeedLayer.hide();
+    });
+
     map.on("dragend", () => {
-        Bridges.getBridges(map);
+        windspeedLayer.show();
         vesselLayer.show();
+        Bridges.getBridges(map);
     });
 
     map.on("overlayremove", () => {
