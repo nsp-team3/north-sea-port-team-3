@@ -5,7 +5,7 @@ import "leaflet-velocity";
 import "leaflet-mouse-position";
 import "./libs/smoothWheelZoom";
 
-import { Bridges, Companies, Berth, VesselLayer, WindspeedLayer } from "./layers/LayerExports";
+import { Bridges, Companies, Berth, OpenSeaMapLayer, VesselLayer, WindspeedLayer } from "./layers/LayerExports";
 import { VesselSearch, PortSearch, BerthSearch } from "./search/SearchExports";
 import { DisplayBerthInfo, DisplayPortInfo, DisplayVesselInfo } from "./display-info/DisplayInfoExports";
 
@@ -21,10 +21,6 @@ const onPageLoaded = async() => {
     }).addTo(map);
 
     // const cleanMap = L.tileLayer('https://tile.jawg.io/be014ddc-e423-43d8-8e15-0ddb1ac99d84/{z}/{x}/{y}{r}.png?access-token=iWfpe7piHdKAYayIe6bRGELuU156lg34z2nVINNr755xTL4AbHcaKBXXhTwHxHdW', {}).addTo(map);
-
-    const openSeaMap = L.tileLayer("https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png", {
-        attribution: `Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors`
-    });
 
     const diepteLayer = L.tileLayer.wms("https://geo.rijkswaterstaat.nl/services/ogc/gdr/bodemhoogte_zeeland/ows", {
         layers: "bodemhoogte_zeeland",
@@ -44,6 +40,9 @@ const onPageLoaded = async() => {
 
     const vesselLayer = new VesselLayer(map, sidebar);
     const windspeedLayer = new WindspeedLayer(map);
+    const openSeaMapLayer = new OpenSeaMapLayer(map);
+    // const openSeaMap = new L.LayerGroup();
+    
 
     new VesselSearch(map, "vessel-search", new DisplayVesselInfo(
         "main-vessel-info",
@@ -71,7 +70,7 @@ const onPageLoaded = async() => {
         "Ligplaatsen": berths.main,
         "Windsnelheid": windspeedLayer.main,
         "Schepen": vesselLayer.main,
-        "Open sea maps": openSeaMap,
+        "Open sea maps": openSeaMapLayer.main,
         "Diepte Water": diepteLayer,
         "Bruggen": Bridges.main
     };
@@ -90,11 +89,13 @@ const onPageLoaded = async() => {
     map.on("zoomstart", () => {
         windspeedLayer.hide();
         vesselLayer.hide();
+        openSeaMapLayer.hide();
     });
 
     map.on("zoomend", () => {
         windspeedLayer.show();
         vesselLayer.show();
+        openSeaMapLayer.show();
         Bridges.getBridges(map);
         berths.checkZoom(map);
         Companies.checkZoom(map);
