@@ -1,15 +1,17 @@
-import Bridges from "./Bridges";
-import Companies from "./Companies";
 import Berth from "./Berth";
-import WindspeedLayer from "./WindspeedLayer";
-import VesselLayer from "./VesselLayer";
+import BridgesLayer from "./BridgesLayer";
+import Companies from "./Companies";
 import OpenSeaMapLayer from "./OpenSeaMapLayer";
+import OpenStreetMapLayer from "./OpenStreetMapLayer";
+import VesselLayer from "./VesselLayer";
+import WindspeedLayer from "./WindspeedLayer";
 
 export {
-    Bridges,
-    Companies,
     Berth,
+    BridgesLayer,
+    Companies,
     OpenSeaMapLayer,
-    WindspeedLayer,
+    OpenStreetMapLayer,
     VesselLayer,
+    WindspeedLayer,
 }

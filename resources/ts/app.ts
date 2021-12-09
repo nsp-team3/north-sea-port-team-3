@@ -5,7 +5,7 @@ import "leaflet-velocity";
 import "leaflet-mouse-position";
 import "./libs/smoothWheelZoom";
 
-import { Bridges, Companies, Berth, OpenSeaMapLayer, VesselLayer, WindspeedLayer } from "./layers/LayerExports";
+import { Berth, BridgesLayer, Companies, OpenSeaMapLayer, VesselLayer, WindspeedLayer, OpenStreetMapLayer } from "./layers/LayerExports";
 import { VesselSearch, PortSearch, BerthSearch } from "./search/SearchExports";
 import { DisplayBerthInfo, DisplayPortInfo, DisplayVesselInfo } from "./display-info/DisplayInfoExports";
 
@@ -16,18 +16,8 @@ const onPageLoaded = async() => {
         smoothSensitivity: 1.5,
     }).setView(new L.LatLng(51.2797429555907, 3.7477111816406254), 8);
 
-    const main = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors`
-    }).addTo(map);
 
     // const cleanMap = L.tileLayer('https://tile.jawg.io/be014ddc-e423-43d8-8e15-0ddb1ac99d84/{z}/{x}/{y}{r}.png?access-token=iWfpe7piHdKAYayIe6bRGELuU156lg34z2nVINNr755xTL4AbHcaKBXXhTwHxHdW', {}).addTo(map);
-
-    const diepteLayer = L.tileLayer.wms("https://geo.rijkswaterstaat.nl/services/ogc/gdr/bodemhoogte_zeeland/ows", {
-        layers: "bodemhoogte_zeeland",
-        format: "image/png",
-        transparent: true,
-        attribution: `<a href="https://maps.rijkswaterstaat.nl/dataregister-publicatie/srv/api/records/e0422848-ca9c-443e-b674-16a295bcff23">Bodemdiepte Zeeland (actueel).</a>`
-    });
 
     const sidebar = L.control.sidebar({
         autopan: false,       // whether to maintain the centered map point when opening the sidebar
@@ -38,11 +28,11 @@ const onPageLoaded = async() => {
 
     const berths = new Berth(sidebar);
 
+    const mainLayer = new OpenStreetMapLayer(map);
     const vesselLayer = new VesselLayer(map, sidebar);
     const windspeedLayer = new WindspeedLayer(map);
     const openSeaMapLayer = new OpenSeaMapLayer(map);
-    // const openSeaMap = new L.LayerGroup();
-    
+    const bridgesLayer = new BridgesLayer(map);
 
     new VesselSearch(map, "vessel-search", new DisplayVesselInfo(
         "main-vessel-info",
@@ -71,8 +61,8 @@ const onPageLoaded = async() => {
         "Windsnelheid": windspeedLayer.main,
         "Schepen": vesselLayer.main,
         "Open sea maps": openSeaMapLayer.main,
-        "Diepte Water": diepteLayer,
-        "Bruggen": Bridges.main
+        // "Diepte Water": diepteLayer,
+        "Bruggen": bridgesLayer.main
     };
 
     L.control.scale().addTo(map);
@@ -84,7 +74,8 @@ const onPageLoaded = async() => {
         sortLayers: true
     }).addTo(map);
 
-    Bridges.main.removeFrom(map);
+    // Bridges.main.removeFrom(map);
+
 
     map.on("zoomstart", () => {
         windspeedLayer.hide();
@@ -96,7 +87,7 @@ const onPageLoaded = async() => {
         windspeedLayer.show();
         vesselLayer.show();
         openSeaMapLayer.show();
-        Bridges.getBridges(map);
+        bridgesLayer.show();
         berths.checkZoom(map);
         Companies.checkZoom(map);
     });
@@ -108,7 +99,7 @@ const onPageLoaded = async() => {
     map.on("dragend", () => {
         windspeedLayer.show();
         vesselLayer.show();
-        Bridges.getBridges(map);
+        bridgesLayer.show();
     });
 
     map.on("overlayremove", () => {
@@ -121,11 +112,11 @@ const onPageLoaded = async() => {
         Companies.checkLayer(map);
     });
 
-    Bridges.getBridges(map);
+    bridgesLayer.show();
 
     setInterval(() => {
         vesselLayer.show();
-        Bridges.getBridges(map);
+        bridgesLayer.show();
     }, 15000);
 }
 

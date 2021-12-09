@@ -23,7 +23,6 @@ export default class Companies {
                 map.addLayer(this.beheersgebiedLayer)
             }
         }
-
     }
 
     public static checkLayer(map: L.Map) {
