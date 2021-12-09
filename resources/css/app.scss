@@ -96,3 +96,46 @@ body {
     }
 
 }
+
+div.sidebar-legenda-menu {
+    display: table;
+    width: 100%;
+    table-layout: fixed;    /* For cells of equal size */
+}
+div.sidebar-legenda-menu span {
+    display: table-cell;
+    text-align: center;
+}
+
+.legenda-element{
+    margin: 10px;
+    background-color: #0074d9;
+    font-size: 14px;
+    width: 60px;
+    height: 30px;
+    color: white;
+    padding: 5px;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .legenda-element:hover {
+    background-color: #0088ff;
+  }
+
+#schipLegenda {
+    table {
+        margin-top: .3rem;
+        input {
+            margin-top: .3rem;
+            margin-right: .3rem;
+        }
+        td:nth-child(2) {
+            font-size: 1rem;
+        }
+        img {
+            margin-right: .4rem;
+            height: 23px;
+        }
+    }
+}

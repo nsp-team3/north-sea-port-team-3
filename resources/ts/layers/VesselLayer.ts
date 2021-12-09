@@ -5,8 +5,31 @@ import AIS from "../api/AIS";
 import { DisplayVesselInfo } from "../display-info/DisplayInfoExports";
 import SimpleVesselInfo from "../types/SimpleVesselInfo";
 import Layer from "./Layer";
+import VesselType from "../types/enums/VesselType";
 
 export default class VesselLayer extends Layer {
+    private vessels: VesselType[] = [
+        VesselType.Unavailable,
+        VesselType.NavigationAid,
+        VesselType.HighSpeed,
+        VesselType.Passenger,
+        VesselType.Cargo,
+        VesselType.Tanker,
+        VesselType.Yacht,
+        VesselType.Fishing,
+    ];
+
+    private static readonly vesselTypes: { [id: string]: VesselType; } = {
+        "Onbekend": VesselType.Unavailable,
+        "Sleepboot": VesselType.NavigationAid,
+        "Hogesnelheidsvaartuig": VesselType.HighSpeed,
+        "Passagiersschip": VesselType.Passenger,
+        "Vrachtschip": VesselType.Cargo,
+        "Tanker": VesselType.Tanker,
+        "Jacht": VesselType.Yacht,
+        "Vissersboot": VesselType.Fishing,
+    }
+
     private static readonly VESSEL_COLORS = {
         "0": "#6b6b6c",
         "3": "#0fa8b7",
@@ -20,6 +43,7 @@ export default class VesselLayer extends Layer {
         "12": "#e71664",
         "13": "#e71634"
     };
+
     private vesselDisplay = new DisplayVesselInfo(
         "main-vessel-info",
         "vessel-name",
@@ -30,7 +54,7 @@ export default class VesselLayer extends Layer {
 
     protected _sidebar: L.Control.Sidebar;
     protected _circleGroup: L.LayerGroup;
-    
+
     public constructor(map: L.Map, sidebar: L.Control.Sidebar) {
         super(map);
         this._sidebar = sidebar;
@@ -38,14 +62,17 @@ export default class VesselLayer extends Layer {
         this._nestedVesselLayer = new Leaflet.LayerGroup();
         this._nestedVesselLayer.addTo(this._layerGroup);
         this.show();
+        this.getSelectedVessels();
     }
 
-    public async show(): Promise<void> {
+    public async show(): Promise<void> {       
         const nearbyVessels: SimpleVesselInfo[] = await AIS.getNearbyVessels(this._map);
         this._layerGroup.clearLayers();
         this._nestedVesselLayer.clearLayers();
-        this._circleGroup.addTo(this._layerGroup);
+
         nearbyVessels.forEach((vesselInfo: SimpleVesselInfo) => this.draw(vesselInfo));
+
+        this._circleGroup.addTo(this._layerGroup);
         this._nestedVesselLayer.addTo(this._layerGroup);
     }
 
@@ -61,7 +88,31 @@ export default class VesselLayer extends Layer {
         this.drawVesselCircle(vesselInfo);
     }
 
+    private getSelectedVessels(): void {
+        const schipLegend = document.getElementById("schipLegenda");
+        schipLegend.querySelectorAll("input").forEach(element => {
+            this.addClickHandler(element);
+        });
+    }
+
+    private addClickHandler(element: HTMLElement): void {
+        element.addEventListener("click", (event: MouseEvent) => {
+            const target = event.target as HTMLInputElement;
+            if (target.checked) {
+                this.vessels.push(VesselLayer.vesselTypes[target.id]);
+            } else {
+                this.vessels = this.vessels.filter(e => e !== VesselLayer.vesselTypes[target.id]);
+            }
+            this.show();
+        });
+    }
+
     private draw(vesselInfo: SimpleVesselInfo): void {
+        const allowedVesselTypes = this.vessels;
+        if (!allowedVesselTypes.includes(vesselInfo.vesselType)) {
+            return;
+        }
+
         const location = Leaflet.latLng(
             Number(vesselInfo.latitude),
             Number(vesselInfo.longitude)

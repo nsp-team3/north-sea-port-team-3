@@ -6,11 +6,17 @@ import VesselFilters from "../types/VesselFilters";
 import SimpleVesselInfo from "../types/SimpleVesselInfo";
 import { SearchFilters, SearchResult } from "../types/SearchTypes";
 import PortInfoResponse from "../types/PortInfoResponse";
+import VesselType from "../types/enums/VesselType";
 
 export class AIS {
     private static readonly BASE_URL = "https://services.myshiptracking.com/requests";
     private static readonly PORT_URL = "/api/ports";
     private static readonly SEARCH_URL: string = "/api/search";
+    private static readonly HIDDEN_AIS_TYPES: VesselType[] = [
+        VesselType.AirCraft,
+        VesselType.BaseStation,
+        VesselType.NavigationAid
+    ];
 
     public static getVessel = async (mmsi: number): Promise<Vessel> => {
         const params = new URLSearchParams({
@@ -84,8 +90,9 @@ export class AIS {
             const portID = simpleVesselInfo.portId;
             const matchesPortId = vesselFilters.currentPortId ? portID && portID === vesselFilters.currentPortId : true;
             const matchesDestination = vesselFilters.destination ? destination && destination.toLowerCase().includes("Vlissingen".toLowerCase()) : true;
+            const shouldBeHidden = this.HIDDEN_AIS_TYPES.includes(simpleVesselInfo.vesselType);
             
-            return matchesPortId && matchesDestination;
+            return matchesPortId && matchesDestination && !shouldBeHidden;
         });
 
         return filteredVessels;
