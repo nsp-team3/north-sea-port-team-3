@@ -4,15 +4,25 @@ const bedrijven = require('../../northSeaPortGeoJson/bedrijven_northsp.json');
 const beheersgebied = require('../../northSeaPortGeoJson/beheergebied_northsp.json');
 const { arcgisToGeoJSON } = require('@esri/arcgis-to-geojson-utils');
 
+/**
+ * Besturing van de bedrijvenlaag
+ */
 export default class Companies {
     public static bedrijvenGroup = L.layerGroup();
     private static infoLayer = L.layerGroup();
     private static beheersgebiedLayer = L.geoJSON(arcgisToGeoJSON(beheersgebied));
 
+    /**
+     * wijzig de zichtbaarheid van items als ingezoomt is op de map
+     * @param map koppeling met de kaart voor zoominformatie ophalen en lagen verwijderen
+     */
     public static checkZoom(map: L.Map) {
+        // extra lagen toevoegen gebaseerd op zichtbaarheid van bedrijvenlayer
         if (map.hasLayer(this.bedrijvenGroup)) {
+            // infoLayer laten zien boven 13 zoomlevel
             if (map.getZoom() >= 16) {
                 map.addLayer(this.infoLayer)
+            // bedrijvenLayer laten zien boven 13 zoomlevel
             } else if (map.getZoom() >= 13) {
                 map.addLayer(this.bedrijvenLayer)
                 map.removeLayer(this.infoLayer)
@@ -26,8 +36,14 @@ export default class Companies {
 
     }
 
+    /**
+     * wijzig de zichtbaarheid van items als de zichtbaarheid van lagen word aangepast
+     * @param map koppeling met de kaart voor zoominformatie ophalen en lagen verwijderen
+     */
     public static checkLayer(map: L.Map) {
+        // extra lagen toevoegen gebaseerd op zichtbaarheid van bedrijvenlayer
         if (map.hasLayer(this.bedrijvenGroup)) {
+            // bedrijvenLayer en infoLayer laten zien boven 13 zoomlevel
             if (map.getZoom() >= 13) {
                 map.addLayer(this.bedrijvenLayer)
                 map.addLayer(this.infoLayer)
@@ -41,6 +57,9 @@ export default class Companies {
         }
     }
 
+    /**
+     * aanmaken bedrijvenlaag met onclick voor extra informatie
+     */
     private static bedrijvenLayer = L.geoJSON(arcgisToGeoJSON(bedrijven), {
         onEachFeature: (feature, layer) => {
 

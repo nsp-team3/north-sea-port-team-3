@@ -34,6 +34,7 @@ const onPageLoaded = async() => {
         attribution: `<a href="https://maps.rijkswaterstaat.nl/dataregister-publicatie/srv/api/records/e0422848-ca9c-443e-b674-16a295bcff23">Bodemdiepte Zeeland (actueel).</a>`
     });
 
+    // inladen zijbalk
     const sidebar = L.control.sidebar({
         autopan: false,       // whether to maintain the centered map point when opening the sidebar
         closeButton: true,    // whether t add a close button to the panes
@@ -45,6 +46,7 @@ const onPageLoaded = async() => {
 
     const vesselLayer = new VesselLayer(map, sidebar);
 
+    // activering schepen zoeken
     new VesselSearch(map, "vessel-search", new DisplayVesselInfo(
         "main-vessel-info",
         "vessel-name",
@@ -52,6 +54,7 @@ const onPageLoaded = async() => {
         "vessel-back-button"
     ));
 
+    // activering havens zoeken
     new PortSearch(map, "port-search", new DisplayPortInfo(
         "main-port-info",
         "port-name",
@@ -59,6 +62,7 @@ const onPageLoaded = async() => {
         "port-back-button"
     ));
 
+    // activering ligplaatsen zoeken
     new BerthSearch(map, "berth-search", new DisplayBerthInfo(
         "main-berth-info",
         "berth-name",
@@ -66,6 +70,7 @@ const onPageLoaded = async() => {
         "berth-back-button"
     ));
 
+    // Items zichtbaar in het lagenactiveermenu
     const optionalOverlays = {
         "Bedrijven": Companies.bedrijvenGroup,
         "Ligplaatsen": berths.main,
@@ -84,6 +89,7 @@ const onPageLoaded = async() => {
     }).addTo(map);
     Bridges.main.removeFrom(map);
 
+    // word aangeroepen bij zoomen
     map.on("zoomend", () => {
         vesselLayer.show();
         Bridges.getBridges(map);
@@ -96,23 +102,26 @@ const onPageLoaded = async() => {
         }
     });
 
+    // word aangeroepen bij het verslepen van de map
     map.on("dragend", () => {
         Bridges.getBridges(map);
         vesselLayer.show();
     });
 
+    // word aangeroepen bij het verwijderen van een laag via het lagenactiveermenu
     map.on("overlayremove", () => {
         berths.checkLayer(map);
         Companies.checkLayer(map);
     });
 
+    // word aangeroepen bij het toevoegen van een laag via het lagenactiveermenu
     map.on("overlayadd", () => {
         berths.checkLayer(map);
         Companies.checkLayer(map);
     });
 
+    // doe elke 15 seconde
     Bridges.getBridges(map);
-
     setInterval(() => {
         vesselLayer.show();
         Bridges.getBridges(map);

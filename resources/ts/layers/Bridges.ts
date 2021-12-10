@@ -1,22 +1,34 @@
 import * as L from "leaflet";
 
+/**
+ * Besturing van de bruggenlaag
+ */
 export default class Bridges {
     public static main = L.layerGroup();
 
+    /**
+     * Ophalen van bruggen gebaseerd op positie
+     * @param map koppeling met de kaart voor zoomniveau en huidige locatie
+     */
     public static async getBridges(map: L.Map): Promise<void> {
+        // niet laten zien waneer er te ver is uitgezoomd
         if (map.getZoom() > 11) {
+            // ophalen van de hoeken van het zichtbare scherm
             const bounds = map.getBounds();
             const sw = bounds.getSouthWest();
             const ne = bounds.getNorthEast();
 
+            // gebaseerd op wat hierin valt, data opvragen
             const res = await fetch("/api/bridges", {
                 "body": `a=${sw.lat}&b=${ne.lng}&c=${ne.lat}&d=${sw.lng}&e=0&f=0&g=0&h=0&i=0&j=0&k=0&l=0&m=0&n=0&o=0&p=0&q=0&r=0&s=0&t=0&u=0&v=1&w=0&x=0&y=0&z=0`,
                 "method": "post"
             });
             const body = await res.json();
 
+            // huidige laag leeghalen om klaar te maken voor nieuwe data
             Bridges.main.clearLayers();
 
+            // vullen met bruginformatie
             Object.keys(body).forEach((bridge) => {
                 Bridges.displayBridge(body[bridge], map);
             });
@@ -25,28 +37,43 @@ export default class Bridges {
         }
     }
 
+    /**
+     * voegt de brug toe aan de bruggenlayer en koppeld een onclick voor popup
+     * @param bridge een brug via de bruggenapi
+     * @param map koppeling met de kaart voor de popup op een brug
+     */
     private static displayBridge(bridge: any, map: L.Map): void {
         const myIcon = L.icon({
             iconUrl: `https://waterkaart.net/items/images/iconen/${bridge.icoo}.png`,
             iconSize: [24, 14],
             className: bridge.RWS_Id,
         });
+        // een icoon moet gekoppeld zijn aan een marker
         const marker = L.marker([
             bridge.lat,
             bridge.lng
         ], {
             icon: myIcon
         });
+        // brug zichtbaar maken
         marker.addTo(Bridges.main);
         marker.on("click", (event: L.LeafletMouseEvent) => this.handleBridgeClick(event, bridge, map));
     }
 
-    private static async bridgePicture(bridge: any) {
+    /**
+     * Probeerd een foto op te halen van een schip,
+     * wanneer die niet is gevonden geeft hij niks terug
+     * @param bridge bruginformatie van de api
+     * @returns img element in string: "<img>"
+     */
+    private static async bridgePicture(bridge: any): Promise<string> {
+        // aanmaken van ?locatie=6554&name=brug....
         const params = new URLSearchParams({
             locatie: bridge.extradata,
             name: bridge.name,
             os: "web",
         });
+        // sluis of brug als type defineren
         if (bridge.icoo == "sluis") {
             params.append("soort", "sluis")
         } else {
@@ -64,6 +91,12 @@ export default class Bridges {
         return "";
     }
 
+    /**
+     * laat de popup zien wanneer op een schip geklikt is
+     * @param event de onclick event van de bruggenicoon
+     * @param bridge bruginformatie
+     * @param map koppeling met de kaart om de popup zichtbaar te maken
+     */
     private static async handleBridgeClick(event: L.LeafletMouseEvent, bridge: any, map: L.Map): Promise<void> {
         let data = "Geen gegevens."
 
@@ -85,6 +118,7 @@ export default class Bridges {
             data += await Bridges.bridgePicture(bridge);
         }
 
+        // popup zichtbaar maken
         L.popup()
         .setLatLng(event.latlng)
         .setContent(data)

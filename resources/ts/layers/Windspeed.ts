@@ -1,16 +1,19 @@
 import * as L from "leaflet";
 
+/**
+ * Besturing van de windsnelheidslaag
+ */
 export default class Windspeed {
     public static main = L.layerGroup();
 
     public static async getWindInfo() {
-        // const response = await fetch('http://127.0.0.1:7000/latest');
         const response = await fetch('https://nsp-weather.jobse.space/latest');
         if (response.status === 200) {
             const data = await response.json()
             let weerInfo = L.velocityLayer({
-
+                // windsnelheidsgetallen weergeven voor windinformatie rechtsonderin als laag geactiveerd is
                 displayValues: true,
+                // vertalingen voor items linksonderin en instellingen
                 displayOptions: {
                     velocityType: 'Globale wind',
                     position: 'bottomleft',//REQUIRED !

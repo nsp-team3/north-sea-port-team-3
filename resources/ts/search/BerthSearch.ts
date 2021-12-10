@@ -4,18 +4,38 @@ import Search from "./Search";
 
 const berthsData = require("../../northSeaPortGeoJson/ligplaatsen_northsp.json");
 
+/**
+ * Voegt zoekfunctionaliteit toe voor ligplaatsen
+ */
 export default class BerthSearch extends Search {
+    protected SEARCH_FILTERS = {};
     protected MIN_INPUT_LENGTH = 1;
     protected RESULTS_ELEMENT = document.getElementById("berth-search-results") as HTMLDivElement;
 
+    /**
+     * @param map koppeling met de kaart, bijvoorbeeld zoomen naar locatie van boot
+     * @param searchBarId ID van de zoekbalk binnen html
+     * @param displayInfo koppeling met de class die aangeeft hoe de data moet worden weergeven
+     */
     public constructor(map: L.Map, searchBarId: string, displayInfo: DisplayBerthInfo) {
         super(map, searchBarId, displayInfo);
     }
 
+    /**
+     * Gaat over elk item binnen geojsonom het te converten naar een leesbare dictionary
+     * @param features geojson data
+     * @returns array van dictionaries met ligplaatsinformatie
+     */
     public static convertFeaturesToBerths(features: any): BerthSearchResult[] {
         return features.map((feature: any) => this.convertFeatureToBerth(feature));
     }
 
+    /**
+     * Zet de geojson data om naar een makkelijk leesbaar dictionary met ligplaatsinformatie
+     * https://leafletjs.com/examples/geojson/
+     * @param feature huidige ligplaats binnen geojson
+     * @returns makkelijk leesbare dictionary
+     */
     public static convertFeatureToBerth(feature: any): BerthSearchResult {
         const properties = feature.properties;
         return {
@@ -64,6 +84,11 @@ export default class BerthSearch extends Search {
         return div;
     }
 
+    /**
+     * Maakt de desctiptie voor items in de lijst met zoekresultaten
+     * @param berthResult 1 zoekresultaat van het zoeken
+     * @returns HTML item voor de descriptie van het zoekresultaat
+     */
     private createInfo(berthResult: BerthSearchResult): HTMLParagraphElement {
         const info = document.createElement("p");
         info.classList.add("mb-1", "small");
@@ -72,6 +97,11 @@ export default class BerthSearch extends Search {
         return info;
     }
 
+    /**
+     * Maakt de titel voor items in de lijst met zoekresultaten
+     * @param berthResult 1 zoekresultaat van het zoeken
+     * @returns HTML item voor de titel van het zoekresultaat
+     */
     private createTitle(berthResult: BerthSearchResult): HTMLElement {
         const title = document.createElement("strong");
         title.classList.add("mb-1");
