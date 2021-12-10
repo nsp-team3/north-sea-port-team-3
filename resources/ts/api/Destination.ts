@@ -3,6 +3,10 @@
 import RawDestination from "../types/RawDestination";
 import { parseHtmlDate } from "./Util";
 
+/**
+ * Een klasse die het makkelijker maakt om specifieke informatie op te halen over een bestemming.
+ * Want de onbewerkte data is erg onduidelijk.
+ */
 export class Destination {
     private _rawDestination: RawDestination;
 
