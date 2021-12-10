@@ -33,7 +33,6 @@ export default class Companies {
                 map.addLayer(this.beheersgebiedLayer)
             }
         }
-
     }
 
     /**

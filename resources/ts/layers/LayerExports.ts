@@ -1,14 +1,20 @@
 /**
- * Maakt de layerfuncties beschikbaar via 1 import
+ * Maakt de lagen beschikbaar via 1 import
  */
-import Bridges from "./Bridges";
-import Companies from "./Companies";
 import Berth from "./Berth";
-import Windspeed from "./Windspeed";
+import BridgesLayer from "./BridgesLayer";
+import Companies from "./Companies";
+import OpenSeaMapLayer from "./OpenSeaMapLayer";
+import OpenStreetMapLayer from "./OpenStreetMapLayer";
+import VesselLayer from "./VesselLayer";
+import WindspeedLayer from "./WindspeedLayer";
 
 export {
-    Bridges,
-    Companies,
     Berth,
-    Windspeed
+    BridgesLayer,
+    Companies,
+    OpenSeaMapLayer,
+    OpenStreetMapLayer,
+    VesselLayer,
+    WindspeedLayer,
 }

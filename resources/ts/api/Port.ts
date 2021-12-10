@@ -4,6 +4,10 @@ import PortType from "../types/enums/PortType";
 import RawVesselInfo from "../types/RawVesselInfo";
 import { parseHtmlDate } from "./Util";
 
+/**
+ * Een klasse die het makkelijker maakt om specifieke informatie op te halen over een haven.
+ * Want de onbewerkte data is erg onduidelijk.
+ */
 export class Port {
     private _type: PortType;
     private _rawVesselInfo: RawVesselInfo;

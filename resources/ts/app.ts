@@ -5,9 +5,8 @@ import "leaflet-velocity";
 import "leaflet-mouse-position";
 import "./libs/smoothWheelZoom";
 
-import { Bridges, Companies, Berth, Windspeed } from "./layers/LayerExports";
+import { Berth, BridgesLayer, Companies, OpenSeaMapLayer, VesselLayer, WindspeedLayer, OpenStreetMapLayer } from "./layers/LayerExports";
 import { VesselSearch, PortSearch, BerthSearch } from "./search/SearchExports";
-import VesselLayer from "./layers/VesselLayer";
 import { DisplayBerthInfo, DisplayPortInfo, DisplayVesselInfo } from "./display-info/DisplayInfoExports";
 
 const onPageLoaded = async() => {
@@ -17,22 +16,8 @@ const onPageLoaded = async() => {
         smoothSensitivity: 1.5,
     }).setView(new L.LatLng(51.2797429555907, 3.7477111816406254), 8);
 
-    const main = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors`
-    }).addTo(map);
 
     // const cleanMap = L.tileLayer('https://tile.jawg.io/be014ddc-e423-43d8-8e15-0ddb1ac99d84/{z}/{x}/{y}{r}.png?access-token=iWfpe7piHdKAYayIe6bRGELuU156lg34z2nVINNr755xTL4AbHcaKBXXhTwHxHdW', {}).addTo(map);
-
-    const openSeaMap = L.tileLayer("https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png", {
-        attribution: `Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors`
-    });
-
-    const diepteLayer = L.tileLayer.wms("https://geo.rijkswaterstaat.nl/services/ogc/gdr/bodemhoogte_zeeland/ows", {
-        layers: "bodemhoogte_zeeland",
-        format: "image/png",
-        transparent: true,
-        attribution: `<a href="https://maps.rijkswaterstaat.nl/dataregister-publicatie/srv/api/records/e0422848-ca9c-443e-b674-16a295bcff23">Bodemdiepte Zeeland (actueel).</a>`
-    });
 
     // inladen zijbalk
     const sidebar = L.control.sidebar({
@@ -44,7 +29,11 @@ const onPageLoaded = async() => {
 
     const berths = new Berth(sidebar);
 
+    const mainLayer = new OpenStreetMapLayer(map);
     const vesselLayer = new VesselLayer(map, sidebar);
+    const windspeedLayer = new WindspeedLayer(map);
+    const openSeaMapLayer = new OpenSeaMapLayer(map);
+    const bridgesLayer = new BridgesLayer(map);
 
     // activering schepen zoeken
     new VesselSearch(map, "vessel-search", new DisplayVesselInfo(
@@ -74,38 +63,51 @@ const onPageLoaded = async() => {
     const optionalOverlays = {
         "Bedrijven": Companies.bedrijvenGroup,
         "Ligplaatsen": berths.main,
-        "Windsnelheid": Windspeed.main,
+        "Windsnelheid": windspeedLayer.main,
         "Schepen": vesselLayer.main,
-        "Open sea maps": openSeaMap,
-        "Diepte Water": diepteLayer,
-        "Bruggen": Bridges.main
+        "Open sea maps": openSeaMapLayer.main,
+        // "Diepte Water": diepteLayer,
+        "Bruggen": bridgesLayer.main
     };
 
     L.control.scale().addTo(map);
     L.control.mousePosition().addTo(map);
+
     sidebar.addTo(map).open("vesselsTab");
+
     L.control.layers({}, optionalOverlays, {
         sortLayers: true
     }).addTo(map);
-    Bridges.main.removeFrom(map);
+
+    // Bridges.main.removeFrom(map);
+
+
+    map.on("zoomstart", () => {
+        bridgesLayer.hide();
+        openSeaMapLayer.hide();
+        vesselLayer.hide();
+        windspeedLayer.hide();
+    });
 
     // word aangeroepen bij zoomen
     map.on("zoomend", () => {
-        vesselLayer.show();
-        Bridges.getBridges(map);
+        bridgesLayer.show();
         berths.checkZoom(map);
+        openSeaMapLayer.show();
+        vesselLayer.show();
+        windspeedLayer.show();
         Companies.checkZoom(map);
-        if (map.getZoom() < 11) {
-            Bridges.main.removeFrom(map);
-        } else {
-            Bridges.main.addTo(map);
-        }
+    });
+
+    map.on("dragstart", () => {
+        windspeedLayer.hide();
     });
 
     // word aangeroepen bij het verslepen van de map
     map.on("dragend", () => {
-        Bridges.getBridges(map);
+        windspeedLayer.show();
         vesselLayer.show();
+        bridgesLayer.show();
     });
 
     // word aangeroepen bij het verwijderen van een laag via het lagenactiveermenu
@@ -121,10 +123,11 @@ const onPageLoaded = async() => {
     });
 
     // doe elke 15 seconde
-    Bridges.getBridges(map);
+    bridgesLayer.show();
+
     setInterval(() => {
         vesselLayer.show();
-        Bridges.getBridges(map);
+        bridgesLayer.show();
     }, 15000);
 }
 

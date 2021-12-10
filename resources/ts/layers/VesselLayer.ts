@@ -28,14 +28,14 @@ export default class VesselLayer extends Layer {
      * legendaitem naar vesseltype conversie voor schepenfilter
      */
     private static readonly vesselTypes: { [id: string]: VesselType; } = {
-        "onbekend": VesselType.Unavailable,
-        "sleepboot": VesselType.NavigationAid,
-        "hogesnelheid": VesselType.HighSpeed,
-        "passagier": VesselType.Passenger,
-        "vracht": VesselType.Cargo,
-        "tanker": VesselType.Tanker,
-        "yacht": VesselType.Yacht,
-        "visschepen": VesselType.Fishing,
+        "Onbekend": VesselType.Unavailable,
+        "Sleepboot": VesselType.NavigationAid,
+        "Hogesnelheidsvaartuig": VesselType.HighSpeed,
+        "Passagiersschip": VesselType.Passenger,
+        "Vrachtschip": VesselType.Cargo,
+        "Tanker": VesselType.Tanker,
+        "Jacht": VesselType.Yacht,
+        "Vissersboot": VesselType.Fishing,
     }
     /**
      * kleuren voor elk vesseltype
@@ -53,12 +53,15 @@ export default class VesselLayer extends Layer {
         "12": "#e71664", // VesselType.AirCraft
         "13": "#e71634"  // VesselType.NavigationAid
     };
+
     private vesselDisplay = new DisplayVesselInfo(
         "main-vessel-info",
         "vessel-name",
         "vessel-info-content",
         "vessel-back-button"
     );
+    private _nestedVesselLayer: L.LayerGroup;
+
     protected _sidebar: L.Control.Sidebar;
     protected _circleGroup: L.LayerGroup;
 
@@ -70,34 +73,25 @@ export default class VesselLayer extends Layer {
         super(map);
         this._sidebar = sidebar;
         this._circleGroup = new Leaflet.LayerGroup();
+        this._nestedVesselLayer = new Leaflet.LayerGroup();
+        this._nestedVesselLayer.addTo(this._layerGroup);
         this.show();
         this.getSelectedVessels();
-    }
-
-    /**
-     * word aangeroepen na het aanklikken van een filter in de legenda
-     * checkt welk schiptype wel/niet zichtbaar gemaakt moet worden gebaseerd op het veranderde input veld
-     */
-    private getSelectedVessels(): void {
-        const schipLegend = document.getElementById("schipLegenda");
-        schipLegend.querySelectorAll("input").forEach(element => {
-            element.addEventListener("click", (event: MouseEvent) => {
-                const target = event.target as HTMLInputElement;
-                if (target.checked) {
-                    this.vessels.push(VesselLayer.vesselTypes[target.id]);
-                } else {
-                    this.vessels = this.vessels.filter(e => e !== VesselLayer.vesselTypes[target.id]);
-                }
-                this.show();
-            })
-        });
     }
 
     public async show(): Promise<void> {
         const nearbyVessels: SimpleVesselInfo[] = await AIS.getNearbyVessels(this._map);
         this._layerGroup.clearLayers();
+        this._nestedVesselLayer.clearLayers();
+
         nearbyVessels.forEach((vesselInfo: SimpleVesselInfo) => this.draw(vesselInfo));
+
         this._circleGroup.addTo(this._layerGroup);
+        this._nestedVesselLayer.addTo(this._layerGroup);
+    }
+
+    public hide(): void {
+        this._layerGroup.removeLayer(this._nestedVesselLayer);
     }
 
     /**
@@ -112,6 +106,29 @@ export default class VesselLayer extends Layer {
             this._map.flyTo(new Leaflet.LatLng(vesselInfo.latitude, vesselInfo.longitude), 16)
         }
         this.drawVesselCircle(vesselInfo);
+    }
+
+    /**
+     * word aangeroepen na het aanklikken van een filter in de legenda
+     * checkt welk schiptype wel/niet zichtbaar gemaakt moet worden gebaseerd op het veranderde input veld
+     */
+    private getSelectedVessels(): void {
+        const schipLegend = document.getElementById("schipLegenda");
+        schipLegend.querySelectorAll("input").forEach(element => {
+            this.addClickHandler(element);
+        });
+    }
+
+    private addClickHandler(element: HTMLElement): void {
+        element.addEventListener("click", (event: MouseEvent) => {
+            const target = event.target as HTMLInputElement;
+            if (target.checked) {
+                this.vessels.push(VesselLayer.vesselTypes[target.id]);
+            } else {
+                this.vessels = this.vessels.filter(e => e !== VesselLayer.vesselTypes[target.id]);
+            }
+            this.show();
+        });
     }
 
     /**
@@ -142,7 +159,7 @@ export default class VesselLayer extends Layer {
             this.focusVessel(vesselInfo, false);
         });
 
-        vessel.addTo(this._layerGroup);
+        vessel.addTo(this._nestedVesselLayer);
     }
 
     /**

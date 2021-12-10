@@ -6,12 +6,26 @@ import VesselFilters from "../types/VesselFilters";
 import SimpleVesselInfo from "../types/SimpleVesselInfo";
 import { SearchFilters, SearchResult } from "../types/SearchTypes";
 import PortInfoResponse from "../types/PortInfoResponse";
+import VesselType from "../types/enums/VesselType";
 
+/**
+ * Een klasse die gebruikt wordt om HTTP requests te maken naar verschillende endpoints.
+ */
 export class AIS {
     private static readonly BASE_URL = "https://services.myshiptracking.com/requests";
     private static readonly PORT_URL = "/api/ports";
     private static readonly SEARCH_URL: string = "/api/search";
+    private static readonly HIDDEN_AIS_TYPES: VesselType[] = [
+        VesselType.AirCraft,
+        VesselType.BaseStation,
+        VesselType.NavigationAid
+    ];
 
+    /**
+     * Vraagt gedetailleerde informatie op over een schip
+     * @param mmsi Het AIS identificatienummer van een schip.
+     * @returns De gedetailleerde informatie over een schip.
+     */
     public static getVessel = async (mmsi: number): Promise<Vessel> => {
         const params = new URLSearchParams({
             type: "json",
@@ -24,6 +38,11 @@ export class AIS {
         return new Vessel(rawInfo);
     }
 
+    /**
+     * Vraagt gedetailleerde informatie op over een haven.
+     * @param id Het identificatienummer van een haven.
+     * @returns Gedetailleerde informatie van een haven.
+     */
     public static async getPort(id?: number | void): Promise<PortInfoResponse | void> {
         const res = await fetch(`${AIS.PORT_URL}?id=${id}`);
         if (res.status === 200) {
@@ -31,6 +50,12 @@ export class AIS {
         }
     }
 
+    /**
+     * Zoekt naar resultaten op basis van een zoekopdracht en filters.
+     * @param query De zoekopdracht, dit kan een naam of identificatienummer zijn.
+     * @param searchFilters De filters voor de zoekopdracht.
+     * @returns Zoekresultaten.
+     */
     public static search = async (query: string, searchFilters?: SearchFilters): Promise<SearchResult[]> => {
         const res = await fetch(`${AIS.SEARCH_URL}?query=${query}`).catch(console.error);
         if (!res || res.status !== 200) {
@@ -41,6 +66,12 @@ export class AIS {
         return AIS.filterSearchResults(AIS.parseSearchXML(body), searchFilters);
     }
 
+    /**
+     * Haalt schepen op die in de buurt zijn van het gebied, dat de gebruiker bekijkt op de kaart.
+     * @param map De leaflet kaart die wordt gebruikt om de lagen op te tonen.
+     * @param vesselFilters Filters om alleen bepaalde schepen op te halen van de api.
+     * @returns Nabijgelegen schepen.
+     */
     public static getNearbyVessels = async (map: Leaflet.Map, vesselFilters: VesselFilters = {}) : Promise<SimpleVesselInfo[]> => {
         const bounds = map.getBounds();
         const sw = bounds.getSouthWest();
@@ -84,13 +115,20 @@ export class AIS {
             const portID = simpleVesselInfo.portId;
             const matchesPortId = vesselFilters.currentPortId ? portID && portID === vesselFilters.currentPortId : true;
             const matchesDestination = vesselFilters.destination ? destination && destination.toLowerCase().includes("Vlissingen".toLowerCase()) : true;
+            const shouldBeHidden = this.HIDDEN_AIS_TYPES.includes(simpleVesselInfo.vesselType);
             
-            return matchesPortId && matchesDestination;
+            return matchesPortId && matchesDestination && !shouldBeHidden;
         });
 
         return filteredVessels;
     }
 
+    /**
+     * Past de filters toe op de zoekresultaten.
+     * @param searchResults De zoekresultaten.
+     * @param searchFilters De zoekfilters.
+     * @returns Gefilterde zoekresultaten.
+     */
     private static filterSearchResults = (searchResults: SearchResult[], searchFilters?: SearchFilters): SearchResult[] => {
         searchResults = searchResults.filter((searchResult) => searchResult.portId ? searchResult.portId < 1000000 : true);
 
@@ -109,6 +147,11 @@ export class AIS {
         return searchResults;
     }
 
+    /**
+     * Zet XML gegevens om naar JSON, zodat het makkelijker te gebruiken is in code.
+     * @param xml De onbewerkte response data.
+     * @returns Informatie van zoekresultaten in JSON.
+     */
     private static parseSearchXML(xml: string): SearchResult[] {
         const resultsMatch = xml.match(/<RES>.*?<\/RES>/g);
         if (!resultsMatch) {
@@ -140,6 +183,11 @@ export class AIS {
         }).filter((e) => e !== undefined);
     }
 
+    /**
+     * Zet de onbewerkte gegevens van nabijgelegen schepen om naar JSON, zodat het gebruikt kan worden in code.
+     * @param body Onbewerkte gegevens van nabijgelen schepen.
+     * @returns Informatie van nabijgelen schepen in JSON.
+     */
     private static parseSearchResponse = (body: string): SimpleVesselInfo[] => {
         const allInfo = body.split("\n");
         allInfo.shift();
@@ -150,6 +198,11 @@ export class AIS {
         });
     }
 
+    /**
+     * Zet een enkele regel van onbewerkte data om naar JSON.
+     * @param shipInfo Onbewerkte data van een nabijgelegen schip.
+     * @returns Informatie van een nabijgelegen schip in JSON.
+     */
     private static parseSimpleVesselInfo = (shipInfo: string[]): SimpleVesselInfo => {
         const simpleInfo: SimpleVesselInfo = {
             aisType: Number(shipInfo[0]),
