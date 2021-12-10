@@ -22,6 +22,12 @@ class BridgesResource extends JsonResource
         return parent::toArray($request);
     }
 
+    /**
+     * Haalt een lijst van bruggen op gebaseerd op de coordinaten in de body van de request
+     * en stuurt het antwoord direct door als return als een soort proxy,
+     * dit moet wegens CORS restrictie.
+     * @param  \Illuminate\Http\Request  $request de aanvraag
+     */
     public static function getBridges($request)
     {
         $client = new \GuzzleHttp\Client();
@@ -50,6 +56,12 @@ class BridgesResource extends JsonResource
         return $response->getBody(); //json
     }
 
+    /**
+     * Haalt meer informatie van een brug op voor de brugfoto wanneer je op een brug klikt in de map
+     * en stuurt het antwoord direct door als return als een soort proxy,
+     * dit moet wegens CORS restrictie.
+     * @param  \Illuminate\Http\Request  $request de aanvraag
+     */
     public static function detailed($request)
     {
         $client = new \GuzzleHttp\Client();

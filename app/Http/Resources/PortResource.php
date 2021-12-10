@@ -22,10 +22,16 @@ class PortResource extends JsonResource
         return parent::toArray($request);
     }
 
+    /**
+     * Haalt meer informatie op van een haven via het id meegegeven in de request
+     * en en zet de gekregen data om naar json voor makkelijker gebruik,
+     * dit moet wegens CORS restrictie.
+     * @param  \Illuminate\Http\Request  $request de aanvraag
+     */
     public static function getPort($request)
     {
         $validData = PortResource::validateRequest($request);
-       
+
         $client = new \GuzzleHttp\Client();
         try {
             $response = $client->request('GET', "https://www.myshiptracking.com/ports/id-" . $validData['id']);
@@ -55,6 +61,10 @@ class PortResource extends JsonResource
         ]);
     }
 
+    /**
+     * checkt de aanvraag of de benodigde items erin zitten
+     * @param  \Illuminate\Http\Request  $request de aanvraag
+     */
     private static function validateRequest($request)
     {
         return $request->validate([
