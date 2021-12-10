@@ -32,6 +32,7 @@ class PortResource extends JsonResource
     {
         $validData = PortResource::validateRequest($request);
 
+        // Haal info op van de api
         $client = new \GuzzleHttp\Client();
         try {
             $response = $client->request('GET', "https://www.myshiptracking.com/ports/id-" . $validData['id']);
@@ -44,12 +45,14 @@ class PortResource extends JsonResource
         $body = $response->getBody();
         $body = preg_replace('/\t+|\n+|\r+/', '', $body);
 
+        // Zoek naar informatie in de opgehaalde html
         preg_match('/<td class="vessels_table_key">Country<\/td><td>\[(.*?)\] (.*?)<\/td>/', $body, $countryMatch);
         preg_match('/<td class="vessels_table_key">Longitude<\/td><td>(.*?)°<\/td>/', $body, $longitudeMatch);
         preg_match('/<td class="vessels_table_key">Latitude<\/td><td>(.*?)°<\/td>/', $body, $latitudeMatch);
         preg_match('/<td class="vessels_table_key">Name<\/td><td><strong>(.*?)<\/strong><\/td>/', $body, $nameMatch);
         preg_match('/<td class="vessels_table_key">Area size<\/td><td>(.*?)<\/td>/', $body, $sizeMatch);
 
+        // stuur de info gevonden in html als json door
         return json_encode([
             "id" => intval($validData['id']),
             "name" => $nameMatch[1],
