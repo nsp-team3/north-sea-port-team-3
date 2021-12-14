@@ -9,6 +9,9 @@ let reddingsboeien = require('../../northSeaPortGeoJson/reddingsboeien_northsp.j
 let gebouwen = require('../../northSeaPortGeoJson/gebouwen_fm_northsp.json');
 const { arcgisToGeoJSON } = require('@esri/arcgis-to-geojson-utils');
 
+/**
+ * Besturing van de ligplaatsenlaag
+ */
 export default class Berth {
     private sidebar: L.Control.Sidebar;
     private searchLigplaats: { [id: string]: any } = {};
@@ -20,6 +23,9 @@ export default class Berth {
         "berth-back-button"
     );
 
+    /**
+     * gebouwen ophalen en weergeven in oranje
+     */
     private gebouwenLayer = L.geoJSON(arcgisToGeoJSON(gebouwen), {
         style: {
             "color": "#ff7800",
@@ -27,6 +33,9 @@ export default class Berth {
             "opacity": 0.65
         }
     });
+    /**
+     * stijgers ophalen en weergeven in rood
+     */
     private steigersLayer = L.geoJSON(arcgisToGeoJSON(steigers), {
         style: {
             "color": "#fd5353",
@@ -34,6 +43,9 @@ export default class Berth {
             "opacity": 0.65
         }
     });
+    /**
+     * aanlegpunten zichtbar maken met icoon
+     */
     private boldersLayer = L.geoJSON(arcgisToGeoJSON(bolders), {
         onEachFeature: (feature, layer) => {
             if (layer instanceof L.Marker) {
@@ -45,6 +57,9 @@ export default class Berth {
             }
         }
     });
+    /**
+     * beschikbaare reddingsboeien
+     */
     private reddingsboeienLayer = L.geoJSON(arcgisToGeoJSON(reddingsboeien), {
         onEachFeature: (feature, layer) => {
             if (layer instanceof L.Marker) {
@@ -56,6 +71,9 @@ export default class Berth {
             }
         }
     });
+    /**
+     * de ligplaatsen zelf inladen net onclick voor meer informatie over de ligplaats
+     */
     private ligplaatsenLayer = L.geoJSON(ligplaatsen, {
         onEachFeature: (feature, layer) => {
             layer.on("click", (event) => {
@@ -93,13 +111,20 @@ export default class Berth {
     //     });
     // }
 
+    /**
+     * wijzig de zichtbaarheid van items als ingezoomt is op de map
+     * @param map koppeling met de kaart voor zoominformatie ophalen en lagen verwijderen
+     */
     public checkZoom(map: L.Map) {
+        // extra lagen toevoegen gebaseerd op zichtbaarheid van ligplaatslayer
         if (map.hasLayer(this.ligplaatsenLayer)) {
+            // aanlegpunten laten zien boven 18 zoomlevel
             if (map.getZoom() >= 18) {
                 map.addLayer(this.boldersLayer)
             } else {
                 map.removeLayer(this.boldersLayer)
             }
+            // nummers en reddingsboeien laten zien boven 16 zoomlevel
             if (map.getZoom() >= 16) {
                 map.addLayer(this.ligplaatsenNummers)
                 map.addLayer(this.reddingsboeienLayer)
@@ -110,11 +135,18 @@ export default class Berth {
         }
     }
 
+    /**
+     * wijzig de zichtbaarheid van items als de zichtbaarheid van lagen word aangepast
+     * @param map koppeling met de kaart voor zoominformatie ophalen en lagen verwijderen
+     */
     public checkLayer(map: L.Map) {
+        // extra lagen toevoegen gebaseerd op zichtbaarheid van ligplaatslayer
         if (map.hasLayer(this.ligplaatsenLayer)) {
+            // aanlegpunten laten zien boven 18 zoomlevel
             if (map.getZoom() >= 18) {
                 map.addLayer(this.boldersLayer)
             }
+            // nummers en reddingsboeien laten zien boven 16 zoomlevel
             if (map.getZoom() >= 16) {
                 map.addLayer(this.ligplaatsenNummers)
                 map.addLayer(this.reddingsboeienLayer)
@@ -126,6 +158,9 @@ export default class Berth {
         }
     }
 
+    /**
+     * layergroup aanvragen voor koppeling met map
+     */
     public get main(): L.LayerGroup {
         return this._main;
     }

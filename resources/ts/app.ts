@@ -16,9 +16,9 @@ const onPageLoaded = async() => {
         smoothSensitivity: 1.5,
     }).setView(new L.LatLng(51.2797429555907, 3.7477111816406254), 8);
 
-
     // const cleanMap = L.tileLayer('https://tile.jawg.io/be014ddc-e423-43d8-8e15-0ddb1ac99d84/{z}/{x}/{y}{r}.png?access-token=iWfpe7piHdKAYayIe6bRGELuU156lg34z2nVINNr755xTL4AbHcaKBXXhTwHxHdW', {}).addTo(map);
 
+    // inladen zijbalk
     const sidebar = L.control.sidebar({
         autopan: false,       // whether to maintain the centered map point when opening the sidebar
         closeButton: true,    // whether t add a close button to the panes
@@ -36,6 +36,7 @@ const onPageLoaded = async() => {
     const openSeaMapLayer = new OpenSeaMapLayer(map);
     const bridgesLayer = new BridgesLayer(map);
 
+    // activering schepen zoeken
     new VesselSearch(map, "vessel-search", new DisplayVesselInfo(
         "main-vessel-info",
         "vessel-name",
@@ -43,6 +44,7 @@ const onPageLoaded = async() => {
         "vessel-back-button"
     ));
 
+    // activering havens zoeken
     new PortSearch(map, "port-search", new DisplayPortInfo(
         "main-port-info",
         "port-name",
@@ -50,6 +52,7 @@ const onPageLoaded = async() => {
         "port-back-button"
     ));
 
+    // activering ligplaatsen zoeken
     new BerthSearch(map, "berth-search", new DisplayBerthInfo(
         "main-berth-info",
         "berth-name",
@@ -57,6 +60,7 @@ const onPageLoaded = async() => {
         "berth-back-button"
     ));
 
+    // Items zichtbaar in het lagenactiveermenu
     const optionalOverlays = {
         "Bedrijven": Companies.bedrijvenGroup,
         "Ligplaatsen": berths.main,
@@ -83,6 +87,7 @@ const onPageLoaded = async() => {
         windspeedLayer.hide();
     });
 
+    // word aangeroepen bij zoomen
     map.on("zoomend", () => {
         movedSinceLastUpdate = true;
         berths.checkZoom(map);
@@ -95,22 +100,26 @@ const onPageLoaded = async() => {
         windspeedLayer.hide();
     });
 
+    // word aangeroepen bij het verslepen van de map
     map.on("dragend", () => {
         windspeedLayer.show();
         movedSinceLastUpdate = true;
     });
 
+    // word aangeroepen bij het verwijderen van een laag via het lagenactiveermenu
     map.on("overlayremove", () => {
         berths.checkLayer(map);
         Companies.checkLayer(map);
     });
 
+    // word aangeroepen bij het toevoegen van een laag via het lagenactiveermenu
     map.on("overlayadd", () => {
         berths.checkLayer(map);
         Companies.checkLayer(map);
     });
 
     setInterval(() => {
+        // Heeft de gebruiker gezoomed of de map verplaatst?
         if (movedSinceLastUpdate) {
             movedSinceLastUpdate = false;
             vesselLayer.show();

@@ -17,6 +17,12 @@ class SearchResource extends JsonResource
         return parent::toArray($request);
     }
 
+    /**
+     * Zoekt naar het zoekterm in de request naar schepen met die naam
+     * en stuurt het antwoord direct door als return als een soort proxy,
+     * dit moet wegens CORS restrictie.
+     * @param  \Illuminate\Http\Request  $request de aanvraag
+     */
     public static function search($request)
     {
         $validData = SearchResource::validate($request);
@@ -25,6 +31,10 @@ class SearchResource extends JsonResource
         return $response->getBody();
     }
 
+    /**
+     * checkt de aanvraag of de benodigde items erin zitten
+     * @param  \Illuminate\Http\Request  $request de aanvraag
+     */
     private static function validate($request)
     {
         return $request->validate([

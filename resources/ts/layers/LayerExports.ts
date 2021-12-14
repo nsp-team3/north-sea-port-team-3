@@ -1,3 +1,6 @@
+/**
+ * Maakt de lagen beschikbaar via 1 import
+ */
 import Berth from "./Berth";
 import BridgesLayer from "./BridgesLayer";
 import Companies from "./Companies";

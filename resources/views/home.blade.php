@@ -19,34 +19,38 @@
     <!-- optionally define the sidebar content via HTML markup -->
     <div id="sidebar" class="leaflet-sidebar collapsed">
 
-        <!-- nav tabs -->
+        <!-- Navigatie tabblad iconen -->
         <div class="leaflet-sidebar-tabs">
-            <!-- top aligned tabs -->
+            <!-- vanboven gepinde items -->
             <ul role="tablist">
                 <li><a href="#vesselsTab" role="tab"><i class="fa fa-ship active"></i></a></li>
                 <li><a href="#portsTab" role="tab"><i class="fa fa-anchor"></i></a></li>
                 <li><a href="#berthsTab" role="tab"><i class="fa fa-anchor"></i></a></li>
             </ul>
 
-            <!-- bottom aligned tabs -->
+            <!-- vanonder gepinde items -->
             <ul role="tablist">
                 <li><a href="#legendasTab" role="tab"><i class="fa fa-table"></i></a></li>
             </ul>
         </div>
 
-        <!-- panel content -->
+        <!-- inhoud van zijbalk -->
         <div class="leaflet-sidebar-content">
+            <!-- inhoud schepen zoeken zijbalk -->
             <div class="leaflet-sidebar-pane" id="vesselsTab">
+
                 <h1 class="leaflet-sidebar-header">
                     <span id="main-title">Schip zoeken</span>
                     <span class="leaflet-sidebar-close">
                         <i class="fa fa-caret-right"></i>
                     </span>
                 </h1>
+
                 <div id="main-search">
                     <input type="text" id="vessel-search" class="searchfield" placeholder="Scheepsnaam / IMO nummer...">
                     <div id="vessel-search-results"></div>
                 </div>
+
                 <div id="main-vessel-info" style="display: none">
                     <div class="title">
                         <i id="vessel-back-button" class="fa fa-arrow-circle-left back-button"></i>
@@ -54,19 +58,24 @@
                     </div>
                     <table id="vessel-info-content" class="table"></table>
                 </div>
+
             </div>
 
+            <!-- inhoud havens zoeken zijbalk -->
             <div class="leaflet-sidebar-pane" id="portsTab">
+
                 <h1 class="leaflet-sidebar-header">
                     <span id="main-title">Haven zoeken</span>
                     <span class="leaflet-sidebar-close">
                         <i class="fa fa-caret-right"></i>
                     </span>
                 </h1>
+
                 <div id="main-search">
                     <input type="text" id="port-search" class="searchfield" placeholder="Haven naam/nummer...">
                     <div id="port-search-results"></div>
                 </div>
+
                 <div id="main-port-info" style="display: none">
                     <div class="title">
                         <i id="port-back-button" class="fa fa-arrow-circle-left back-button"></i>
@@ -74,19 +83,24 @@
                     </div>
                     <table id="port-info-content" class="table"></table>
                 </div>
+
             </div>
 
+            <!-- inhoud ligplaats zoeken zijbalk -->
             <div class="leaflet-sidebar-pane" id="berthsTab">
+
                 <h1 class="leaflet-sidebar-header">
                     <span id="main-title">Ligplaats zoeken</span>
                     <span class="leaflet-sidebar-close">
                         <i class="fa fa-caret-right"></i>
                     </span>
                 </h1>
+
                 <div id="main-search">
                     <input type="text" id="berth-search" class="searchfield" placeholder="Ligplaats naam/nummer...">
                     <div id="berth-search-results"></div>
                 </div>
+
                 <div id="main-berth-info" style="display: none">
                     <div class="title">
                         <i id="berth-back-button" class="fa fa-arrow-circle-left back-button"></i>
@@ -94,8 +108,10 @@
                     </div>
                     <table id="berth-info-content" class="table"></table>
                 </div>
+
             </div>
 
+            <!-- inhoud legenda zijbalk -->
             <div class="leaflet-sidebar-pane" id="legendasTab">
 
                 <div class="leaflet-sidebar-header sidebar-legenda-menu">
@@ -103,9 +119,12 @@
                     <span onclick="showLegendaElement('schipLegenda')" class="legenda-element">Schepen</span>
                 </div>
 
+                <!-- Dieptetabel -->
                 <div id="depthLegenda" style="display: none">
                     <img src="/img/depthLegend.png" alt="image not found">
                 </div>
+
+                <!-- scheepsfilter en scheepskleuren tabel -->
                 <div id="schipLegenda" style="display: none">
                     <table>
                         <tr>
