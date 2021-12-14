@@ -102,8 +102,8 @@ const onPageLoaded = async() => {
 
     // word aangeroepen bij het verslepen van de map
     map.on("dragend", () => {
-        windspeedLayer.show();
         movedSinceLastUpdate = true;
+        windspeedLayer.show();
     });
 
     // word aangeroepen bij het verwijderen van een laag via het lagenactiveermenu
