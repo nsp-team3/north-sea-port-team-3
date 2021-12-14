@@ -26,6 +26,8 @@ const onPageLoaded = async() => {
         position: "right"     // left or right
     });
 
+    let movedSinceLastUpdate: boolean = false;
+
     const berths = new Berth(sidebar);
 
     const mainLayer = new OpenStreetMapLayer(map);
@@ -74,9 +76,6 @@ const onPageLoaded = async() => {
         sortLayers: true
     }).addTo(map);
 
-    // Bridges.main.removeFrom(map);
-
-
     map.on("zoomstart", () => {
         bridgesLayer.hide();
         openSeaMapLayer.hide();
@@ -85,10 +84,9 @@ const onPageLoaded = async() => {
     });
 
     map.on("zoomend", () => {
-        bridgesLayer.show();
+        movedSinceLastUpdate = true;
         berths.checkZoom(map);
         openSeaMapLayer.show();
-        vesselLayer.show();
         windspeedLayer.show();
         Companies.checkZoom(map);
     });
@@ -99,8 +97,7 @@ const onPageLoaded = async() => {
 
     map.on("dragend", () => {
         windspeedLayer.show();
-        vesselLayer.show();
-        bridgesLayer.show();
+        movedSinceLastUpdate = true;
     });
 
     map.on("overlayremove", () => {
@@ -113,12 +110,13 @@ const onPageLoaded = async() => {
         Companies.checkLayer(map);
     });
 
-    bridgesLayer.show();
-
     setInterval(() => {
-        vesselLayer.show();
-        bridgesLayer.show();
-    }, 15000);
+        if (movedSinceLastUpdate) {
+            movedSinceLastUpdate = false;
+            vesselLayer.show();
+            bridgesLayer.show();
+        }
+    }, 1000);
 }
 
 window.addEventListener("load", onPageLoaded);
