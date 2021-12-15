@@ -40,7 +40,13 @@ jobs:
     - uses: actions/setup-node@v2.5.0
     - name: "Install Dependencies"
       run: npm install
-    - name: "Execute unit tests"
-      run: npm run test
-    - name: "Compile TypeScript"
-      run: npm run prod
+    - uses: mattallty/jest-github-action@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+    # - name: "Execute unit tests"
+    #   run: npm run test
+    # - name: "Compile TypeScript"
+    #   run: npm run prod
+      
