@@ -30,7 +30,7 @@ jobs:
         mkdir -p database
         touch database/database.sqlite
     - name: "Setup Node.JS"
-      run: npm install && npm run prod
+      run: npm install && npm run test && npm run prod
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
         DB_CONNECTION: sqlite
