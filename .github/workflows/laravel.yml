@@ -33,7 +33,7 @@ jobs:
       run: vendor/bin/phpunit
 
   node-tests:
-    needs: build
+    needs: laravel-tests
     runs-on: ubuntu-latest
     steps:
     - uses: actions/setup-node@v2.5.0
