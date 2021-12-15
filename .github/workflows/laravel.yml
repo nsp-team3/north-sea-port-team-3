@@ -35,6 +35,7 @@ jobs:
   node-tests:
     needs: build
     runs-on: ubuntu-latest
+    steps:
     - uses: actions/setup-node@v2.5.0
     - name: "Install Dependencies"
       run: npm install
