@@ -63,10 +63,11 @@ jobs:
       - name: "Compile TypeScript"
         run: npm run prod
 
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@3.7.1
+      - name: Push main branch into production
+        uses: codingforentrepreneurs/action-branch-to-branch@main
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: build
-          FOLDER: .
-          CLEAN: true
+          dest_branch: 'production-v1'
+          source_branch: 'main'
+          commit_message: 'Release production version'
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
