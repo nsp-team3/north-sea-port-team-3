@@ -69,4 +69,4 @@ jobs:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: "nsp-ons"
           heroku_email: "mischag1337@gmail.com"
-          branch: "main"
+          branch: "build"
