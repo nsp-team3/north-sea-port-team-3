@@ -39,8 +39,6 @@ jobs:
     - uses: actions/setup-node@v2.5.0
     - name: "Install Dependencies"
       run: npm install
-    - name: "Compile TypeScript"
-      run: npm run prod
     - name: "Execute unit tests"
       run: npm run test
 
@@ -65,11 +63,10 @@ jobs:
       - name: "Compile TypeScript"
         run: npm run prod
 
-      - name: push
-        uses: s0/git-publish-subdir-action@develop
-        env:
-          REPO: self
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: build
           FOLDER: .
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MESSAGE: "Build: ({sha}) {msg}"
+          CLEAN: true
