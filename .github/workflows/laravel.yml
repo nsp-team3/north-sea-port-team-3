@@ -8,11 +8,8 @@ on:
 
 jobs:
   laravel-tests:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/setup-node@v2.5.0
     - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
       with:
         php-version: '8.0'
@@ -29,11 +26,19 @@ jobs:
       run: |
         mkdir -p database
         touch database/database.sqlite
-    - name: "Setup Node.JS"
-      run: npm install && npm run test && npm run prod
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: vendor/bin/phpunit
-    
+
+  node-tests:
+    needs: build
+    runs-on: ubuntu-latest
+    - uses: actions/setup-node@v2.5.0
+    - name: "Install Dependencies"
+      run: npm install
+    - name: "Execute unit tests"
+      run: npm run test
+    - name: "Compile TypeScript"
+      run: npm run prod
