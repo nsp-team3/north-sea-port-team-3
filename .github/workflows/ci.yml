@@ -63,11 +63,10 @@ jobs:
       - name: "Compile TypeScript"
         run: npm run prod
 
-      - name: Push main branch into production
-        uses: codingforentrepreneurs/action-branch-to-branch@main
+      - name: Deploy to Heroku
+        uses: AkhileshNS/heroku-deploy@v3.12.12
         with:
-          dest_branch: 'build'
-          source_branch: 'main'
-          commit_message: 'Release production version'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: "nsp-ons"
+          heroku_email: "mischag1337@gmail.com"
+          branch: "main"
