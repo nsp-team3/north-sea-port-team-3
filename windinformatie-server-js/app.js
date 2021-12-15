@@ -17,7 +17,8 @@ var whitelist = [
     'http://localhost',
     'http://127.0.0.1',
     'http://laravel.test',
-    'https://nsp.jobse.space'
+    'https://nsp.jobse.space',
+    'https://nsp-ons.herokuapp.com'
 ];
 
 var corsOptions = {
