@@ -28,7 +28,7 @@ const onPageLoaded = async() => {
 
     let movedSinceLastUpdate: boolean = false;
 
-    const berths = new Berth(sidebar);
+    const berths = new Berth(map, sidebar);
 
     const mainLayer = new OpenStreetMapLayer(map);
     const vesselLayer = new VesselLayer(map, sidebar);
@@ -72,7 +72,7 @@ const onPageLoaded = async() => {
     // word aangeroepen bij zoomen
     map.on("zoomend", () => {
         movedSinceLastUpdate = true;
-        berths.checkZoom(map);
+        berths.show();
         openSeaMapLayer.show();
         windspeedLayer.show();
         Companies.checkZoom(map);
@@ -90,13 +90,13 @@ const onPageLoaded = async() => {
 
     // word aangeroepen bij het verwijderen van een laag via het lagenactiveermenu
     map.on("overlayremove", () => {
-        berths.checkLayer(map);
+        berths.show();
         Companies.checkLayer(map);
     });
 
     // word aangeroepen bij het toevoegen van een laag via het lagenactiveermenu
     map.on("overlayadd", () => {
-        berths.checkLayer(map);
+        berths.show();
         Companies.checkLayer(map);
     });
 

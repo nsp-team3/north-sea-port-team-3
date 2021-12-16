@@ -119,6 +119,63 @@ export default class BridgesLayer extends Layer {
     }
 
     /**
+     * Haalt verdere informatie over de brug op van https://vaarweginformatie.nl/
+     * @param bridge de brug waarvan de administratieve informatie van opgehaald worden
+     * @returns de administratieve informatie van de brug
+     */
+    private async fetchBridgeAdministration(bridge: any): Promise<string> {
+        let data = ""
+        const res2 = await fetch(`/api/bridgeadministration/${bridge.RWS_Id}`).catch(console.error);
+        if (res2) {
+            const json: { [id: string]: { [id: string]: string } } = await res2.json();
+            let info: { [id: string]: string[] } = {
+                "Bezoeksadres": [],
+                "Postadres": []
+            }
+            if (json.administration !== undefined) {
+                Object.entries(json.administration).forEach(([key, value]) => {
+                    console.log(value)
+                    if (key.includes("postal")) {
+                        info.Postadres.push(value)
+                    } else if (key.includes("visiting")) {
+                        info.Bezoeksadres.push(value)
+                    }
+                })
+            }
+
+            Object.entries(info).forEach(([key, value]) => {
+                if (value.length !== 0) {
+                    data += `<br><b>${key}</b>`
+                    value.forEach(item => {
+                        data += `<br>${item}`
+                    })
+                }
+            })
+        }
+        return data
+    }
+
+    /**
+     * Haalt de countrycode op van de hudige locatie van de brug
+     * @param bridge de brug waarvan +31 of +32 toegevoegt moet worden
+     * @returns het telefoonnummer met +31 of +32
+     */
+    private async fetchCountryCode(bridge: any): Promise<any> {
+        const res = await fetch(`http://api.geonames.org/countryCodeJSON?lat=${bridge.lat}&lng=${bridge.lng}&username=zefanjajobse`).catch(console.error);
+        if (res) {
+            const json: { countryCode: string } = await res.json();
+            if (["NL", "BE"].includes(json.countryCode) && bridge.lnk.charAt(0) === "0") {
+                const countryCodes: { [id: string]: string } = {
+                    "NL": "+31-",
+                    "BE": "+32-"
+                }
+                bridge.lnk = countryCodes[json.countryCode] + bridge.lnk.substr(1, 99);
+            }
+        }
+        return bridge
+    }
+
+    /**
      * laat de popup zien wanneer op een schip geklikt is
      * @param event de onclick event van de bruggenicoon
      * @param bridge bruginformatie
@@ -128,6 +185,8 @@ export default class BridgesLayer extends Layer {
 
         // telefoonnummber toevoegen wanneer beschikbaar
         if (bridge.lnk.length > 4) {
+            bridge = await this.fetchCountryCode(bridge);
+
             data = "<h6>" + bridge.name + "</h6><b>Telefoonnummer: </b>" + bridge.lnk
         } else {
             data = "<h6>" + bridge.name + "</h6>Geen bijzonderheden"
@@ -139,6 +198,8 @@ export default class BridgesLayer extends Layer {
         } else {
             data += "<br>Doorvaarhoogte en -breedte onbekend";
         }
+
+        data += await this.fetchBridgeAdministration(bridge);
 
         if (["sluit", "brug_open"].includes(bridge.icoo)) {
             data += await this.fetchBridgePicture(bridge);

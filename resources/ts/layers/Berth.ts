@@ -1,6 +1,7 @@
 import * as L from "leaflet";
 import { DisplayBerthInfo } from "../display-info/DisplayInfoExports";
 import BerthSearch from "../search/BerthSearch";
+import Layer from "./Layer";
 
 let ligplaatsen = require('../../northSeaPortGeoJson/ligplaatsen_northsp.json');
 let bolders = require('../../northSeaPortGeoJson/bolders_northsp.json');
@@ -12,7 +13,30 @@ const { arcgisToGeoJSON } = require('@esri/arcgis-to-geojson-utils');
 /**
  * Besturing van de ligplaatsenlaag
  */
-export default class Berth {
+export default class Berth extends Layer {
+    public show(): void {
+        // extra lagen toevoegen gebaseerd op zichtbaarheid van ligplaatslayer
+        if (this._map.hasLayer(this.ligplaatsenLayer)) {
+            // aanlegpunten laten zien boven 18 zoomlevel
+            if (this._map.getZoom() >= 18) {
+                this._map.addLayer(this.boldersLayer)
+            } else {
+                this._map.removeLayer(this.boldersLayer)
+            }
+            // nummers en reddingsboeien laten zien boven 16 zoomlevel
+            if (this._map.getZoom() >= 16) {
+                this._map.addLayer(this.ligplaatsenNummers)
+                this._map.addLayer(this.reddingsboeienLayer)
+            } else {
+                this._map.removeLayer(this.ligplaatsenNummers)
+                this._map.removeLayer(this.reddingsboeienLayer)
+            }
+        } else {
+            this._map.removeLayer(this.boldersLayer)
+            this._map.removeLayer(this.reddingsboeienLayer)
+            this._map.removeLayer(this.ligplaatsenNummers)
+        }
+    }
     private sidebar: L.Control.Sidebar;
     private searchLigplaats: { [id: string]: any } = {};
     private ligplaatsenNummers = L.layerGroup();
@@ -90,68 +114,9 @@ export default class Berth {
     });
     private _main = L.layerGroup([this.ligplaatsenLayer, this.gebouwenLayer, this.steigersLayer]);
 
-    constructor(sidebar: L.Control.Sidebar) {
-        this.sidebar = sidebar;
-        // this.berthDisplay = new DisplayBerthInfo(this._main);
-    }
-
-    // public async enableBackButton() {
-    //     const searchResults = document.querySelectorAll(".back-button");
-    //     searchResults.forEach((element: HTMLSpanElement) => {
-    //         element.addEventListener("click", () => {
-    //             let tabName = <HTMLSpanElement>document.getElementById("main-ligplaatstitle");
-    //             tabName.textContent = "Ligplaats zoeken";
-    //             document.getElementById("main-ligplaatsinfo").style.display = "none";
-    //             document.getElementById("main-ligplaatssearch").style.display = "block";
-    //         })
-    //     });
-    // }
-
-    /**
-     * wijzig de zichtbaarheid van items als ingezoomt is op de map
-     * @param map koppeling met de kaart voor zoominformatie ophalen en lagen verwijderen
-     */
-    public checkZoom(map: L.Map) {
-        // extra lagen toevoegen gebaseerd op zichtbaarheid van ligplaatslayer
-        if (map.hasLayer(this.ligplaatsenLayer)) {
-            // aanlegpunten laten zien boven 18 zoomlevel
-            if (map.getZoom() >= 18) {
-                map.addLayer(this.boldersLayer)
-            } else {
-                map.removeLayer(this.boldersLayer)
-            }
-            // nummers en reddingsboeien laten zien boven 16 zoomlevel
-            if (map.getZoom() >= 16) {
-                map.addLayer(this.ligplaatsenNummers)
-                map.addLayer(this.reddingsboeienLayer)
-            } else {
-                map.removeLayer(this.ligplaatsenNummers)
-                map.removeLayer(this.reddingsboeienLayer)
-            }
-        }
-    }
-
-    /**
-     * wijzig de zichtbaarheid van items als de zichtbaarheid van lagen word aangepast
-     * @param map koppeling met de kaart voor zoominformatie ophalen en lagen verwijderen
-     */
-    public checkLayer(map: L.Map) {
-        // extra lagen toevoegen gebaseerd op zichtbaarheid van ligplaatslayer
-        if (map.hasLayer(this.ligplaatsenLayer)) {
-            // aanlegpunten laten zien boven 18 zoomlevel
-            if (map.getZoom() >= 18) {
-                map.addLayer(this.boldersLayer)
-            }
-            // nummers en reddingsboeien laten zien boven 16 zoomlevel
-            if (map.getZoom() >= 16) {
-                map.addLayer(this.ligplaatsenNummers)
-                map.addLayer(this.reddingsboeienLayer)
-            }
-        } else {
-            map.removeLayer(this.boldersLayer)
-            map.removeLayer(this.reddingsboeienLayer)
-            map.removeLayer(this.ligplaatsenNummers)
-        }
+    public constructor(map: L.Map, sidebar: L.Control.Sidebar) {
+        super(map);
+        this.sidebar = sidebar
     }
 
     /**

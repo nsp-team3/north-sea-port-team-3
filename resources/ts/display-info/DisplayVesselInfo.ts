@@ -63,7 +63,7 @@ export default class DisplayVesselInfo extends DisplayInfo {
         img.style.maxWidth = "100%";
         img.style.height = "auto";
         img.src = `https://www.myshiptracking.com/requests/getimage-normal/${mmsi}.jpg`;
-        img.alt = "Could not find an image for this vessel.";
+        img.alt = "Voor dit schip kon geen afbeelding gevonden worden.";
 
         td.appendChild(img);
     }
