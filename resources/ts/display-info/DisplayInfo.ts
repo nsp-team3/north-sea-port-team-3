@@ -1,67 +1,46 @@
 import Search from "../search/Search";
 
 export default abstract class DisplayInfo {
-    protected mainDiv: HTMLDivElement;
+    // De id van de leaflet details sidebar
+    public static readonly DETAILS_ID: string = "detailsTab";
+
+    protected static readonly INFO_TABLE_ID: string = "details-content";
+    protected static readonly BACK_BUTTON_ID: string = "back-button";
+    protected static readonly TITLE_ID: string = "details-title";
+
     protected title: HTMLHeadingElement;
-    protected infoTable: HTMLTableElement;
+    protected sidebar: L.Control.Sidebar;
+    protected map: L.Map;
+
+    protected detailsTable: HTMLTableElement;
     protected backButton: HTMLButtonElement;
     protected previousSearch?: Search;
     protected previousInfo?: DisplayInfo;
+
+    protected abstract TITLE_TEXT: string;
+    protected abstract loadTableData(info: any): void;
     
-    public constructor(mainDivId: string, titleId: string, infoTableId: string, backButtonId: string) {
-        this.mainDiv = document.getElementById(mainDivId) as HTMLDivElement;
-        this.title = document.getElementById(titleId) as HTMLHeadingElement;
-        this.infoTable = document.getElementById(infoTableId) as HTMLTableElement;
-        this.backButton = document.getElementById(backButtonId) as HTMLButtonElement;
+    public constructor(map: L.Map, sidebar: L.Control.Sidebar) {
+        this.detailsTable = document.getElementById(DisplayInfo.INFO_TABLE_ID) as HTMLTableElement;
+        this.backButton = document.getElementById(DisplayInfo.BACK_BUTTON_ID) as HTMLButtonElement;
+        this.title = document.getElementById(DisplayInfo.TITLE_ID) as HTMLHeadingElement;
+        this.map = map;
+        this.sidebar = sidebar;
         this.enableBackButton();
     }
 
-    public abstract show(searchResult: any, previous?: Search | DisplayInfo, map?: L.Map): void;
-    protected abstract loadTableData(info: any): void;
+    public abstract show(searchResult: any): void;
 
-    protected setPrevious(previous: Search | DisplayInfo): void {
-        if (previous instanceof Search) {
-            this.previousSearch = previous;
-        } else if (previous instanceof DisplayInfo) {
-            this.previousInfo = previous;
-        }
-    }
-
-    protected showDiv(): void {
-        this.mainDiv.style.display = "block";
-    }
-
-    protected hideDiv(): void {
-        this.mainDiv.style.display = "none";
-    }
-
-    protected enableBackButton(): void {
-        this.backButton.addEventListener("click", () => {
-            this.onBackButtonPressed();
-        });
-    }
-
-    protected onBackButtonPressed(): void {
-        this.hideDiv();
-        if (this.previousSearch) {
-            this.previousSearch.showDiv();
-            this.clearPrevious();
-        } else if (this.previousInfo) {
-            this.previousInfo.showDiv();
-            this.clearPrevious();
-        }
+    public clear(): void {
+        this.detailsTable.innerHTML = "";
     }
 
     protected setTitle(title: string): void {
         this.title.innerText = title;
     }
 
-    protected clearTable(): void {
-        this.infoTable.innerHTML = "";
-    }
-
     protected addInfoRow(title: string, value: string): HTMLTableRowElement {
-        const row = this.infoTable.insertRow();
+        const row = this.detailsTable.insertRow();
         const titleCell = row.insertCell(0);
         const valueCell = row.insertCell(1);
 
@@ -71,8 +50,11 @@ export default abstract class DisplayInfo {
         return row;
     }
 
-    private clearPrevious(): void {
-        this.previousSearch = undefined;
-        this.previousInfo = undefined;
+    protected enableBackButton(): void {
+        const backButton = document.getElementById("back-button");
+        backButton.addEventListener("click", () => {
+            this.setTitle(this.TITLE_TEXT);
+            this.sidebar.open(Search.SEARCH_ID);
+        });
     }
 }

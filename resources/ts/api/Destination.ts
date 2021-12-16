@@ -39,7 +39,6 @@ export class Destination {
     }
 
     public get RDIST(): number {
-        console.log("I need to figure out what this means.");
         return this._rawDestination.RDIST;
     }
 
@@ -48,7 +47,6 @@ export class Destination {
     }
 
     public get TRV(): number {
-        console.log("I need to figure out what this means.");
         return this._rawDestination.TRV;
     }
 }

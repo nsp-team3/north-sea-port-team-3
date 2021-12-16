@@ -5,16 +5,56 @@ import PortType from "../types/enums/PortType";
 import RawDestination from "../types/RawDestination";
 import RawVesselInfo from "../types/RawVesselInfo";
 import { Port } from "./Port";
+import SimpleVesselInfo from "../types/SimpleVesselInfo";
 
 /**
  * Een klasse die het makkelijker maakt om specifieke informatie op te halen over een schip.
  * Want de onbewerkte data is erg onduidelijk.
  */
 export class Vessel {
+    private static readonly BASE_URL = "https://services.myshiptracking.com/requests";
     private _rawVesselInfo: RawVesselInfo;
 
     public constructor (rawVesselInfo: RawVesselInfo) {
         this._rawVesselInfo = rawVesselInfo;
+    }
+
+    public async getLocationInfo(): Promise<any | undefined> {
+        const params: URLSearchParams = new URLSearchParams({
+            type: "json",
+            selid: String(this.mmsi),
+            seltype: "0",
+            _: String(new Date().getTime())
+        });
+        const response = await fetch(`${Vessel.BASE_URL}/vesselsonmaptempw.php?${params}`);
+        const body = await response.text();
+
+        const allInfo = body.split("\n");
+        allInfo.shift();
+        allInfo.pop();
+
+        const results = allInfo.map((line) => {
+            const shipInfo: string[] = line.split("\t");
+
+            if (shipInfo[0] !== "0") {
+                return undefined;
+            }
+
+            return {
+                mmsi: Number(shipInfo[1]),
+                name: shipInfo[2],
+                latitude: Number(shipInfo[5]),
+                longitude: Number(shipInfo[6]),
+                lastUpdatedText: shipInfo[11] ? shipInfo[11] : undefined,
+                lastUpdated: shipInfo[11] ? new Date(shipInfo[11]) : undefined
+            }
+        }).filter(e => e !== undefined);
+
+        if (results.length === 0) {
+            return;
+        }
+
+        return results.length > 0 ? results[0] : undefined;
     }
 
     public get area(): string {
@@ -134,37 +174,30 @@ export class Vessel {
     // Van de dingen hieronder weet ik nog niet wat ze betekenen.
 
     public get PD(): string {
-        console.log("I need to figure out what this means.");
         return this._rawVesselInfo.PD;
     }
 
     public get SN(): number {
-        console.log("I need to figure out what this means.");
         return this._rawVesselInfo.SN;
     }
 
     public get ROT(): number {
-        console.log("I need to figure out what this means.");
         return this._rawVesselInfo.ROT;
     }
 
     public get TRV_SRC(): number {
-        console.log("I need to figure out what this means.");
         return this._rawVesselInfo.TRV_SRC;
     }
 
     public get TRV(): number {
-        console.log("I need to figure out what this means.");
         return this._rawVesselInfo.TRV;
     }
 
     public get INP(): number {
-        console.log("I need to figure out what this means.");
         return this._rawVesselInfo.INP;
     }
 
     public get SEP(): number {
-        console.log("I need to figure out what this means.");
         return this._rawVesselInfo.SEC;
     }
 }

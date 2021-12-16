@@ -5,12 +5,14 @@ import { SearchResult } from "../types/SearchTypes";
 import DisplayInfo from "./DisplayInfo";
 
 export default class DisplayPortInfo extends DisplayInfo {
-    public constructor(mainDivId: string, titleId: string, infoTableId: string, backButtonId: string) {
-        super(mainDivId, titleId, infoTableId, backButtonId);
+    protected TITLE_TEXT: string = "Havens";
+
+    public constructor(map: L.Map, sidebar: L.Control.Sidebar) {
+        super(map, sidebar);
     }
 
-    public async show(searchResult: SearchResult, previous: Search | DisplayInfo): Promise<void> {
-        this.clearTable();
+    public async show(searchResult: SearchResult): Promise<void> {
+        this.clear();
         const port: PortInfoResponse | void = await AIS.getPort(searchResult.portId);
         if (!port) {
             console.error(`Could not find port with id: ${searchResult.portId}!`);
@@ -19,8 +21,6 @@ export default class DisplayPortInfo extends DisplayInfo {
         
         this.setTitle(port.name);
         this.loadTableData(port);
-        this.setPrevious(previous);
-        this.showDiv();
     }
 
     protected loadTableData(port: PortInfoResponse): void {

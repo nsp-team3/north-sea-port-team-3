@@ -8,17 +8,12 @@ const berthsData = require("../../northSeaPortGeoJson/ligplaatsen_northsp.json")
  * Voegt zoekfunctionaliteit toe voor ligplaatsen
  */
 export default class BerthSearch extends Search {
-    protected SEARCH_FILTERS = {};
-    protected MIN_INPUT_LENGTH = 1;
-    protected RESULTS_ELEMENT = document.getElementById("berth-search-results") as HTMLDivElement;
-
     /**
      * @param map koppeling met de kaart, bijvoorbeeld zoomen naar locatie van boot
      * @param searchBarId ID van de zoekbalk binnen html
-     * @param displayInfo koppeling met de class die aangeeft hoe de data moet worden weergeven
      */
-    public constructor(map: L.Map, searchBarId: string, displayInfo: DisplayBerthInfo) {
-        super(map, searchBarId, displayInfo);
+    public constructor(map: L.Map, sidebar: L.Control.Sidebar, searchBarId: string) {
+        super(map, sidebar, searchBarId);
     }
 
     /**
@@ -55,6 +50,10 @@ export default class BerthSearch extends Search {
     }
 
     protected async getSearchResults(query: string): Promise<BerthSearchResult[]> {
+        if (query.length < 3) {
+            return [];
+        }
+
         const berths = BerthSearch.convertFeaturesToBerths(berthsData.features).filter((berth: BerthSearchResult) => (berth.name) ? berth.name.includes(query) || String(berth.id).startsWith(query) : false);
 
         if (!isNaN(Number(query))) {
@@ -72,7 +71,16 @@ export default class BerthSearch extends Search {
         return berths;
     }
 
-    protected displayResult(berthResult: any): HTMLElement {
+    protected async executeSearch(): Promise<void> {
+        const searchbar = document.getElementById(Search.SEARCH_BAR_ID) as HTMLInputElement;
+        const searchResultsElement = document.getElementById(Search.RESULTS_ID) as HTMLTableElement;
+        const results = await this.getSearchResults(searchbar.value).catch(console.error);
+        if (results) {
+            results.forEach((result) => this.displayResult(searchResultsElement, result));
+        }
+    }
+
+    protected displayResult(searchResultsElement: HTMLTableElement, berthResult: any): void {
         const div = document.createElement("div");
         div.classList.add("list-group-item", "list-group-item-action", "my-2");
 
@@ -80,8 +88,11 @@ export default class BerthSearch extends Search {
         const info = this.createInfo(berthResult);
 
         div.append(title, info);
+        div.addEventListener("click", () => {
+            console.log("TODO: SHOW BERTH DETAILS");
+        });
 
-        return div;
+        searchResultsElement.appendChild(div);
     }
 
     /**
@@ -111,8 +122,7 @@ export default class BerthSearch extends Search {
     }
 
     protected onResultClicked(berthResult: any): void {
-        this.hideDiv();
-        this.displayInfo.show(berthResult, this);
+        // this.displayInfo.show(berthResult);
         this.map.flyTo(berthResult.center, 16);
     }
 }

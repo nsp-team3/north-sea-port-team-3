@@ -54,12 +54,7 @@ export default class VesselLayer extends Layer {
         "13": "#e71634"  // VesselType.NavigationAid
     };
 
-    private vesselDisplay = new DisplayVesselInfo(
-        "main-vessel-info",
-        "vessel-name",
-        "vessel-info-content",
-        "vessel-back-button"
-    );
+    private _vesselDisplay: DisplayVesselInfo;
     private _nestedVesselLayer: L.LayerGroup;
 
     protected _sidebar: L.Control.Sidebar;
@@ -72,6 +67,7 @@ export default class VesselLayer extends Layer {
     public constructor(map: L.Map, sidebar: L.Control.Sidebar) {
         super(map);
         this._sidebar = sidebar;
+        this._vesselDisplay = new DisplayVesselInfo(this._map, this._sidebar);
         this._circleGroup = new Leaflet.LayerGroup();
         this._nestedVesselLayer = new Leaflet.LayerGroup();
         this._nestedVesselLayer.addTo(this._layerGroup);
@@ -101,7 +97,7 @@ export default class VesselLayer extends Layer {
      * @param autoZoom moet er ingezoomt worden naar het schip binnen de map
      */
     public focusVessel(vesselInfo: SimpleVesselInfo, autoZoom?: boolean): void {
-        this.vesselDisplay.show(vesselInfo);
+        this._vesselDisplay.show(vesselInfo);
         if (autoZoom) {
             this._map.flyTo(new Leaflet.LatLng(vesselInfo.latitude, vesselInfo.longitude), 16)
         }
@@ -113,10 +109,10 @@ export default class VesselLayer extends Layer {
      * checkt welk schiptype wel/niet zichtbaar gemaakt moet worden gebaseerd op het veranderde input veld
      */
     private getSelectedVessels(): void {
-        const schipLegend = document.getElementById("schipLegenda");
-        schipLegend.querySelectorAll("input").forEach(element => {
-            this.addClickHandler(element);
-        });
+        // const schipLegend = document.getElementById("schipLegenda");
+        // schipLegend.querySelectorAll("input").forEach(element => {
+        //     this.addClickHandler(element);
+        // });
     }
 
     private addClickHandler(element: HTMLElement): void {
@@ -154,7 +150,6 @@ export default class VesselLayer extends Layer {
         const vessel: L.LayerGroup = this.drawVessel(vesselInfo, location);
 
         vessel.on("click", () => {
-            this._sidebar.open("vesselsTab");
             this._circleGroup.clearLayers();
             this.focusVessel(vesselInfo, false);
         });

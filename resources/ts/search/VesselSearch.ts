@@ -1,26 +1,35 @@
+import * as Leaflet from "leaflet";
 import AIS from "../api/AIS";
-import DisplayInfo from "../display-info/DisplayInfo";
 import DisplayVesselInfo from "../display-info/DisplayVesselInfo";
 import { SearchResult } from "../types/SearchTypes";
+import SimpleVesselInfo from "../types/SimpleVesselInfo";
 import Search from "./Search";
 
 /**
  * Voegt zoekfunctionaliteit toe voor schepen
  */
 export default class VesselSearch extends Search {
-    protected SEARCH_FILTERS = { excludePorts: true };
-    protected MIN_INPUT_LENGTH = 3;
-    protected RESULTS_ELEMENT = document.getElementById("vessel-search-results") as HTMLDivElement;
+    private SEARCH_FILTERS = { excludePorts: true };
 
-    public constructor(map: L.Map, searchBarId: string, displayInfo: DisplayVesselInfo) {
-        super(map, searchBarId, displayInfo);
+    public constructor(map: L.Map, sidebar: L.Control.Sidebar, searchButtonId: string) {
+        super(map, sidebar, searchButtonId);
+        this.displayInfo = new DisplayVesselInfo(map, sidebar);
     }
 
-    protected async getSearchResults(query: string): Promise<SearchResult[]> {
-        return await AIS.search(query, this.SEARCH_FILTERS);
+    protected async executeSearch(): Promise<void> {
+        if (!this.enabled) {
+            return;
+        }
+
+        const searchbar = document.getElementById(Search.SEARCH_BAR_ID) as HTMLInputElement;
+        const searchResultsElement = document.getElementById(Search.RESULTS_ID) as HTMLTableElement;
+        const results = await AIS.search(searchbar.value, this.SEARCH_FILTERS).catch(console.error);
+        if (results) {
+            results.forEach((result) => this.displayResult(searchResultsElement, result));
+        }
     }
 
-    protected displayResult(searchResult: SearchResult): HTMLElement {
+    protected displayResult(searchResultsElement: HTMLTableElement, searchResult: SearchResult): void {
         const div = document.createElement("div");
         div.classList.add("list-group-item", "list-group-item-action", "my-2");
 
@@ -28,8 +37,11 @@ export default class VesselSearch extends Search {
         const info = this.createInfo(searchResult);
 
         div.append(title, info);
+        div.addEventListener("click", () => {
+            this.displayInfo.show(searchResult);
+        });
 
-        return div;
+        searchResultsElement.appendChild(div);
     }
 
     /**

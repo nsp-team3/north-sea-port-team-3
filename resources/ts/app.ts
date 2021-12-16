@@ -7,7 +7,7 @@ import "./libs/smoothWheelZoom";
 
 import { Berth, BridgesLayer, Companies, OpenSeaMapLayer, VesselLayer, WindspeedLayer, OpenStreetMapLayer } from "./layers/LayerExports";
 import { VesselSearch, PortSearch, BerthSearch } from "./search/SearchExports";
-import { DisplayBerthInfo, DisplayPortInfo, DisplayVesselInfo } from "./display-info/DisplayInfoExports";
+import Search from "./search/Search";
 
 const onPageLoaded = async() => {
     const map = L.map("map", {
@@ -36,29 +36,14 @@ const onPageLoaded = async() => {
     const openSeaMapLayer = new OpenSeaMapLayer(map);
     const bridgesLayer = new BridgesLayer(map);
 
-    // activering schepen zoeken
-    new VesselSearch(map, "vessel-search", new DisplayVesselInfo(
-        "main-vessel-info",
-        "vessel-name",
-        "vessel-info-content",
-        "vessel-back-button"
-    ));
+   // activering schepen zoeken
+   const vesselSearch = new VesselSearch(map, sidebar, "vessels-button");
 
-    // activering havens zoeken
-    new PortSearch(map, "port-search", new DisplayPortInfo(
-        "main-port-info",
-        "port-name",
-        "port-info-content",
-        "port-back-button"
-    ));
+   // activering havens zoeken
+   const portSearch = new PortSearch(map, sidebar, "ports-button");
 
-    // activering ligplaatsen zoeken
-    new BerthSearch(map, "berth-search", new DisplayBerthInfo(
-        "main-berth-info",
-        "berth-name",
-        "berth-info-content",
-        "berth-back-button"
-    ));
+   // activering ligplaatsen zoeken
+   const berthSearch = new BerthSearch(map, sidebar, "berths-button");
 
     // Items zichtbaar in het lagenactiveermenu
     const optionalOverlays = {
@@ -67,14 +52,11 @@ const onPageLoaded = async() => {
         "Windsnelheid": windspeedLayer.main,
         "Schepen": vesselLayer.main,
         "Open sea maps": openSeaMapLayer.main,
-        // "Diepte Water": diepteLayer,
         "Bruggen": bridgesLayer.main
     };
 
     L.control.scale().addTo(map);
     L.control.mousePosition().addTo(map);
-
-    sidebar.addTo(map).open("vesselsTab");
 
     L.control.layers({}, optionalOverlays, {
         sortLayers: true
@@ -118,12 +100,20 @@ const onPageLoaded = async() => {
         Companies.checkLayer(map);
     });
 
+    sidebar.addTo(map).open(Search.SEARCH_ID);
+
     setInterval(() => {
         // Heeft de gebruiker gezoomed of de map verplaatst?
         if (movedSinceLastUpdate) {
             movedSinceLastUpdate = false;
             vesselLayer.show();
             bridgesLayer.show();
+        }
+
+        if (Search.hasQueryChanged()) {
+            vesselSearch.update();
+            portSearch.update();
+            berthSearch.update();
         }
     }, 1000);
 }

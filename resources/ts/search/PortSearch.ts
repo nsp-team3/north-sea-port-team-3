@@ -7,24 +7,28 @@ import Search from "./Search";
  * Voegt zoekfunctionaliteit toe voor havens
  */
 export default class PortSearch extends Search {
-    protected SEARCH_FILTERS = { excludeVessels: true };
-    protected MIN_INPUT_LENGTH = 2;
-    protected RESULTS_ELEMENT = document.getElementById("port-search-results") as HTMLDivElement;
+    private SEARCH_FILTERS = { excludeVessels: true };
 
     /**
      * @param map koppeling met de kaart, bijvoorbeeld zoomen naar locatie van boot
-     * @param searchBarId ID van de zoekbalk binnen html
+     * @param searchButtonId ID van de zoekbalk binnen html
      * @param displayInfo koppeling met de class die aangeeft hoe de data moet worden weergeven
      */
-    public constructor(map: L.Map, searchBarId: string, displayInfo: DisplayPortInfo) {
-        super(map, searchBarId, displayInfo);
+    public constructor(map: L.Map, sidebar: L.Control.Sidebar, searchButtonId: string) {
+        super(map, sidebar, searchButtonId);
     }
 
-    protected async getSearchResults(query: string): Promise<SearchResult[]> {
-        return await AIS.search(query, this.SEARCH_FILTERS);
+    protected async executeSearch(): Promise<void> {
+        const searchbar = document.getElementById(Search.SEARCH_BAR_ID) as HTMLInputElement;
+        const searchResultsElement = document.getElementById(Search.RESULTS_ID) as HTMLTableElement;
+        const results = await AIS.search(searchbar.value, this.SEARCH_FILTERS).catch(console.error);
+        if (results) {
+            results.forEach((result) => this.displayResult(searchResultsElement, result));
+        }
     }
+    
 
-    protected displayResult(searchResult: SearchResult): HTMLElement {
+    protected displayResult(searchResultsElement: HTMLTableElement, searchResult: SearchResult): void {
         const div = document.createElement("div");
         div.classList.add("list-group-item", "list-group-item-action", "my-2");
 
@@ -32,8 +36,11 @@ export default class PortSearch extends Search {
         const info = this.createInfo(searchResult);
 
         div.append(title, info);
+        div.addEventListener("click", () => {
+            console.log("TODO: SHOW PORT DETAILS");
+        });
 
-        return div;
+        searchResultsElement.appendChild(div);
     }
 
     /**

@@ -1,116 +1,86 @@
 import DisplayInfo from "../display-info/DisplayInfo";
-import { SearchResult } from "../types/SearchTypes";
 
 /**
  * Abstracte class die de zoekfunctionaliteit in de zoekbalk regeld
  */
 export default abstract class Search {
-    /**
-     * zoekfilters die toegepast worden bij zoeken
-     */
-    protected abstract SEARCH_FILTERS: { [id: string]: boolean };
-    /**
-     * Minimale aantal karakters voor het begint met zoeken
-     */
-    protected abstract MIN_INPUT_LENGTH: number;
-    /**
-     * Div element die aangepast moet worden bij nieuwe resultaten
-     */
-    protected abstract RESULTS_ELEMENT: HTMLDivElement;
+    public static forceUpdate: boolean = false;
 
-    /**
-     * Zet zoekresultaten om naar een HTML element
-     * @param searchResult Zoekresultaten als HTML element
-     */
-    protected abstract displayResult(searchResult: SearchResult): HTMLElement;
+    // De id van de leaflet zoek sidebar
+    public static readonly SEARCH_ID: string = "searchTab";
 
-    /**
-     * Dit event word aangeroepen bij elk nieuw of verwijderd karacter in het zoekvenster
-     * @param query inhoud van het zoekvenster
-     * @returns zoekresultaat binnen await
-     */
-    protected abstract getSearchResults(query: string): Promise<any>;
+    // De id van de zoekbalk
+    protected static readonly SEARCH_BAR_ID: string = "searchbar";
 
+    // De id van de zoekresultaten tabel.
+    protected static readonly RESULTS_ID: string = "search-results";
+
+    // Laatste zoekopdracht
+    private static lastQuery: string = "";
+
+    // Voert de zoekopdracht uit.
+    protected abstract executeSearch(): void;
+
+    // De klasse die gebruikt wordt om gedetailleerde informatie te tonen.
+    
     protected map: L.Map;
-    protected searchBar: HTMLInputElement;
+    protected sidebar: L.Control.Sidebar;
     protected displayInfo: DisplayInfo;
+    protected searchButton: HTMLButtonElement;
+    protected enabled: boolean;
 
     /**
      * zet zoekfunctionaliteit aan voor de zoekbalk
      * @param map koppeling met de kaart, bijvoorbeeld zoomen naar locatie van boot
-     * @param searchBarId ID van de zoekbalk binnen html
-     * @param displayInfo koppeling met de class die aangeeft hoe de data moet worden weergeven
+     * @param searchButtonId Het ID van de zoek knop in html
      */
-    public constructor(map: L.Map, searchBarId: string, displayInfo: DisplayInfo) {
+    public constructor(map: L.Map, sidebar: L.Control.Sidebar, searchButtonId: string) {
         this.map = map;
-        this.searchBar = document.getElementById(searchBarId) as HTMLInputElement;
-        this.displayInfo = displayInfo;
-        this.enableSearch();
+        this.sidebar = sidebar;
+        this.searchButton = document.getElementById(searchButtonId) as HTMLButtonElement;
+        this.enabled = true;
+        this.addFilterListener();
     }
 
-    /**
-     * Maakt de zoekbalk en resultaat zichtbaar door de <div> op zichtbaar te zetten,
-     * <div style="display=block" /> is de default wanneer display niet gedefineerd is binnen de div's CSS.
-     * word gebruikt als je bijv. op terug drukt.
-     */
-    public showDiv(): void {
-        this.searchBar.style.display = "block";
-        this.RESULTS_ELEMENT.style.display = "block";
-    }
-
-    /**
-     * Maakt de zoekbalk en resultaat onzichtbaar zodat andere elementen,
-     * zoals het resultaat, getoont kunnen worden.
-     */
-    public hideDiv(): void {
-        this.searchBar.style.display = "none";
-        this.RESULTS_ELEMENT.style.display = "none";
-    }
-
-    /**
-     * Voegt een eventlistener toe aan de zoekbalk,
-     * zodat onInputEntered() resultaten kan aanvragen aan getSearchResults()
-     */
-    private enableSearch(): void {
-        this.searchBar.addEventListener("input", () => {
-            this.onInputEntered();
-        });
-    }
-
-    /**
-     * Vraagt informatie op nadat een resultaat is ingevuld.
-     */
-    private async onInputEntered(): Promise<void> {
-        if (this.searchBar.value.length >= this.MIN_INPUT_LENGTH) {
-            const searchResults = await this.getSearchResults(this.searchBar.value);
-            this.displayResults(searchResults);
-        } else {
-            this.RESULTS_ELEMENT.innerHTML = "";
+    public static hasQueryChanged(): boolean {
+        const searchbar = document.getElementById(Search.SEARCH_BAR_ID) as HTMLInputElement;
+        const query: string = searchbar.value;
+        if (Search.forceUpdate || query !== Search.lastQuery) {
+            Search.clearSearchResults();
+            Search.lastQuery = query;
+            Search.forceUpdate = false;
+            return true;
         }
+        return false;
     }
 
-    /**
-     * Laat de zoekresultaten zien nadat die zijn ophehaald
-     * @param searchResults de opgehaalde zoekresultaten
-     */
-    private displayResults(searchResults: SearchResult[]): void {
-        this.RESULTS_ELEMENT.innerHTML = "";
-        searchResults.forEach((searchResult: SearchResult) => {
-            const resultElement: HTMLElement = this.displayResult(searchResult);
-            this.RESULTS_ELEMENT.append(resultElement);
-            resultElement.addEventListener("click", () => {
-                this.onResultClicked(searchResult);
-            });
+    private static clearSearchResults(): void {
+        const resultsElement = document.getElementById(Search.RESULTS_ID);
+        resultsElement.innerHTML = ""; 
+    }
+
+    public update(): void {
+        if (!this.enabled) {
+            return;
+        }
+        this.executeSearch();
+    }
+
+    private addFilterListener(): void {
+        this.searchButton.addEventListener("click", () => {
+            this.onFilterClicked();
         });
     }
 
-    /**
-     * Verbergt de zoekbalk en laat meer informatie zien als de gebruiker klikt op een resultaat.
-     * elk zoekresultaat heeft een eventlistener die hier naartoe leid.
-     * @param searchResult Het zoekresultaat wat moet ingeladen worden
-     */
-    protected onResultClicked(searchResult: SearchResult): void {
-        this.hideDiv();
-        this.displayInfo.show(searchResult, this);
+    private onFilterClicked(): void {
+        this.enabled = !this.enabled;
+        if (this.enabled) {
+            this.searchButton.classList.remove("btn-secondary");
+            this.searchButton.classList.add("btn-primary");
+        } else {
+            this.searchButton.classList.remove("btn-primary");
+            this.searchButton.classList.add("btn-secondary");
+        }
+        Search.forceUpdate = true;
     }
 }

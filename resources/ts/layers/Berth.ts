@@ -16,12 +16,7 @@ export default class Berth {
     private sidebar: L.Control.Sidebar;
     private searchLigplaats: { [id: string]: any } = {};
     private ligplaatsenNummers = L.layerGroup();
-    private berthDisplay = new DisplayBerthInfo(
-        "main-berth-info",
-        "berth-name",
-        "berth-info-content",
-        "berth-back-button"
-    );
+    private berthDisplay: DisplayBerthInfo;
 
     /**
      * gebouwen ophalen en weergeven in oranje
@@ -77,7 +72,7 @@ export default class Berth {
     private ligplaatsenLayer = L.geoJSON(ligplaatsen, {
         onEachFeature: (feature, layer) => {
             layer.on("click", (event) => {
-                this.berthDisplay.show(BerthSearch.convertFeatureToBerth(feature), undefined);
+                this.berthDisplay.show(BerthSearch.convertFeatureToBerth(feature));
             });
 
             if (layer instanceof L.Polygon) {
@@ -96,7 +91,8 @@ export default class Berth {
     private _main = L.layerGroup([this.ligplaatsenLayer, this.gebouwenLayer, this.steigersLayer]);
 
     constructor(sidebar: L.Control.Sidebar) {
-        this.sidebar = sidebar
+        this.sidebar = sidebar;
+        // this.berthDisplay = new DisplayBerthInfo(this._main);
     }
 
     // public async enableBackButton() {
