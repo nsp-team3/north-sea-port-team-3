@@ -53,4 +53,8 @@ Route::get('/detailedbridge', function (Request $request) {
     return BridgesResource::detailed($request);
 });
 
+Route::get('/bridgeadministration/{id}', function ($id) {
+    return BridgesResource::administration($id);
+});
+
 // CORS: https://en.wikipedia.org/wiki/Cross-origin_resource_sharing

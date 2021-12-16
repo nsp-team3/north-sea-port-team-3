@@ -48,6 +48,21 @@ class BridgesResource extends JsonResource
         return $response->getBody(); //json
     }
 
+    public static function administration($id)
+    {
+        $client = new \GuzzleHttp\Client();
+        try {
+            $response = $client->request('GET', "https://vaarweginformatie.nl/frp/api/geo/bridge/" . $id);
+        } catch (Exception $e) {
+            return json_encode([
+                "error" => "Could not find bridge with id: " . $id
+            ]);
+        }
+
+        return $response->getBody(); //json
+    }
+
+
     /**
      * Haalt meer informatie van een brug op voor de brugfoto wanneer je op een brug klikt in de map
      * en stuurt het antwoord direct door als return als een soort proxy,
