@@ -21,27 +21,27 @@ export default class DisplayVesselInfo extends DisplayInfo {
     }
 
     protected loadTableData(vessel: Vessel, lastSignal?: Date): void {
-        this.addInfoRow("IMO", vessel.imo ? String(vessel.imo) : "Unknown");
+        this.addInfoRow("IMO", vessel.imo ? String(vessel.imo) : "Onbekend");
         this.addInfoRow("MMSI", String(vessel.mmsi));
         this.addInfoRow("Type", vessel.typeText);
         this.addInfoRow("Status", vessel.statusText);
-        this.addInfoRow("Last AIS signal", lastSignal ? lastSignal.toLocaleDateString() : "Unknown");
-        this.addInfoRow("Country of origin", `${vessel.country} [${vessel.flag}]`);
-        this.addInfoRow("ETA", vessel.ETA ? vessel.ETA.toLocaleString() : "Unknown");
-        this.addInfoRow("Velocity", `${vessel.course}° at ${vessel.speed} knots`);
-        this.addInfoRow("Length", `${vessel.length}m`);
-        this.addInfoRow("Width", `${vessel.width}m`);
-        this.addInfoRow("Draught", vessel.draught ? `${vessel.draught}m` : "Unknown");
-        this.addInfoRow("Safe depth range", (typeof vessel.minDepth === "number" && typeof vessel.maxDepth === "number") ? `${vessel.minDepth}m to ${vessel.maxDepth}m` : "Unknown");
-        this.addInfoRow("Last draught change", vessel.lastDraught ? `${vessel.lastDraught}m (${vessel.lastDraughtChange ? vessel.lastDraughtChange.toLocaleString() : ''})` : "Unknown");
-        this.addPortRow("Last port", vessel.lastPort, vessel);
-        this.addPortRow("Current port", vessel.port, vessel);
-        this.addPortRow("Next port", vessel.nextPort, vessel);
+        this.addInfoRow("Laatste AIS signaal", lastSignal ? lastSignal.toLocaleDateString() : "Onbekend");
+        this.addInfoRow("Land van herkomst", `${vessel.country} [${vessel.flag}]`);
+        this.addInfoRow("ETA", vessel.ETA ? vessel.ETA.toLocaleString() : "Onbekend");
+        this.addInfoRow("Snelheid", `${vessel.course}° met ${vessel.speed} knoop`);
+        this.addInfoRow("Lengte", `${vessel.length}m`);
+        this.addInfoRow("Breedte", `${vessel.width}m`);
+        this.addInfoRow("Diepgang", vessel.draught ? `${vessel.draught}m` : "Onbekend");
+        this.addInfoRow("Veilig dieptebereik", (typeof vessel.minDepth === "number" && typeof vessel.maxDepth === "number") ? `${vessel.minDepth}m to ${vessel.maxDepth}m` : "Onbekend");
+        this.addInfoRow("Laatste diepgang verandering", vessel.lastDraught ? `${vessel.lastDraught}m (${vessel.lastDraughtChange ? vessel.lastDraughtChange.toLocaleString() : ''})` : "Onbekend");
+        this.addPortRow("Laatste port", vessel.lastPort, vessel);
+        this.addPortRow("Huidige port", vessel.port, vessel);
+        this.addPortRow("Volgende port", vessel.nextPort, vessel);
         this.addVesselImage(vessel.mmsi);
     }
 
     private addPortRow(title: string, port: Port, vessel: Vessel){
-        const portRow = this.addInfoRow(title, port.name || "Unknown");
+        const portRow = this.addInfoRow(title, port.name || "Onbekend");
         // portRow.addEventListener("click", () => DisplayPortInfo.show(map, port, mmsi));
     }
 
@@ -57,7 +57,7 @@ export default class DisplayVesselInfo extends DisplayInfo {
         img.style.maxWidth = "100%";
         img.style.height = "auto";
         img.src = `https://www.myshiptracking.com/requests/getimage-normal/${mmsi}.jpg`;
-        img.alt = "Could not find an image for this vessel.";
+        img.alt = "Voor dit schip kon geen afbeelding gevonden worden.";
 
         td.appendChild(img);
     }
