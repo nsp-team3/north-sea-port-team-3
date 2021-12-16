@@ -63,12 +63,12 @@ export default class Companies {
         onEachFeature: (feature, layer) => {
 
             if (layer instanceof L.Polygon) {
-                let marker = L.marker(layer.getBounds().getCenter(), {
-                    icon: L.icon({
-                        iconUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Infobox_info_icon.svg/480px-Infobox_info_icon.svg.png",
-                        iconSize: [20, 20]
-                    })
-                });
+                // let marker = L.marker(layer.getBounds().getCenter(), {
+                //     icon: L.icon({
+                //         iconUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Infobox_info_icon.svg/480px-Infobox_info_icon.svg.png",
+                //         iconSize: [20, 20]
+                //     })
+                // });
 
                 const popupContent = `<table>
                 <tr>
@@ -80,9 +80,15 @@ export default class Companies {
                   <td>${feature.properties.havenNummer}</td>
                 </tr>
                 </table>`;
-                marker.bindPopup(popupContent);
+                layer.bindPopup(popupContent);
+                layer.on('mouseover', function (e) {
+                    this.openPopup();
+                });
+                layer.on('mouseout', function (e) {
+                    this.closePopup();
+                });
 
-                marker.addTo(this.infoLayer);
+                //marker.addTo(this.infoLayer);
             }
         },
         style: {
