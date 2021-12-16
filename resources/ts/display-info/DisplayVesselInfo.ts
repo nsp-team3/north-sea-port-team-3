@@ -20,9 +20,7 @@ export default class DisplayVesselInfo extends DisplayInfo {
         this.sidebar.open(DisplayInfo.DETAILS_ID);
         const locationInfo = await vessel.getLocationInfo();
         if (location) {
-            this.map.flyTo(new Leaflet.LatLng(locationInfo.latitude, locationInfo.longitude), 16, {
-                duration: 3
-            });
+            this.map.flyTo(new Leaflet.LatLng(locationInfo.latitude, locationInfo.longitude), 16);
         }
     }
 
