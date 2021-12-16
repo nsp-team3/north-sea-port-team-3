@@ -118,6 +118,7 @@ export default class BridgesLayer extends Layer {
         return "";
     }
 
+
     /**
      * laat de popup zien wanneer op een schip geklikt is
      * @param event de onclick event van de bruggenicoon
@@ -128,6 +129,17 @@ export default class BridgesLayer extends Layer {
 
         // telefoonnummber toevoegen wanneer beschikbaar
         if (bridge.lnk.length > 4) {
+            const res = await fetch(`http://api.geonames.org/countryCodeJSON?lat=${bridge.lat}&lng=${bridge.lng}&username=zefanjajobse`).catch(console.error);
+            if (res) {
+                const json: { countryCode: string } = await res.json();
+                if (["NL", "BE"].includes(json.countryCode) && bridge.lnk.charAt(0) === "0") {
+                    const countryCodes: { [id: string]: string } = {
+                        "NL": "+31-",
+                        "BE": "+32-"
+                    }
+                    bridge.lnk = countryCodes[json.countryCode] + bridge.lnk.substr(1, 99);
+                }
+            }
             data = "<h6>" + bridge.name + "</h6><b>Telefoonnummer: </b>" + bridge.lnk
         } else {
             data = "<h6>" + bridge.name + "</h6>Geen bijzonderheden"
