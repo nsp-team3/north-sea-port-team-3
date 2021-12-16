@@ -13,10 +13,10 @@ export default class DisplayPortInfo extends DisplayInfo {
         this.clearTable();
         const port: PortInfoResponse | void = await AIS.getPort(searchResult.portId);
         if (!port) {
-            console.error(`Could not find port with id: ${searchResult.portId}!`);
+            console.error(`Kon geen port vinden met het ID: ${searchResult.portId}!`);
             return;
         }
-        
+
         this.setTitle(port.name);
         this.loadTableData(port);
         this.setPrevious(previous);
@@ -24,8 +24,8 @@ export default class DisplayPortInfo extends DisplayInfo {
     }
 
     protected loadTableData(port: PortInfoResponse): void {
-        this.addInfoRow("Id", port.id ? String(port.id): "Unknown");
-        this.addInfoRow("Country", port.country ? `${port.country} (${port.countryCode})` : "Unknown");
-        this.addInfoRow("Coordinates", port.latitude ? `${port.latitude}, ${port.longitude}` : "Unknown");
+        this.addInfoRow("Port ID", port.id ? String(port.id): "Onbekend");
+        this.addInfoRow("Land", port.country ? `${port.country} (${port.countryCode})` : "Onbekend");
+        this.addInfoRow("Coördinaten", port.latitude ? `${port.latitude}, ${port.longitude}` : "Onbekend");
     }
 }

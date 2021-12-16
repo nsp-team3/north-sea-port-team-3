@@ -30,7 +30,7 @@
 
             <!-- vanonder gepinde items -->
             <ul role="tablist">
-                <li><a href="#legendasTab" role="tab"><i class="fa fa-table"></i></a></li>
+                <li><a href="#legendasTab" role="tab"><i class="fa fa-filter"></i></a></li>
             </ul>
         </div>
 
@@ -115,17 +115,19 @@
             <div class="leaflet-sidebar-pane" id="legendasTab">
 
                 <div class="leaflet-sidebar-header sidebar-legenda-menu">
-                    <span onclick="showLegendaElement('depthLegenda')" class="legenda-element">Diepte</span>
+                    {{-- <span onclick="showLegendaElement('depthLegenda')" class="legenda-element">Diepte</span> --}}
                     <span onclick="showLegendaElement('schipLegenda')" class="legenda-element">Schepen</span>
                 </div>
 
-                <!-- Dieptetabel -->
+                {{-- <!-- Dieptetabel -->
                 <div id="depthLegenda" style="display: none">
                     <img src="/img/depthLegend.png" alt="image not found">
-                </div>
+                </div> --}}
 
                 <!-- scheepsfilter en scheepskleuren tabel -->
-                <div id="schipLegenda" style="display: none">
+                <div id="schipLegenda"
+                {{-- style="display: none" --}}
+                >
                     <table>
                         <tr>
                             <td>
