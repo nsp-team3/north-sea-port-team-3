@@ -1,7 +1,7 @@
 /**
  * Maakt de lagen beschikbaar via 1 import
  */
-import Berth from "./Berth";
+import BerthLayer from "./BerthLayer";
 import BridgesLayer from "./BridgesLayer";
 import Companies from "./Companies";
 import OpenSeaMapLayer from "./OpenSeaMapLayer";
@@ -10,7 +10,7 @@ import VesselLayer from "./VesselLayer";
 import WindspeedLayer from "./WindspeedLayer";
 
 export {
-    Berth,
+    BerthLayer,
     BridgesLayer,
     Companies,
     OpenSeaMapLayer,

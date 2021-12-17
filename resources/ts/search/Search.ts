@@ -1,4 +1,5 @@
 import DisplayInfo from "../display-info/DisplayInfo";
+import Layer from "../layers/Layer";
 
 /**
  * Abstracte class die de zoekfunctionaliteit in de zoekbalk regeld
@@ -23,6 +24,7 @@ export default abstract class Search {
 
     // De klasse die gebruikt wordt om gedetailleerde informatie te tonen.
     
+    protected layer: Layer;
     protected map: L.Map;
     protected sidebar: L.Control.Sidebar;
     protected displayInfo: DisplayInfo;
@@ -34,8 +36,9 @@ export default abstract class Search {
      * @param map koppeling met de kaart, bijvoorbeeld zoomen naar locatie van boot
      * @param searchButtonId Het ID van de zoek knop in html
      */
-    public constructor(map: L.Map, sidebar: L.Control.Sidebar, searchButtonId: string) {
-        this.map = map;
+    public constructor(layer: Layer, sidebar: L.Control.Sidebar, searchButtonId: string) {
+        this.layer = layer;
+        this.map = layer.map;
         this.sidebar = sidebar;
         this.searchButton = document.getElementById(searchButtonId) as HTMLButtonElement;
         this.enabled = true;

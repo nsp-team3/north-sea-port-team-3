@@ -67,7 +67,7 @@ export default class VesselLayer extends Layer {
     public constructor(map: L.Map, sidebar: L.Control.Sidebar) {
         super(map);
         this._sidebar = sidebar;
-        this._vesselDisplay = new DisplayVesselInfo(this._map, this._sidebar);
+        this._vesselDisplay = new DisplayVesselInfo(this, this._sidebar);
         this._circleGroup = new Leaflet.LayerGroup();
         this._nestedVesselLayer = new Leaflet.LayerGroup();
         this._nestedVesselLayer.addTo(this._layerGroup);
@@ -97,10 +97,11 @@ export default class VesselLayer extends Layer {
      * @param autoZoom moet er ingezoomt worden naar het schip binnen de map
      */
     public focusVessel(vesselInfo: SimpleVesselInfo, autoZoom?: boolean): void {
-        this._vesselDisplay.show(vesselInfo);
         if (autoZoom) {
             this._map.flyTo(new Leaflet.LatLng(vesselInfo.latitude, vesselInfo.longitude), 16)
         }
+        this.main.addTo(this._map);
+        this.clearVesselCircle();
         this.drawVesselCircle(vesselInfo);
     }
 
@@ -151,10 +152,18 @@ export default class VesselLayer extends Layer {
 
         vessel.on("click", () => {
             this._circleGroup.clearLayers();
+            this._vesselDisplay.show(vesselInfo);
             this.focusVessel(vesselInfo, false);
         });
 
         vessel.addTo(this._nestedVesselLayer);
+    }
+
+    /**
+     * wist de cirkel laag. 
+     */
+    private clearVesselCircle(): void {
+        this._circleGroup.clearLayers();
     }
 
     /**

@@ -1,8 +1,7 @@
-import * as Leaflet from "leaflet";
 import AIS from "../api/AIS";
 import DisplayVesselInfo from "../display-info/DisplayVesselInfo";
+import VesselLayer from "../layers/VesselLayer";
 import { SearchResult } from "../types/SearchTypes";
-import SimpleVesselInfo from "../types/SimpleVesselInfo";
 import Search from "./Search";
 
 /**
@@ -11,9 +10,9 @@ import Search from "./Search";
 export default class VesselSearch extends Search {
     private SEARCH_FILTERS = { excludePorts: true };
 
-    public constructor(map: L.Map, sidebar: L.Control.Sidebar, searchButtonId: string) {
-        super(map, sidebar, searchButtonId);
-        this.displayInfo = new DisplayVesselInfo(map, sidebar);
+    public constructor(vesselLayer: VesselLayer, sidebar: L.Control.Sidebar, searchButtonId: string) {
+        super(vesselLayer, sidebar, searchButtonId);
+        this.displayInfo = new DisplayVesselInfo(vesselLayer, sidebar);
     }
 
     protected async executeSearch(): Promise<void> {
@@ -37,8 +36,12 @@ export default class VesselSearch extends Search {
         const info = this.createInfo(searchResult);
 
         div.append(title, info);
-        div.addEventListener("click", () => {
+        div.addEventListener("click", async () => {
             this.displayInfo.show(searchResult);
+            const vessel = await AIS.getVessel(searchResult.mmsi);
+            const layer = this.layer as VesselLayer;
+            const simpleVesselInfo = await vessel.getLocationInfo();
+            layer.focusVessel(simpleVesselInfo, true);
         });
 
         searchResultsElement.appendChild(div);

@@ -2,14 +2,15 @@ import * as Leaflet from "leaflet";
 import AIS from "../api/AIS";
 import { Port } from "../api/Port";
 import { Vessel } from "../api/Vessel";
+import VesselLayer from "../layers/VesselLayer";
 import SimpleVesselInfo from "../types/SimpleVesselInfo";
 import DisplayInfo from "./DisplayInfo";
 
 export default class DisplayVesselInfo extends DisplayInfo {
     protected TITLE_TEXT: string = "Schepen";
 
-    public constructor(map: L.Map, sidebar: L.Control.Sidebar) {
-        super(map, sidebar);
+    public constructor(layer: VesselLayer, sidebar: L.Control.Sidebar) {
+        super(layer, sidebar);
     }
 
     public async show(searchResult: SimpleVesselInfo): Promise<void> {
@@ -18,10 +19,6 @@ export default class DisplayVesselInfo extends DisplayInfo {
         this.clear();
         this.loadTableData(vessel, (searchResult as SimpleVesselInfo).requestTime);
         this.sidebar.open(DisplayInfo.DETAILS_ID);
-        const locationInfo = await vessel.getLocationInfo();
-        if (location) {
-            this.map.flyTo(new Leaflet.LatLng(locationInfo.latitude, locationInfo.longitude), 16);
-        }
     }
 
     protected loadTableData(vessel: Vessel, lastSignal?: Date): void {
@@ -47,7 +44,7 @@ export default class DisplayVesselInfo extends DisplayInfo {
 
     private addPortRow(title: string, port: Port, vessel: Vessel){
         const portRow = this.addInfoRow(title, port.name || "Onbekend");
-        // portRow.addEventListener("click", () => DisplayPortInfo.show(map, port, mmsi));
+        // portRow.addEventListener("click", () => this.portDisplay.show());
     }
 
     private addVesselImage(mmsi: number): void {

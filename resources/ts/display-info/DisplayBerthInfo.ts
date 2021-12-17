@@ -1,3 +1,4 @@
+import Layer from "../layers/Layer";
 import Search from "../search/Search";
 import { BerthSearchResult } from "../types/SearchTypes";
 import DisplayInfo from "./DisplayInfo";
@@ -5,8 +6,8 @@ import DisplayInfo from "./DisplayInfo";
 export default class DisplayBerthInfo extends DisplayInfo {
     protected TITLE_TEXT: string = "Ligplaatsen";
 
-    public constructor(map: L.Map, sidebar: L.Control.Sidebar) {
-        super(map, sidebar);
+    public constructor(layer: Layer, sidebar: L.Control.Sidebar) {
+        super(layer, sidebar);
     }
 
     public async show(searchResult: any): Promise<void> {

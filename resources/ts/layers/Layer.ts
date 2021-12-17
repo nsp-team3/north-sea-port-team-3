@@ -26,6 +26,10 @@ export default abstract class Layer {
         return this._layerGroup;
     }
 
+    public get map(): L.Map {
+        return this._map;
+    }
+
     /**
      * nieuwe data aanvragen, kan bijv worden aangevraagt na het inzoomen
      */

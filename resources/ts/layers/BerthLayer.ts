@@ -13,7 +13,7 @@ const { arcgisToGeoJSON } = require('@esri/arcgis-to-geojson-utils');
 /**
  * Besturing van de ligplaatsenlaag
  */
-export default class Berth extends Layer {
+export default class BerthLayer extends Layer {
     public show(): void {
         // extra lagen toevoegen gebaseerd op zichtbaarheid van ligplaatslayer
         if (this._map.hasLayer(this.ligplaatsenLayer)) {

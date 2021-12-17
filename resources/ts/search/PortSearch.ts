@@ -1,5 +1,6 @@
 import AIS from "../api/AIS";
 import DisplayPortInfo from "../display-info/DisplayPortInfo";
+import Layer from "../layers/Layer";
 import { SearchResult } from "../types/SearchTypes";
 import Search from "./Search";
 
@@ -12,10 +13,10 @@ export default class PortSearch extends Search {
     /**
      * @param map koppeling met de kaart, bijvoorbeeld zoomen naar locatie van boot
      * @param searchButtonId ID van de zoekbalk binnen html
-     * @param displayInfo koppeling met de class die aangeeft hoe de data moet worden weergeven
      */
-    public constructor(map: L.Map, sidebar: L.Control.Sidebar, searchButtonId: string) {
-        super(map, sidebar, searchButtonId);
+    public constructor(layer: Layer, sidebar: L.Control.Sidebar, searchButtonId: string) {
+        super(layer, sidebar, searchButtonId);
+        this.displayInfo = new DisplayPortInfo(layer, sidebar);
     }
 
     protected async executeSearch(): Promise<void> {
@@ -26,7 +27,6 @@ export default class PortSearch extends Search {
             results.forEach((result) => this.displayResult(searchResultsElement, result));
         }
     }
-    
 
     protected displayResult(searchResultsElement: HTMLTableElement, searchResult: SearchResult): void {
         const div = document.createElement("div");
@@ -37,7 +37,7 @@ export default class PortSearch extends Search {
 
         div.append(title, info);
         div.addEventListener("click", () => {
-            console.log("TODO: SHOW PORT DETAILS");
+            this.displayInfo.show(searchResult);
         });
 
         searchResultsElement.appendChild(div);

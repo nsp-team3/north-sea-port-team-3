@@ -1,4 +1,5 @@
 import DisplayBerthInfo from "../display-info/DisplayBerthInfo";
+import Layer from "../layers/Layer";
 import { BerthSearchResult, SearchResult } from "../types/SearchTypes";
 import Search from "./Search";
 
@@ -12,8 +13,8 @@ export default class BerthSearch extends Search {
      * @param map koppeling met de kaart, bijvoorbeeld zoomen naar locatie van boot
      * @param searchBarId ID van de zoekbalk binnen html
      */
-    public constructor(map: L.Map, sidebar: L.Control.Sidebar, searchBarId: string) {
-        super(map, sidebar, searchBarId);
+    public constructor(layer: Layer, sidebar: L.Control.Sidebar, searchBarId: string) {
+        super(layer, sidebar, searchBarId);
     }
 
     /**

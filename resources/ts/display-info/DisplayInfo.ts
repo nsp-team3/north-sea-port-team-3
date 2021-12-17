@@ -1,3 +1,4 @@
+import Layer from "../layers/Layer";
 import Search from "../search/Search";
 
 export default abstract class DisplayInfo {
@@ -11,6 +12,7 @@ export default abstract class DisplayInfo {
     protected title: HTMLHeadingElement;
     protected sidebar: L.Control.Sidebar;
     protected map: L.Map;
+    protected layer: Layer;
 
     protected detailsTable: HTMLTableElement;
     protected backButton: HTMLButtonElement;
@@ -20,11 +22,12 @@ export default abstract class DisplayInfo {
     protected abstract TITLE_TEXT: string;
     protected abstract loadTableData(info: any): void;
     
-    public constructor(map: L.Map, sidebar: L.Control.Sidebar) {
+    public constructor(layer: Layer, sidebar: L.Control.Sidebar) {
         this.detailsTable = document.getElementById(DisplayInfo.INFO_TABLE_ID) as HTMLTableElement;
         this.backButton = document.getElementById(DisplayInfo.BACK_BUTTON_ID) as HTMLButtonElement;
         this.title = document.getElementById(DisplayInfo.TITLE_ID) as HTMLHeadingElement;
-        this.map = map;
+        this.map = layer.map;
+        this.layer = layer;
         this.sidebar = sidebar;
         this.enableBackButton();
     }

@@ -5,7 +5,8 @@ import "leaflet-velocity";
 import "leaflet-mouse-position";
 import "./libs/smoothWheelZoom";
 
-import { Berth, BridgesLayer, Companies, OpenSeaMapLayer, VesselLayer, WindspeedLayer, OpenStreetMapLayer } from "./layers/LayerExports";
+import * as Layers from "./layers/LayerExports";
+import Companies from "./layers/Companies";
 import { VesselSearch, PortSearch, BerthSearch } from "./search/SearchExports";
 import Search from "./search/Search";
 
@@ -28,27 +29,27 @@ const onPageLoaded = async() => {
 
     let movedSinceLastUpdate: boolean = false;
 
-    const berths = new Berth(map, sidebar);
+    const berthsLayer = new Layers.BerthLayer(map, sidebar);
 
-    const mainLayer = new OpenStreetMapLayer(map);
-    const vesselLayer = new VesselLayer(map, sidebar);
-    const windspeedLayer = new WindspeedLayer(map);
-    const openSeaMapLayer = new OpenSeaMapLayer(map);
-    const bridgesLayer = new BridgesLayer(map);
+    const mainLayer = new Layers.OpenStreetMapLayer(map);
+    const vesselLayer = new Layers.VesselLayer(map, sidebar);
+    const windspeedLayer = new Layers.WindspeedLayer(map);
+    const openSeaMapLayer = new Layers.OpenSeaMapLayer(map);
+    const bridgesLayer = new Layers.BridgesLayer(map);
 
    // activering schepen zoeken
-   const vesselSearch = new VesselSearch(map, sidebar, "vessels-button");
+   const vesselSearch = new VesselSearch(vesselLayer, sidebar, "vessels-button");
 
    // activering havens zoeken
-   const portSearch = new PortSearch(map, sidebar, "ports-button");
+   const portSearch = new PortSearch(vesselLayer, sidebar, "ports-button");
 
    // activering ligplaatsen zoeken
-   const berthSearch = new BerthSearch(map, sidebar, "berths-button");
+   const berthSearch = new BerthSearch(berthsLayer, sidebar, "berths-button");
 
     // Items zichtbaar in het lagenactiveermenu
     const optionalOverlays = {
         "Bedrijven": Companies.bedrijvenGroup,
-        "Ligplaatsen": berths.main,
+        "Ligplaatsen": berthsLayer.main,
         "Windsnelheid": windspeedLayer.main,
         "Schepen": vesselLayer.main,
         "Open sea maps": openSeaMapLayer.main,
@@ -72,7 +73,7 @@ const onPageLoaded = async() => {
     // word aangeroepen bij zoomen
     map.on("zoomend", () => {
         movedSinceLastUpdate = true;
-        berths.show();
+        berthsLayer.show();
         openSeaMapLayer.show();
         windspeedLayer.show();
         Companies.checkZoom(map);
@@ -90,13 +91,13 @@ const onPageLoaded = async() => {
 
     // word aangeroepen bij het verwijderen van een laag via het lagenactiveermenu
     map.on("overlayremove", () => {
-        berths.show();
+        berthsLayer.show();
         Companies.checkLayer(map);
     });
 
     // word aangeroepen bij het toevoegen van een laag via het lagenactiveermenu
     map.on("overlayadd", () => {
-        berths.show();
+        berthsLayer.show();
         Companies.checkLayer(map);
     });
 
