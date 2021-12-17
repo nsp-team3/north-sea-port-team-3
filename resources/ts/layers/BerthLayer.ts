@@ -1,128 +1,176 @@
 import * as L from "leaflet";
-import { DisplayBerthInfo } from "../display-info/DisplayInfoExports";
-import BerthSearch from "../search/BerthSearch";
 import Layer from "./Layer";
+import { arcgisToGeoJSON } from "@esri/arcgis-to-geojson-utils";
 
-let ligplaatsen = require('../../northSeaPortGeoJson/ligplaatsen_northsp.json');
-let bolders = require('../../northSeaPortGeoJson/bolders_northsp.json');
-let steigers = require('../../northSeaPortGeoJson/steigers_northsp.json');
-let reddingsboeien = require('../../northSeaPortGeoJson/reddingsboeien_northsp.json');
-let gebouwen = require('../../northSeaPortGeoJson/gebouwen_fm_northsp.json');
-const { arcgisToGeoJSON } = require('@esri/arcgis-to-geojson-utils');
+// TODO: Create a class for each of these layers.
+const arcgis = {
+    berths: require('../../northSeaPortGeoJson/ligplaatsen_northsp.json'),
+    bolders: require("../../northSeaPortGeoJson/bolders_northsp.json"),
+    buildings: require("../../northSeaPortGeoJson/gebouwen_fm_northsp.json"),
+    lifebuoys: require('../../northSeaPortGeoJson/reddingsboeien_northsp.json'),
+    scaffolding: require('../../northSeaPortGeoJson/steigers_northsp.json')
+}
 
-/**
- * Besturing van de ligplaatsenlaag
- */
 export default class BerthLayer extends Layer {
-    public show(): void {
-        // extra lagen toevoegen gebaseerd op zichtbaarheid van ligplaatslayer
-        if (this._map.hasLayer(this.ligplaatsenLayer)) {
-            // aanlegpunten laten zien boven 18 zoomlevel
-            if (this._map.getZoom() >= 18) {
-                this._map.addLayer(this.boldersLayer)
-            } else {
-                this._map.removeLayer(this.boldersLayer)
-            }
-            // nummers en reddingsboeien laten zien boven 16 zoomlevel
-            if (this._map.getZoom() >= 16) {
-                this._map.addLayer(this.ligplaatsenNummers)
-                this._map.addLayer(this.reddingsboeienLayer)
-            } else {
-                this._map.removeLayer(this.ligplaatsenNummers)
-                this._map.removeLayer(this.reddingsboeienLayer)
-            }
-        } else {
-            this._map.removeLayer(this.boldersLayer)
-            this._map.removeLayer(this.reddingsboeienLayer)
-            this._map.removeLayer(this.ligplaatsenNummers)
-        }
-    }
-    private sidebar: L.Control.Sidebar;
-    private searchLigplaats: { [id: string]: any } = {};
-    private ligplaatsenNummers = L.layerGroup();
-    private berthDisplay: DisplayBerthInfo;
+    private _berthsLayer: L.GeoJSON;
+    private _boldersLayer: L.GeoJSON;
+    private _buildingsLayer: L.GeoJSON;
+    private _lifebuoysLayer: L.GeoJSON;
+    private _scaffoldingLayer: L.GeoJSON;
 
-    /**
-     * gebouwen ophalen en weergeven in oranje
-     */
-    private gebouwenLayer = L.geoJSON(arcgisToGeoJSON(gebouwen), {
-        style: {
-            "color": "#ff7800",
-            "weight": 3,
-            "opacity": 0.65
-        }
-    });
-    /**
-     * stijgers ophalen en weergeven in rood
-     */
-    private steigersLayer = L.geoJSON(arcgisToGeoJSON(steigers), {
-        style: {
-            "color": "#fd5353",
-            "weight": 3,
-            "opacity": 0.65
-        }
-    });
-    /**
-     * aanlegpunten zichtbar maken met icoon
-     */
-    private boldersLayer = L.geoJSON(arcgisToGeoJSON(bolders), {
-        onEachFeature: (feature, layer) => {
-            if (layer instanceof L.Marker) {
-                layer.setIcon(L.icon({
-                    iconUrl: '/icons/bollard.png',
-                    iconSize: [18, 18],
-                    iconAnchor: [9, 9]
-                }))
-            }
-        }
-    });
-    /**
-     * beschikbaare reddingsboeien
-     */
-    private reddingsboeienLayer = L.geoJSON(arcgisToGeoJSON(reddingsboeien), {
-        onEachFeature: (feature, layer) => {
-            if (layer instanceof L.Marker) {
-                layer.setIcon(L.icon({
-                    iconUrl: '/icons/lifebuoy.png',
-                    iconSize: [20, 20],
-                    iconAnchor: [10, 10]
-                }))
-            }
-        }
-    });
-    /**
-     * de ligplaatsen zelf inladen net onclick voor meer informatie over de ligplaats
-     */
-    private ligplaatsenLayer = L.geoJSON(ligplaatsen, {
-        onEachFeature: (feature, layer) => {
-            layer.on("click", (event) => {
-                this.berthDisplay.show(BerthSearch.convertFeatureToBerth(feature));
-            });
+    private searchBerth: {[index: string]: any};
+    private berthNumbersLayer: L.LayerGroup;
 
-            if (layer instanceof L.Polygon) {
-                feature.properties.center = layer.getBounds().getCenter();
-                this.searchLigplaats[`${feature.properties.type} ${feature.properties.ligplaatsNr}`] = feature.properties;
-                L.marker(feature.properties.center, {
-                    icon: L.divIcon({
-                        className: 'label',
-                        html: feature.properties.ligplaatsNr,
-                        iconSize: [30, 40]
-                    })
-                }).addTo(this.ligplaatsenNummers);
-            }
-        }
-    });
-    private _main = L.layerGroup([this.ligplaatsenLayer, this.gebouwenLayer, this.steigersLayer]);
-
-    public constructor(map: L.Map, sidebar: L.Control.Sidebar) {
+    public constructor(map: L.Map) {
         super(map);
-        this.sidebar = sidebar
+
+        this._berthsLayer = this.createBerthsJSON();
+        this._boldersLayer = this.createBoldersJSON();
+        this._buildingsLayer = this.createBuildingsJSON();
+        this._lifebuoysLayer = this.createLifebuoysJSON();
+        this._scaffoldingLayer = this.createScaffoldingJSON();
     }
 
     /**
-     * layergroup aanvragen voor koppeling met map
+     * Rendert alle layers
      */
-    public get main(): L.LayerGroup {
-        return this._main;
+    public render(): void {
+        if (this.shouldRender()) {
+            this.clearLayers();
+            const zoomLevel = this._map.getZoom();
+            this.renderBerths();
+            this.renderBolders(zoomLevel);
+            this.renderNumbers(zoomLevel);
+            this.renderLifebuoys(zoomLevel);
+        }
+    }
+
+    protected clearLayers(): void {
+        this._layerGroup.clearLayers();
+        this._berthsLayer.clearLayers();
+        this._boldersLayer.clearLayers();
+        this._buildingsLayer.clearLayers();
+        this._lifebuoysLayer.clearLayers();
+        this._scaffoldingLayer.clearLayers();
+    }
+
+    /**
+     * Checkt of de layers nu gerendert moeten worden.
+     */
+    private shouldRender(): boolean {
+        return this._map.hasLayer(this.main);
+    }
+
+    /**
+     * Rendert de daadwerkelijke ligplaatsen.
+     */
+    private renderBerths(): void {
+        this.main.addLayer(this._berthsLayer);
+    }
+
+    /**
+     * Rendert de aanlegpunten van ligplaatsen.
+     */
+    private renderBolders(zoomLevel: number): void {
+        if (zoomLevel >= 18) {
+            this.main.addLayer(this._boldersLayer);
+        } else {
+            this.main.removeLayer(this._boldersLayer);
+        }
+    }
+
+    /**
+     * Rendert de nummers van ligplaatsen.
+     */
+    private renderNumbers(zoomLevel: number): void {
+        if (zoomLevel >= 16) {
+            this.main.addLayer(this.berthNumbersLayer);
+        } else {
+            this.main.removeLayer(this.berthNumbersLayer);
+        }
+    }
+
+    /**
+     * Rendert de reddingsboeien.
+     */
+    private renderLifebuoys(zoomLevel: number): void {
+        if (zoomLevel >= 16) {
+            this.main.addLayer(this._lifebuoysLayer);
+        } else {
+            this.main.removeLayer(this._lifebuoysLayer);
+        }
+    }
+
+    private createBerthsJSON(): L.GeoJSON {
+        this.searchBerth = {};
+        this.berthNumbersLayer = new L.LayerGroup();
+        return L.geoJSON(arcgis.berths, {
+            onEachFeature: (feature, layer) => {
+                layer.on("click", (event) => {
+                    console.log("TODO: Display berth information.");
+                    // this.berthDisplay.show(BerthSearch.convertFeatureToBerth(feature));
+                });
+    
+                if (layer instanceof L.Polygon) {
+                    feature.properties.center = layer.getBounds().getCenter();
+                    this.searchBerth[`${feature.properties.type} ${feature.properties.ligplaatsNr}`] = feature.properties;
+                    L.marker(feature.properties.center, {
+                        icon: L.divIcon({
+                            className: 'label',
+                            html: feature.properties.ligplaatsNr,
+                            iconSize: [30, 40]
+                        })
+                    }).addTo(this.berthNumbersLayer);
+                }
+            }
+        });
+    }
+
+    private createBoldersJSON(): L.GeoJSON {
+        return L.geoJSON(arcgisToGeoJSON(arcgis.bolders), {
+            onEachFeature: (_, layer) => {
+                if (layer instanceof L.Marker) {
+                    layer.setIcon(L.icon({
+                        iconUrl: '/icons/bollard.png',
+                        iconSize: [18, 18],
+                        iconAnchor: [9, 9]
+                    }))
+                }
+            }
+        });
+    }
+
+    private createBuildingsJSON(): L.GeoJSON {
+        return L.geoJSON(arcgisToGeoJSON(arcgis.buildings), {
+            style: {
+                "color": "#ff7800",
+                "weight": 3,
+                "opacity": 0.65
+            }
+        });
+    }
+
+    private createLifebuoysJSON(): L.GeoJSON {
+        return L.geoJSON(arcgisToGeoJSON(arcgis.lifebuoys), {
+            onEachFeature: (_, layer) => {
+                if (layer instanceof L.Marker) {
+                    layer.setIcon(L.icon({
+                        iconUrl: '/icons/lifebuoy.png',
+                        iconSize: [20, 20],
+                        iconAnchor: [10, 10]
+                    }))
+                }
+            }
+        });
+    }
+
+    private createScaffoldingJSON(): L.GeoJSON {
+        return L.geoJSON(arcgisToGeoJSON(arcgis.scaffolding), {
+            style: {
+                "color": "#fd5353",
+                "weight": 3,
+                "opacity": 0.65
+            }
+        });
     }
 }

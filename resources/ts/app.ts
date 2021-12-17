@@ -5,118 +5,152 @@ import "leaflet-velocity";
 import "leaflet-mouse-position";
 import "./libs/smoothWheelZoom";
 
-import * as Layers from "./layers/LayerExports";
-import Companies from "./layers/Companies";
-import { VesselSearch, PortSearch, BerthSearch } from "./search/SearchExports";
-import Search from "./search/Search";
+import Layer from "./layers/Layer";
+import OpenStreetMapsLayer from "./layers/OpenStreetMapsLayer";
+import OpenSeaMapsLayer from "./layers/OpenSeaMapsLayer";
+import BerthLayer from "./layers/BerthLayer";
+import BridgeLayer from "./layers/BridgeLayer";
+import VesselLayer from "./layers/VesselLayer";
 
-const onPageLoaded = async() => {
-    const map = L.map("map", {
-        scrollWheelZoom: false,
-        smoothWheelZoom: true,
-        smoothSensitivity: 1.5,
-    }).setView(new L.LatLng(51.2797429555907, 3.7477111816406254), 8);
+type Layers = {[index: string]: Layer};
 
-    // const cleanMap = L.tileLayer('https://tile.jawg.io/be014ddc-e423-43d8-8e15-0ddb1ac99d84/{z}/{x}/{y}{r}.png?access-token=iWfpe7piHdKAYayIe6bRGELuU156lg34z2nVINNr755xTL4AbHcaKBXXhTwHxHdW', {}).addTo(map);
+class Application {
+    private readonly INITIAL_LATITUDE = 51.2797429555907;
+    private readonly INITIAL_LONGITUDE = 3.7477111816406254;
+    private readonly INITIAL_ZOOM = 8;
 
-    // inladen zijbalk
-    const sidebar = L.control.sidebar({
-        autopan: false,       // whether to maintain the centered map point when opening the sidebar
-        closeButton: true,    // whether t add a close button to the panes
-        container: "sidebar", // the DOM container or #ID of a predefined sidebar container that should be used
-        position: "right"     // left or right
-    });
+    private _map: L.Map;
+    private _sidebar: L.Control.Sidebar;
+    private _layers: Layers;
+    private _scale: L.Control.Scale;
+    private _overlays: L.Control.Layers;
 
-    let movedSinceLastUpdate: boolean = false;
+    private _movedSinceLastUpdate: boolean;
 
-    const berthsLayer = new Layers.BerthLayer(map, sidebar);
+    public constructor() {
+        this._map = this.createMap();
+        this._sidebar = this.createSidebar();
+        this._layers = this.createLayers();
+        this._scale = this.createScale();
+        this._overlays = this.createOverlays();
+        this.addEventListeners();
+        this.startIntervalUpdates();
+    }
 
-    const mainLayer = new Layers.OpenStreetMapLayer(map);
-    const vesselLayer = new Layers.VesselLayer(map, sidebar);
-    const windspeedLayer = new Layers.WindspeedLayer(map);
-    const openSeaMapLayer = new Layers.OpenSeaMapLayer(map);
-    const bridgesLayer = new Layers.BridgesLayer(map);
+    /**
+     * Maakt de leaflet map aan.
+     * @returns 
+     */
+    private createMap() {
+        return L.map("map", {
+            scrollWheelZoom: false,
+            smoothWheelZoom: true,
+            smoothSensitivity: 1.5,
+        }).setView(
+            new L.LatLng(this.INITIAL_LATITUDE, this.INITIAL_LONGITUDE),
+            this.INITIAL_ZOOM
+        );
+    }
 
-   // activering schepen zoeken
-   const vesselSearch = new VesselSearch(vesselLayer, sidebar, "vessels-button");
+    /**
+     * Maakt de zijbalk aan en laadt deze in.
+     * @returns 
+     */
+    private createSidebar(): L.Control.Sidebar {
+        return L.control.sidebar({
+            autopan: false,       // Moet de map dezelfde plek tonen wanneer de zijbalk wordt geopend?
+            closeButton: true,    // Moeten de tabs een close button hebben?
+            container: "sidebar", // De html id van de sidebar container. 
+            position: "right"     // Of de sidebar rechts of links moet staan.
+        }).addTo(this._map);
+    }
 
-   // activering havens zoeken
-   const portSearch = new PortSearch(vesselLayer, sidebar, "ports-button");
+    private createScale(): L.Control.Scale {
+        return new L.Control.Scale().addTo(this._map);
+    }
 
-   // activering ligplaatsen zoeken
-   const berthSearch = new BerthSearch(berthsLayer, sidebar, "berths-button");
+    private createOverlays(): L.Control.Layers {
+        console.log("TODO: Add companies layer & windspeed layer!!!");
+        const overlays = {
+            // "Bedrijven": this._layers.companies.main,
+            "Ligplaatsen": this._layers.berths.main,
+            // "Windsnelheid": this._layers.windspeed.main,
+            "Schepen": this._layers.vessels.main,
+            "Open sea maps": this._layers.openSeaMaps.main,
+            "Bruggen": this._layers.bridges.main
+        };
+        
+        return L.control.layers({}, overlays, {
+            sortLayers: true
+        }).addTo(this._map);
+    }
 
-    // Items zichtbaar in het lagenactiveermenu
-    const optionalOverlays = {
-        "Bedrijven": Companies.bedrijvenGroup,
-        "Ligplaatsen": berthsLayer.main,
-        "Windsnelheid": windspeedLayer.main,
-        "Schepen": vesselLayer.main,
-        "Open sea maps": openSeaMapLayer.main,
-        "Bruggen": bridgesLayer.main
-    };
+    /**
+     * Maakt alle lagen aan voor de leaflet map.
+     */
+    private createLayers(): Layers {
+        return {
+            openStreetMaps: new OpenStreetMapsLayer(this._map),
+            openSeaMaps: new OpenSeaMapsLayer(this._map),
+            berths: new BerthLayer(this._map),
+            bridges: new BridgeLayer(this._map),
+            vessels: new VesselLayer(this._map),
+        };
+    }
 
-    L.control.scale().addTo(map);
-    L.control.mousePosition().addTo(map);
+    /**
+     * Voegt alle event listeners toe aan de kaart.
+     */
+    private addEventListeners(): void {
+        this._map.on("zoomstart", () => this.onZoomStart());
+        this._map.on("zoomend", () => this.onZoomEnd());
+        this._map.on("dragstart", () => this.onDragStart());
+        this._map.on("dragend", () => this.onDragEnd());
+        // TODO: Check if we really need these events:
+        this._map.on("overlayremove", () => {});
+        this._map.on("overlayadd", () => {});
+    }
 
-    L.control.layers({}, optionalOverlays, {
-        sortLayers: true
-    }).addTo(map);
+    /**
+     * Zorgt ervoor dat enkele functies elke seconde worden aangeroepen.
+     */
+    private startIntervalUpdates(): void {
+        this._movedSinceLastUpdate = false;
+        console.log("TODO: Add automatic searching every second.");
+        console.log("TODO: Add all search methods back.");
+        setInterval(() => {
+            if (this._movedSinceLastUpdate) {
+                this._movedSinceLastUpdate = false;
+                this._layers.vessels.render();
+                this._layers.bridges.render();
+            }
+        }, 1000);
+    }
 
-    map.on("zoomstart", () => {
-        bridgesLayer.hide();
-        openSeaMapLayer.hide();
-        vesselLayer.hide();
-        windspeedLayer.hide();
-    });
+    private onZoomStart(): void {
+        this._layers.bridges.hide();
+        this._layers.openSeaMaps.hide();
+        this._layers.vessels.hide();
+        // this._layers.windspeed.hide();
+    }
 
-    // word aangeroepen bij zoomen
-    map.on("zoomend", () => {
-        movedSinceLastUpdate = true;
-        berthsLayer.show();
-        openSeaMapLayer.show();
-        windspeedLayer.show();
-        Companies.checkZoom(map);
-    });
+    private onZoomEnd(): void {
+        this._movedSinceLastUpdate = true;
+        this._layers.bridges.show();
+        this._layers.openSeaMaps.show();
+        this._layers.vessels.show();
+        // this._layers.companies.show();
+    }
 
-    map.on("dragstart", () => {
-        windspeedLayer.hide();
-    });
+    private onDragStart(): void {
 
-    // word aangeroepen bij het verslepen van de map
-    map.on("dragend", () => {
-        movedSinceLastUpdate = true;
-        windspeedLayer.show();
-    });
+    }
 
-    // word aangeroepen bij het verwijderen van een laag via het lagenactiveermenu
-    map.on("overlayremove", () => {
-        berthsLayer.show();
-        Companies.checkLayer(map);
-    });
-
-    // word aangeroepen bij het toevoegen van een laag via het lagenactiveermenu
-    map.on("overlayadd", () => {
-        berthsLayer.show();
-        Companies.checkLayer(map);
-    });
-
-    sidebar.addTo(map).open(Search.SEARCH_ID);
-
-    setInterval(() => {
-        // Heeft de gebruiker gezoomed of de map verplaatst?
-        if (movedSinceLastUpdate) {
-            movedSinceLastUpdate = false;
-            vesselLayer.show();
-            bridgesLayer.show();
-        }
-
-        if (Search.hasQueryChanged()) {
-            vesselSearch.update();
-            portSearch.update();
-            berthSearch.update();
-        }
-    }, 1000);
+    private onDragEnd(): void {
+        this._movedSinceLastUpdate = true;
+    }
 }
 
-window.addEventListener("load", onPageLoaded);
+window.addEventListener("load", () => {
+    const app = new Application();
+});

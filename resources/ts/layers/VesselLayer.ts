@@ -1,190 +1,86 @@
-import * as Leaflet from "leaflet";
+import * as L from "leaflet";
 import "../libs/tracksymbol";
-
-import AIS from "../api/AIS";
-import { DisplayVesselInfo } from "../display-info/DisplayInfoExports";
-import SimpleVesselInfo from "../types/SimpleVesselInfo";
+import VesselAPI from "../api/VesselAPI";
+import { SimpleVesselInfo, VesselFilters, VesselType } from "../types/vessel-types";
 import Layer from "./Layer";
-import VesselType from "../types/enums/VesselType";
 
-/**
- * Besturing van de schepenlaag
- */
 export default class VesselLayer extends Layer {
-    /**
-     * standaard geactiveerde items binnen schepenfilter
-     */
-    private vessels: VesselType[] = [
-        VesselType.Unavailable,
-        VesselType.NavigationAid,
-        VesselType.HighSpeed,
-        VesselType.Passenger,
-        VesselType.Cargo,
-        VesselType.Tanker,
-        VesselType.Yacht,
-        VesselType.Fishing,
-    ];
-    /**
-     * legendaitem naar vesseltype conversie voor schepenfilter
-     */
-    private static readonly vesselTypes: { [id: string]: VesselType; } = {
-        "Onbekend": VesselType.Unavailable,
-        "Sleepboot": VesselType.NavigationAid,
-        "Hogesnelheidsvaartuig": VesselType.HighSpeed,
-        "Passagiersschip": VesselType.Passenger,
-        "Vrachtschip": VesselType.Cargo,
-        "Tanker": VesselType.Tanker,
-        "Jacht": VesselType.Yacht,
-        "Vissersboot": VesselType.Fishing,
-    }
-    /**
-     * kleuren voor elk vesseltype
-     */
-    private static readonly VESSEL_COLORS = {
-        "0": "#6b6b6c", // VesselType.Unavailable
-        "3": "#0fa8b7", // VesselType.Pilot
-        "4": "#ac7b22", // VesselType.HighSpeed
-        "6": "#2856fe", // VesselType.Passenger
-        "7": "#0c9338", // VesselType.Cargo
-        "8": "#d60202", // VesselType.Tanker
-        "9": "#e716f4", // VesselType.Yacht
-        "10": "#ede115", // VesselType.Fishing
-        "11": "#e71694", // VesselType.BaseStation
-        "12": "#e71664", // VesselType.AirCraft
-        "13": "#e71634"  // VesselType.NavigationAid
-    };
+    private _circleLayer: L.LayerGroup;
+    private _shownVesselTypes: VesselType[];
 
-    private _vesselDisplay: DisplayVesselInfo;
-    private _nestedVesselLayer: L.LayerGroup;
-
-    protected _sidebar: L.Control.Sidebar;
-    protected _circleGroup: L.LayerGroup;
-
-    /**
-     * @param map koppeling met de kaart, voor bijv. zichtbaarheid gebaseerd op zoomniveau
-     * @param sidebar de zoekbalk voor als op het schip geklikt word, het te kunnen openen
-     */
-    public constructor(map: L.Map, sidebar: L.Control.Sidebar) {
+    public constructor(map: L.Map) {
         super(map);
-        this._sidebar = sidebar;
-        this._vesselDisplay = new DisplayVesselInfo(this, this._sidebar);
-        this._circleGroup = new Leaflet.LayerGroup();
-        this._nestedVesselLayer = new Leaflet.LayerGroup();
-        this._nestedVesselLayer.addTo(this._layerGroup);
-        this.show();
-        this.getSelectedVessels();
+        this._circleLayer = new L.LayerGroup();
+        this._shownVesselTypes = this.getAllVesselTypes();
     }
 
-    public async show(): Promise<void> {
-        const nearbyVessels: SimpleVesselInfo[] = await AIS.getNearbyVessels(this._map);
-        this._layerGroup.clearLayers();
-        this._nestedVesselLayer.clearLayers();
+    public async render(): Promise<void> {
+        const defaultFilters = this.getDefaultVesselFilters();
+        const nearbyVessels = await VesselAPI.getNearbyVessels(defaultFilters).catch(console.error);
+        if (nearbyVessels) {
+            this.clearLayers();
+            nearbyVessels.forEach((vesselInfo: SimpleVesselInfo) => this.renderVessel(vesselInfo));
+            this.show();
+        }
+    }
 
-        nearbyVessels.forEach((vesselInfo: SimpleVesselInfo) => this.draw(vesselInfo));
-
-        this._circleGroup.addTo(this._layerGroup);
-        this._nestedVesselLayer.addTo(this._layerGroup);
+    public show(): void {
+        this._circleLayer.addTo(this._layerGroup);
+        this._nestedLayer.addTo(this._layerGroup);
     }
 
     public hide(): void {
-        this._layerGroup.removeLayer(this._nestedVesselLayer);
+        this._layerGroup.removeLayer(this._nestedLayer);
     }
 
-    /**
-     * acties voorrdat de gedetaileerde informatie te laten zien over het gezochte of aangeklikte schip,
-     * vraagt aan show() om de data werkelijk te laten zien
-     * @param vesselInfo voor welk schip informatie getoont moet worden
-     * @param autoZoom moet er ingezoomt worden naar het schip binnen de map
-     */
-    public focusVessel(vesselInfo: SimpleVesselInfo, autoZoom?: boolean): void {
-        if (autoZoom) {
-            this._map.flyTo(new Leaflet.LatLng(vesselInfo.latitude, vesselInfo.longitude), 16)
-        }
-        this.main.addTo(this._map);
-        this.clearVesselCircle();
-        this.drawVesselCircle(vesselInfo);
-    }
-
-    /**
-     * word aangeroepen na het aanklikken van een filter in de legenda
-     * checkt welk schiptype wel/niet zichtbaar gemaakt moet worden gebaseerd op het veranderde input veld
-     */
-    private getSelectedVessels(): void {
-        // const schipLegend = document.getElementById("schipLegenda");
-        // schipLegend.querySelectorAll("input").forEach(element => {
-        //     this.addClickHandler(element);
-        // });
-    }
-
-    private addClickHandler(element: HTMLElement): void {
-        element.addEventListener("click", (event: MouseEvent) => {
-            const target = event.target as HTMLInputElement;
-            if (target.checked) {
-                this.vessels.push(VesselLayer.vesselTypes[target.id]);
-            } else {
-                this.vessels = this.vessels.filter(e => e !== VesselLayer.vesselTypes[target.id]);
-            }
-            this.show();
-        });
-    }
-
-    /**
-     * Schip op de kaart zetten
-     * @param vesselInfo scheepsinformatie
-     */
-    private draw(vesselInfo: SimpleVesselInfo): void {
-        const allowedVesselTypes = this.vessels;
-        if (!allowedVesselTypes.includes(vesselInfo.vesselType)) {
-            return;
-        }
-
-        const location = Leaflet.latLng(
-            Number(vesselInfo.latitude),
-            Number(vesselInfo.longitude)
-        );
-
-        if (this._circleGroup.getLayers().length > 0 && this._circleGroup.getLayers()[0].getAttribution() === String(vesselInfo.mmsi)) {
-            this._circleGroup.clearLayers();
-            this.drawVesselCircle(vesselInfo);
-        }
-
-        const vessel: L.LayerGroup = this.drawVessel(vesselInfo, location);
-
-        vessel.on("click", () => {
-            this._circleGroup.clearLayers();
-            this._vesselDisplay.show(vesselInfo);
-            this.focusVessel(vesselInfo, false);
-        });
-
-        vessel.addTo(this._nestedVesselLayer);
-    }
-
-    /**
-     * wist de cirkel laag. 
-     */
-    private clearVesselCircle(): void {
-        this._circleGroup.clearLayers();
-    }
-
-    /**
-     * tekent een cirkel om het schip heen
-     * @param vesselInfo scheepsinformatie
-     */
-    private drawVesselCircle(vesselInfo: SimpleVesselInfo): void {
-        Leaflet.circleMarker([vesselInfo.latitude, vesselInfo.longitude], {
-            radius: 12,
-            attribution: String(vesselInfo.mmsi)
-        }).addTo(this._circleGroup);
+    protected clearLayers(): void {
+        this._nestedLayer.clearLayers();
+        this._layerGroup.clearLayers();
     }
 
     /**
      * de scheepsinformatie koppelen aan het schip dat getekend word
      * @param vesselInfo scheepsinformatie
-     * @param location scheepslocatie
      * @returns scheepitem die gekoppeld kan worden aan de scheepslaag
      */
-    private drawVessel(vesselInfo: SimpleVesselInfo, location: L.LatLng): L.LayerGroup {
-        return Leaflet.trackSymbol(location, {
+    private renderVessel(vesselInfo: SimpleVesselInfo): void {
+        if (!this._shownVesselTypes.includes(vesselInfo.vesselType)) {
+            return;
+        }
+
+        const vesselSymbol = this.createVesselSymbol(vesselInfo);
+
+        // Kijkt of er een bestaande cirkel is, zo ja dan tekent dit een cirkel op de nieuwe positie van het schip.
+        if (this._circleLayer.getLayers().length > 0 && this._circleLayer.getLayers()[0].getAttribution() === String(vesselInfo.mmsi)) {
+            this.renderCircle(vesselInfo);
+        }
+
+        vesselSymbol.on("click", () => this.handleVesselClick(vesselInfo));
+
+        vesselSymbol.addTo(this._nestedLayer);
+    }
+
+    /**
+     * tekent een cirkel om het schip heen
+     * @param vesselInfo scheepsinformatie
+     * @returns Cirkel die om een schip heen staat.
+     */
+    private renderCircle(vesselInfo: SimpleVesselInfo): void {
+        this._circleLayer.clearLayers();
+        L.circleMarker([vesselInfo.latitude, vesselInfo.longitude], {
+            radius: 12,
+            attribution: String(vesselInfo.mmsi)
+        }).addTo(this._circleLayer);
+    }
+
+    /**
+     * Maakt een symbool aan voor een schip, zodat dit schip zichtbaar wordt op de kaart.
+     * @param vesselInfo Informatie over een schip
+     * @returns Een symbool van het schip voor op de kaart.
+     */
+    private createVesselSymbol(vesselInfo: SimpleVesselInfo): L.LayerGroup {
+        const location = new L.LatLng(vesselInfo.latitude, vesselInfo.longitude);
+        return L.trackSymbol(location, {
             trackId: vesselInfo.mmsi,
             fill: true,
             fillColor: this.getVesselColor(vesselInfo),
@@ -200,12 +96,46 @@ export default class VesselLayer extends Layer {
         });
     }
 
-    /**
-     * haalt kleurcode uit de VESSEL_COLORS dictionary
-     * @param vesselInfo scheepsinformatie
-     * @returns kleurcode string: "#6b6b6c"
-     */
+    private handleVesselClick(vesselInfo: SimpleVesselInfo): void {
+        this.renderCircle(vesselInfo);
+        console.log("TODO: Show details of the selected vessel in the sidebar.");
+    }
+
+    private getDefaultVesselFilters(): VesselFilters {
+        const bounds = this._map.getBounds();
+        return {
+            zoom: Math.round(this._map.getZoom()),
+            southWest: bounds.getSouthWest(),
+            northEast: bounds.getNorthEast()
+        }
+    }
+
+    private getAllVesselTypes(): VesselType[] {
+        return [
+            VesselType.Unavailable,
+            VesselType.HighSpeed,
+            VesselType.Passenger,
+            VesselType.Cargo,
+            VesselType.Tanker,
+            VesselType.Yacht,
+            VesselType.Fishing
+        ];
+    }
+
     private getVesselColor(vesselInfo: SimpleVesselInfo): string {
-        return VesselLayer.VESSEL_COLORS[vesselInfo.vesselType];
+        const VESSEL_COLORS: { [index: string]: string } = {
+            "0": "#6b6b6c", // VesselType.Unavailable
+            "3": "#0fa8b7", // VesselType.Pilot
+            "4": "#ac7b22", // VesselType.HighSpeed
+            "6": "#2856fe", // VesselType.Passenger
+            "7": "#0c9338", // VesselType.Cargo
+            "8": "#d60202", // VesselType.Tanker
+            "9": "#e716f4", // VesselType.Yacht
+            "10": "#ede115", // VesselType.Fishing
+            "11": "#e7f694", // VesselType.BaseStation
+            "12": "#971f64", // VesselType.AirCraft
+            "13": "#1716f4"  // VesselType.NavigationAid
+        }
+        return VESSEL_COLORS[vesselInfo.vesselType];
     }
 }
