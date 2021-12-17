@@ -106,9 +106,8 @@ class Application {
         this._map.on("zoomend", () => this.onZoomEnd());
         this._map.on("dragstart", () => this.onDragStart());
         this._map.on("dragend", () => this.onDragEnd());
-        // TODO: Check if we really need these events:
-        this._map.on("overlayremove", () => {});
-        this._map.on("overlayadd", () => {});
+        this._map.on("overlayadd", () => this.onOverlayAdd());
+        this._map.on("overlayremove", () => this.onOverlayRemove());
     }
 
     /**
@@ -139,6 +138,7 @@ class Application {
         this._layers.bridges.show();
         this._layers.openSeaMaps.show();
         this._layers.vessels.show();
+        this._layers.berths.render();
         // this._layers.companies.show();
     }
 
@@ -148,6 +148,14 @@ class Application {
 
     private onDragEnd(): void {
         this._movedSinceLastUpdate = true;
+    }
+
+    private onOverlayAdd(): void {
+        this._layers.berths.render();
+    }
+
+    private onOverlayRemove(): void {
+        this._layers.berths.hide();
     }
 }
 

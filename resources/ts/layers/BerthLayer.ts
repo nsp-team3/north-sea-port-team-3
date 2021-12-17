@@ -19,16 +19,21 @@ export default class BerthLayer extends Layer {
     private _scaffoldingLayer: L.GeoJSON;
 
     private searchBerth: {[index: string]: any};
-    private berthNumbersLayer: L.LayerGroup;
+    private _berthNumbersLayer: L.LayerGroup;
 
     public constructor(map: L.Map) {
         super(map);
 
+        this._berthNumbersLayer = new L.LayerGroup();
         this._berthsLayer = this.createBerthsJSON();
+        // TODO: Remove this layer, since it just creates lag.
         this._boldersLayer = this.createBoldersJSON();
+        // TODO: This is not being used rn:
         this._buildingsLayer = this.createBuildingsJSON();
+        // TODO: Probably remove this since it seems like unnecessary information.
         this._lifebuoysLayer = this.createLifebuoysJSON();
-        this._scaffoldingLayer = this.createScaffoldingJSON();
+        // TODO: Only render this at certain zoom levels.
+        this._scaffoldingLayer = this.createScaffoldingJSON().addTo(this._nestedLayer);
     }
 
     /**
@@ -36,12 +41,18 @@ export default class BerthLayer extends Layer {
      */
     public render(): void {
         if (this.shouldRender()) {
-            this.clearLayers();
             const zoomLevel = this._map.getZoom();
             this.renderBerths();
             this.renderBolders(zoomLevel);
             this.renderNumbers(zoomLevel);
             this.renderLifebuoys(zoomLevel);
+            this._layerGroup.addLayer(this._nestedLayer);
+        }
+    }
+
+    public hide(): void {
+        if (this._map.hasLayer(this._layerGroup)) {
+            this._layerGroup.removeLayer(this._nestedLayer);
         }
     }
 
@@ -65,7 +76,7 @@ export default class BerthLayer extends Layer {
      * Rendert de daadwerkelijke ligplaatsen.
      */
     private renderBerths(): void {
-        this.main.addLayer(this._berthsLayer);
+        this._nestedLayer.addLayer(this._berthsLayer);
     }
 
     /**
@@ -73,9 +84,9 @@ export default class BerthLayer extends Layer {
      */
     private renderBolders(zoomLevel: number): void {
         if (zoomLevel >= 18) {
-            this.main.addLayer(this._boldersLayer);
+            this._nestedLayer.addLayer(this._boldersLayer);
         } else {
-            this.main.removeLayer(this._boldersLayer);
+            this._nestedLayer.removeLayer(this._boldersLayer);
         }
     }
 
@@ -84,9 +95,10 @@ export default class BerthLayer extends Layer {
      */
     private renderNumbers(zoomLevel: number): void {
         if (zoomLevel >= 16) {
-            this.main.addLayer(this.berthNumbersLayer);
+            // TODO: Check if it possible to only render the numbers within the map bounds.
+            this._berthNumbersLayer.addTo(this._nestedLayer);
         } else {
-            this.main.removeLayer(this.berthNumbersLayer);
+            this._nestedLayer.removeLayer(this._berthNumbersLayer);
         }
     }
 
@@ -95,15 +107,15 @@ export default class BerthLayer extends Layer {
      */
     private renderLifebuoys(zoomLevel: number): void {
         if (zoomLevel >= 16) {
-            this.main.addLayer(this._lifebuoysLayer);
+            this._lifebuoysLayer.addTo(this._nestedLayer);
         } else {
-            this.main.removeLayer(this._lifebuoysLayer);
+            this._nestedLayer.removeLayer(this._lifebuoysLayer);
         }
     }
 
     private createBerthsJSON(): L.GeoJSON {
         this.searchBerth = {};
-        this.berthNumbersLayer = new L.LayerGroup();
+        
         return L.geoJSON(arcgis.berths, {
             onEachFeature: (feature, layer) => {
                 layer.on("click", (event) => {
@@ -120,7 +132,7 @@ export default class BerthLayer extends Layer {
                             html: feature.properties.ligplaatsNr,
                             iconSize: [30, 40]
                         })
-                    }).addTo(this.berthNumbersLayer);
+                    }).addTo(this._berthNumbersLayer);
                 }
             }
         });
