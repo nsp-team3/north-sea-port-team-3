@@ -11,6 +11,7 @@ import OpenSeaMapsLayer from "./layers/OpenSeaMapsLayer";
 import BerthLayer from "./layers/BerthLayer";
 import BridgeLayer from "./layers/BridgeLayer";
 import VesselLayer from "./layers/VesselLayer";
+import CompanyLayer from "./layers/CompanyLayer";
 
 type Layers = {[index: string]: Layer};
 
@@ -35,13 +36,14 @@ class Application {
         this._overlays = this.createOverlays();
         this.addEventListeners();
         this.startIntervalUpdates();
+        console.log("TODO: Add all search methods back.");
     }
 
     /**
      * Maakt de leaflet map aan.
-     * @returns 
+     * @returns Leaflet map
      */
-    private createMap() {
+    private createMap(): L.Map {
         return L.map("map", {
             scrollWheelZoom: false,
             smoothWheelZoom: true,
@@ -72,12 +74,12 @@ class Application {
     private createOverlays(): L.Control.Layers {
         console.log("TODO: Add companies layer & windspeed layer!!!");
         const overlays = {
-            // "Bedrijven": this._layers.companies.main,
+            "Bedrijven": this._layers.companies.main,
             "Ligplaatsen": this._layers.berths.main,
             // "Windsnelheid": this._layers.windspeed.main,
             "Schepen": this._layers.vessels.main,
             "Open sea maps": this._layers.openSeaMaps.main,
-            "Bruggen": this._layers.bridges.main
+            "Bruggen": this._layers.bridges.main,
         };
         
         return L.control.layers({}, overlays, {
@@ -95,6 +97,7 @@ class Application {
             berths: new BerthLayer(this._map),
             bridges: new BridgeLayer(this._map),
             vessels: new VesselLayer(this._map),
+            companies: new CompanyLayer(this._map)
         };
     }
 
@@ -106,8 +109,6 @@ class Application {
         this._map.on("zoomend", () => this.onZoomEnd());
         this._map.on("dragstart", () => this.onDragStart());
         this._map.on("dragend", () => this.onDragEnd());
-        this._map.on("overlayadd", () => this.onOverlayAdd());
-        this._map.on("overlayremove", () => this.onOverlayRemove());
     }
 
     /**
@@ -115,47 +116,46 @@ class Application {
      */
     private startIntervalUpdates(): void {
         this._movedSinceLastUpdate = false;
-        console.log("TODO: Add automatic searching every second.");
-        console.log("TODO: Add all search methods back.");
         setInterval(() => {
             if (this._movedSinceLastUpdate) {
                 this._movedSinceLastUpdate = false;
-                this._layers.vessels.render();
-                this._layers.bridges.render();
+                this._layers.vessels.update();
+                this._layers.bridges.update();
             }
         }, 1000);
+        setInterval(() => {
+            this._layers.vessels.update();
+            this._layers.bridges.update();
+        }, 15000);
     }
 
     private onZoomStart(): void {
+        this._movedSinceLastUpdate = true;
         this._layers.bridges.hide();
         this._layers.openSeaMaps.hide();
         this._layers.vessels.hide();
-        // this._layers.windspeed.hide();
+        this._layers.berths.hide();
+        this._layers.companies.hide();
     }
 
     private onZoomEnd(): void {
-        this._movedSinceLastUpdate = true;
         this._layers.bridges.show();
         this._layers.openSeaMaps.show();
         this._layers.vessels.show();
-        this._layers.berths.render();
-        // this._layers.companies.show();
+        this._layers.berths.show();
+        this._layers.companies.show();
     }
 
     private onDragStart(): void {
-
-    }
-
-    private onDragEnd(): void {
         this._movedSinceLastUpdate = true;
     }
 
-    private onOverlayAdd(): void {
-        this._layers.berths.render();
-    }
-
-    private onOverlayRemove(): void {
-        this._layers.berths.hide();
+    private onDragEnd(): void {
+        this._layers.bridges.show();
+        this._layers.openSeaMaps.show();
+        this._layers.vessels.show();
+        this._layers.companies.show();
+        this._layers.berths.show();
     }
 }
 

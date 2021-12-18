@@ -12,30 +12,35 @@ export default class VesselLayer extends Layer {
         super(map);
         this._circleLayer = new L.LayerGroup();
         this._shownVesselTypes = this.getAllVesselTypes();
+        this.update();
+        this.show();
     }
 
-    public async render(): Promise<void> {
+    public async update(): Promise<void> {
         const defaultFilters = this.getDefaultVesselFilters();
         const nearbyVessels = await VesselAPI.getNearbyVessels(defaultFilters).catch(console.error);
         if (nearbyVessels) {
             this.clearLayers();
             nearbyVessels.forEach((vesselInfo: SimpleVesselInfo) => this.renderVessel(vesselInfo));
-            this.show();
         }
     }
 
     public show(): void {
-        this._circleLayer.addTo(this._layerGroup);
-        this._nestedLayer.addTo(this._layerGroup);
+        if (!this._layerGroup.hasLayer(this._nestedLayer)) {
+            this._layerGroup.addLayer(this._nestedLayer);
+        }
+        if (!this._layerGroup.hasLayer(this._circleLayer)) {
+            this._layerGroup.addLayer(this._circleLayer);
+        }
     }
 
     public hide(): void {
-        this._layerGroup.removeLayer(this._nestedLayer);
-    }
-
-    protected clearLayers(): void {
-        this._nestedLayer.clearLayers();
-        this._layerGroup.clearLayers();
+        if (this._layerGroup.hasLayer(this._nestedLayer)) {
+            this._layerGroup.removeLayer(this._nestedLayer);
+        }
+        if (this._layerGroup.hasLayer(this._circleLayer)) {
+            this._layerGroup.removeLayer(this._circleLayer);
+        }
     }
 
     /**

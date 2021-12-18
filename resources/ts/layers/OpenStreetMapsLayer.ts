@@ -13,7 +13,7 @@ export default class OpenStreetMapLayer extends Layer {
         this._layerGroup.addTo(map);
     }
 
-    public render(): void {
+    public update(): void {
         this._layerGroup.addLayer(this._nestedLayer);
     }
 }

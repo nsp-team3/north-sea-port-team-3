@@ -8,24 +8,25 @@ export default class BridgeLayer extends Layer {
 
     public constructor(map: L.Map) {
         super(map);
+        this.update();
+        this.show();
     }
 
-    public render(): void {
+    public update(): void {
         if (this._map.getZoom() >= this.MIN_ZOOM) {
-            this.renderNearbyBridges();
+            this.updateNearbyBridges();
         } else {
-            // console.log("TODO: Check if this is required.");
             this.clearLayers();
         }
     }
 
-    private async renderNearbyBridges(): Promise<void> {
+    private async updateNearbyBridges(): Promise<void> {
         const nearbyBridges = await this.fetchNearbyBridges();
-        this.clearLayers();
         if (nearbyBridges) {
+            this.clearLayers();
             nearbyBridges.forEach((bridgeData: object) => this.displayBridge(bridgeData));
+            this._layerGroup.addLayer(this._nestedLayer);
         }
-        this._layerGroup.addLayer(this._nestedLayer);
     }
 
     /**
@@ -55,6 +56,9 @@ export default class BridgeLayer extends Layer {
      * @param bridge bruginformatie
      */
     private async handleBridgeClick(event: L.LeafletMouseEvent, bridge: any): Promise<void> {
+        // Toont een bericht zodat mensen weten dat ze wel goed hebben geklikt.
+        L.popup().setLatLng(event.latlng).setContent("Laden van gegevens...").openOn(this._map);
+
         let data = "Geen gegevens.";
 
         // telefoonnummber toevoegen wanneer beschikbaar

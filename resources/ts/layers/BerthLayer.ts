@@ -1,176 +1,117 @@
 import * as L from "leaflet";
 import Layer from "./Layer";
 import { arcgisToGeoJSON } from "@esri/arcgis-to-geojson-utils";
+import { BerthInfo } from "../types/berth-types";
 
-// TODO: Create a class for each of these layers.
 const arcgis = {
     berths: require('../../northSeaPortGeoJson/ligplaatsen_northsp.json'),
-    bolders: require("../../northSeaPortGeoJson/bolders_northsp.json"),
-    buildings: require("../../northSeaPortGeoJson/gebouwen_fm_northsp.json"),
-    lifebuoys: require('../../northSeaPortGeoJson/reddingsboeien_northsp.json'),
     scaffolding: require('../../northSeaPortGeoJson/steigers_northsp.json')
 }
 
 export default class BerthLayer extends Layer {
-    private _berthsLayer: L.GeoJSON;
-    private _boldersLayer: L.GeoJSON;
-    private _buildingsLayer: L.GeoJSON;
-    private _lifebuoysLayer: L.GeoJSON;
+    private readonly MIN_ZOOM_LEVEL = 12;
     private _scaffoldingLayer: L.GeoJSON;
-
-    private searchBerth: {[index: string]: any};
-    private _berthNumbersLayer: L.LayerGroup;
 
     public constructor(map: L.Map) {
         super(map);
-
-        this._berthNumbersLayer = new L.LayerGroup();
-        this._berthsLayer = this.createBerthsJSON();
-        // TODO: Remove this layer, since it just creates lag.
-        this._boldersLayer = this.createBoldersJSON();
-        // TODO: This is not being used rn:
-        this._buildingsLayer = this.createBuildingsJSON();
-        // TODO: Probably remove this since it seems like unnecessary information.
-        this._lifebuoysLayer = this.createLifebuoysJSON();
-        // TODO: Only render this at certain zoom levels.
-        this._scaffoldingLayer = this.createScaffoldingJSON().addTo(this._nestedLayer);
+        this._nestedLayer = this.createBerthsJSON();
+        this._scaffoldingLayer = this.createScaffoldingJSON();
+        this.update();
+        this.show();
     }
 
     /**
      * Rendert alle layers
      */
-    public render(): void {
-        if (this.shouldRender()) {
-            const zoomLevel = this._map.getZoom();
-            this.renderBerths();
-            this.renderBolders(zoomLevel);
-            this.renderNumbers(zoomLevel);
-            this.renderLifebuoys(zoomLevel);
-            this._layerGroup.addLayer(this._nestedLayer);
-        }
+    public update(): void {
+        const zoomLevel = this._map.getZoom();
+        this.renderBerths(zoomLevel);
+        this.renderScaffolding(zoomLevel);
+    }
+
+    public show(): void { 
+        this.update();
     }
 
     public hide(): void {
-        if (this._map.hasLayer(this._layerGroup)) {
+        if (this._layerGroup.hasLayer(this._nestedLayer)) {
+            this._layerGroup.removeLayer(this._nestedLayer);
+        }
+        if (this._layerGroup.hasLayer(this._scaffoldingLayer)) {
+            this._layerGroup.removeLayer(this._scaffoldingLayer);
+        }
+    }
+
+    /**
+     * Zet de geojson data om naar een makkelijk leesbaar object met ligplaatsinformatie
+     * https://leafletjs.com/examples/geojson/
+     * @param feature huidige ligplaats binnen geojson
+     * @returns makkelijk leesbaar object
+     */
+    private convertFeatureToBerth(feature: any, layer: L.Layer): BerthInfo {
+        const properties = feature.properties;
+        const id = properties.ligplaatsNr ? Number(properties.ligplaatsNr.substring(2)) : undefined;
+        const maxDepth = properties.maxDiepgang_m ? parseFloat(properties.maxDiepgang_m) : undefined;
+        return {
+            id: id,
+            name: properties.enigmaNaam,
+            owner: properties.eigenaar,
+            enigmaCode: properties.enigmaCode,
+            externalCode: properties.externeCode,
+            maxDepth: maxDepth,
+            type: properties.type,
+            region: properties.zone,
+            location: this.getCenter(layer as L.Polygon),
+            width: properties.breedte ? Number(properties.breedte) : undefined,
+            length: properties.lengte ? Number(properties.lengte) : undefined,
+            dock: properties.dok
+        }
+    }
+
+    private getCenter(feature: L.Polygon): L.LatLng {
+        return feature.getBounds().getCenter();
+    }
+
+    /**
+     * Rendert de ligplaatsen.
+     */
+    private renderBerths(zoomLevel: number): void {
+        if (zoomLevel >= this.MIN_ZOOM_LEVEL) {
+            this._layerGroup.addLayer(this._nestedLayer);
+        } else {
             this._layerGroup.removeLayer(this._nestedLayer);
         }
     }
-
-    protected clearLayers(): void {
-        this._layerGroup.clearLayers();
-        this._berthsLayer.clearLayers();
-        this._boldersLayer.clearLayers();
-        this._buildingsLayer.clearLayers();
-        this._lifebuoysLayer.clearLayers();
-        this._scaffoldingLayer.clearLayers();
-    }
-
+    
     /**
-     * Checkt of de layers nu gerendert moeten worden.
+     * Rendert de steigers.
+     * @param zoomLevel 
      */
-    private shouldRender(): boolean {
-        return this._map.hasLayer(this.main);
-    }
-
-    /**
-     * Rendert de daadwerkelijke ligplaatsen.
-     */
-    private renderBerths(): void {
-        this._nestedLayer.addLayer(this._berthsLayer);
-    }
-
-    /**
-     * Rendert de aanlegpunten van ligplaatsen.
-     */
-    private renderBolders(zoomLevel: number): void {
-        if (zoomLevel >= 18) {
-            this._nestedLayer.addLayer(this._boldersLayer);
+    private renderScaffolding(zoomLevel: number) {
+        if (zoomLevel >= this.MIN_ZOOM_LEVEL) {
+            this._layerGroup.addLayer(this._scaffoldingLayer);
         } else {
-            this._nestedLayer.removeLayer(this._boldersLayer);
-        }
-    }
-
-    /**
-     * Rendert de nummers van ligplaatsen.
-     */
-    private renderNumbers(zoomLevel: number): void {
-        if (zoomLevel >= 16) {
-            // TODO: Check if it possible to only render the numbers within the map bounds.
-            this._berthNumbersLayer.addTo(this._nestedLayer);
-        } else {
-            this._nestedLayer.removeLayer(this._berthNumbersLayer);
-        }
-    }
-
-    /**
-     * Rendert de reddingsboeien.
-     */
-    private renderLifebuoys(zoomLevel: number): void {
-        if (zoomLevel >= 16) {
-            this._lifebuoysLayer.addTo(this._nestedLayer);
-        } else {
-            this._nestedLayer.removeLayer(this._lifebuoysLayer);
+            this._layerGroup.removeLayer(this._scaffoldingLayer);
         }
     }
 
     private createBerthsJSON(): L.GeoJSON {
-        this.searchBerth = {};
-        
         return L.geoJSON(arcgis.berths, {
+            filter: (feature: any): boolean => {
+                return feature.properties.ligplaatsNr || feature.properties.enigmaNaam;
+            },
             onEachFeature: (feature, layer) => {
-                layer.on("click", (event) => {
-                    console.log("TODO: Display berth information.");
-                    // this.berthDisplay.show(BerthSearch.convertFeatureToBerth(feature));
-                });
-    
-                if (layer instanceof L.Polygon) {
-                    feature.properties.center = layer.getBounds().getCenter();
-                    this.searchBerth[`${feature.properties.type} ${feature.properties.ligplaatsNr}`] = feature.properties;
-                    L.marker(feature.properties.center, {
-                        icon: L.divIcon({
-                            className: 'label',
-                            html: feature.properties.ligplaatsNr,
-                            iconSize: [30, 40]
-                        })
-                    }).addTo(this._berthNumbersLayer);
-                }
-            }
-        });
-    }
+                const berthInfo = this.convertFeatureToBerth(feature, layer);
+                const content = this.createBerthPopupContent(berthInfo);
 
-    private createBoldersJSON(): L.GeoJSON {
-        return L.geoJSON(arcgisToGeoJSON(arcgis.bolders), {
-            onEachFeature: (_, layer) => {
-                if (layer instanceof L.Marker) {
-                    layer.setIcon(L.icon({
-                        iconUrl: '/icons/bollard.png',
-                        iconSize: [18, 18],
-                        iconAnchor: [9, 9]
-                    }))
-                }
-            }
-        });
-    }
+                if (berthInfo.location) {
+                    const popup = L.popup()
+                        .setLatLng(berthInfo.location)
+                        .setContent(content);
 
-    private createBuildingsJSON(): L.GeoJSON {
-        return L.geoJSON(arcgisToGeoJSON(arcgis.buildings), {
-            style: {
-                "color": "#ff7800",
-                "weight": 3,
-                "opacity": 0.65
-            }
-        });
-    }
-
-    private createLifebuoysJSON(): L.GeoJSON {
-        return L.geoJSON(arcgisToGeoJSON(arcgis.lifebuoys), {
-            onEachFeature: (_, layer) => {
-                if (layer instanceof L.Marker) {
-                    layer.setIcon(L.icon({
-                        iconUrl: '/icons/lifebuoy.png',
-                        iconSize: [20, 20],
-                        iconAnchor: [10, 10]
-                    }))
+                    layer.on("click", () => {
+                        this._map.openPopup(popup);
+                    });
                 }
             }
         });
@@ -184,5 +125,37 @@ export default class BerthLayer extends Layer {
                 "opacity": 0.65
             }
         });
+    }
+
+    private createBerthPopupContent(berthInfo: BerthInfo): string {
+        const name = berthInfo.name ? `${berthInfo.name}` : "";
+        const id = berthInfo.id ? `(${berthInfo.id})` : "";
+        const size = (berthInfo.width && berthInfo.length) ? `Grootte: ${berthInfo.width}m x ${berthInfo.length}m` : "";
+        const maxDepth = berthInfo.maxDepth ? `Maximale diepte: ${berthInfo.maxDepth}m` : "";
+        const owner = berthInfo.owner ? `Eigenaar: ${berthInfo.owner}` : "";
+        const region = berthInfo.region ? `Regio: ${berthInfo.region}` : "";
+        const dock = berthInfo.dock ? `Dok: ${berthInfo.dock}` : "";
+
+        return `<table>
+            <tr>
+                <th>${name}</th>
+                <td>${id}</td>
+            </tr>
+            <tr>
+                <td>${size}</td>
+            </tr>
+            <tr>
+                <td>${maxDepth}</td>
+            </tr>
+            <tr>
+                <td>${owner}</td>
+            </tr>
+            <tr>
+                <td>${region}</td>
+            </tr>
+            <tr>
+                <td>${dock}</td>
+            </tr>
+        </table>`;
     }
 }

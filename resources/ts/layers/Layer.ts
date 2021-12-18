@@ -32,7 +32,7 @@ export default abstract class Layer {
     /**
      * Wordt aangevraagd om de layer op de kaart te renderen.
      */
-    public abstract render(): void;
+    public abstract update(): void;
 
     /**
      * Voegt de nested layer toe aan de main layer.
@@ -57,6 +57,5 @@ export default abstract class Layer {
      */
     protected clearLayers(): void {
         this._nestedLayer.clearLayers();
-        this._layerGroup.clearLayers();
     }
 }
