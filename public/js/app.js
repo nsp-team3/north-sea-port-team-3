@@ -563,53 +563,54 @@ var BridgeAPI = /*#__PURE__*/function () {
     key: "fetchBridgePicture",
     value: function () {
       var _fetchBridgePicture = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3(bridge) {
-        var params, res, html, doc, image;
+        var imageIndicators, params, res, html, doc, image;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
+                imageIndicators = ["sluit", "brug_open"];
+
+                if (imageIndicators.includes(bridge.icoo)) {
+                  _context3.next = 3;
+                  break;
+                }
+
+                return _context3.abrupt("return");
+
+              case 3:
                 params = new URLSearchParams({
                   locatie: bridge.extradata,
                   name: bridge.name,
                   os: "web"
                 });
-
-                if (bridge.icoo == "sluis") {
-                  params.append("soort", "sluis");
-                } else {
-                  params.append("soort", "brug");
-                }
-
-                _context3.next = 4;
+                bridge.icoo === "sluis" ? params.append("soort", "sluis") : params.append("soort", "brug");
+                _context3.next = 7;
                 return fetch("/api/detailedbridge?".concat(params))["catch"](console.error);
 
-              case 4:
+              case 7:
                 res = _context3.sent;
 
                 if (!res) {
-                  _context3.next = 13;
+                  _context3.next = 16;
                   break;
                 }
 
-                _context3.next = 8;
+                _context3.next = 11;
                 return res.text();
 
-              case 8:
+              case 11:
                 html = _context3.sent;
                 doc = new DOMParser().parseFromString(html, "text/html");
                 image = doc.querySelector("img");
 
-                if (!(image !== null)) {
-                  _context3.next = 13;
+                if (!image) {
+                  _context3.next = 16;
                   break;
                 }
 
                 return _context3.abrupt("return", image.outerHTML);
 
-              case 13:
-                return _context3.abrupt("return", "");
-
-              case 14:
+              case 16:
               case "end":
                 return _context3.stop();
             }
@@ -828,6 +829,10 @@ var Destination = /*#__PURE__*/function () {
   }, {
     key: "parseHtmlDate",
     value: function parseHtmlDate(rawDate) {
+      if (!rawDate) {
+        return;
+      }
+
       var _rawDate$split = rawDate.split(" "),
           _rawDate$split2 = _slicedToArray(_rawDate$split, 2),
           date = _rawDate$split2[0],
@@ -931,7 +936,11 @@ var PortInfo = /*#__PURE__*/function () {
     key: "arrivalTime",
     get: function get() {
       if (this._type === _types_port_types__WEBPACK_IMPORTED_MODULE_0__.PortType.Current) {
-        return this.parseHtmlDate(this._rawVesselInfo["".concat(this._type, "ARR")]);
+        var rawArrivalTime = this._rawVesselInfo["".concat(this._type, "ARR")];
+
+        if (rawArrivalTime) {
+          return this.parseHtmlDate(rawArrivalTime);
+        }
       }
     }
   }, {
@@ -1383,7 +1392,7 @@ var VesselInfo = /*#__PURE__*/function () {
         return !Array.isArray(entry);
       }).map(function (rawDestination) {
         return new _Destination__WEBPACK_IMPORTED_MODULE_1__.Destination(rawDestination);
-      });
+      })[0];
     }
   }, {
     key: "draught",
@@ -1529,11 +1538,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _layers_BridgeLayer__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./layers/BridgeLayer */ "./resources/ts/layers/BridgeLayer.ts");
 /* harmony import */ var _layers_VesselLayer__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./layers/VesselLayer */ "./resources/ts/layers/VesselLayer.ts");
 /* harmony import */ var _layers_CompanyLayer__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./layers/CompanyLayer */ "./resources/ts/layers/CompanyLayer.ts");
+/* harmony import */ var _search_Search__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./search/Search */ "./resources/ts/search/Search.ts");
+/* harmony import */ var _search_VesselSearch__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./search/VesselSearch */ "./resources/ts/search/VesselSearch.ts");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+
 
 
 
@@ -1557,6 +1570,7 @@ var Application = /*#__PURE__*/function () {
     this._map = this.createMap();
     this._sidebar = this.createSidebar();
     this._layers = this.createLayers();
+    this._searches = this.createSearches();
     this._scale = this.createScale();
     this._overlays = this.createOverlays();
     this.addEventListeners();
@@ -1616,6 +1630,13 @@ var Application = /*#__PURE__*/function () {
       };
     }
   }, {
+    key: "createSearches",
+    value: function createSearches() {
+      return {
+        vessels: new _search_VesselSearch__WEBPACK_IMPORTED_MODULE_12__["default"](this._sidebar, "vessels-button")
+      };
+    }
+  }, {
     key: "addEventListeners",
     value: function addEventListeners() {
       var _this = this;
@@ -1626,10 +1647,6 @@ var Application = /*#__PURE__*/function () {
 
       this._map.on("zoomend", function () {
         return _this.onZoomEnd();
-      });
-
-      this._map.on("dragstart", function () {
-        return _this.onDragStart();
       });
 
       this._map.on("dragend", function () {
@@ -1650,12 +1667,23 @@ var Application = /*#__PURE__*/function () {
 
           _this2._layers.bridges.update();
         }
+
+        _this2.searchUpdate();
       }, 1000);
       setInterval(function () {
         _this2._layers.vessels.update();
 
         _this2._layers.bridges.update();
       }, 15000);
+    }
+  }, {
+    key: "searchUpdate",
+    value: function searchUpdate() {
+      if (_search_Search__WEBPACK_IMPORTED_MODULE_11__["default"].hasQueryChanged()) {
+        for (var searchMethod in this._searches) {
+          this._searches[searchMethod].update();
+        }
+      }
     }
   }, {
     key: "onZoomStart",
@@ -1667,41 +1695,24 @@ var Application = /*#__PURE__*/function () {
       this._layers.openSeaMaps.hide();
 
       this._layers.vessels.hide();
-
-      this._layers.berths.hide();
-
-      this._layers.companies.hide();
     }
   }, {
     key: "onZoomEnd",
     value: function onZoomEnd() {
-      this._layers.bridges.show();
-
-      this._layers.openSeaMaps.show();
-
       this._layers.vessels.show();
+
+      this._layers.bridges.show();
 
       this._layers.berths.show();
 
       this._layers.companies.show();
-    }
-  }, {
-    key: "onDragStart",
-    value: function onDragStart() {
-      this._movedSinceLastUpdate = true;
+
+      this._layers.openSeaMaps.show();
     }
   }, {
     key: "onDragEnd",
     value: function onDragEnd() {
-      this._layers.bridges.show();
-
-      this._layers.openSeaMaps.show();
-
-      this._layers.vessels.show();
-
-      this._layers.companies.show();
-
-      this._layers.berths.show();
+      this._movedSinceLastUpdate = true;
     }
   }]);
 
@@ -2069,61 +2080,55 @@ var BridgeLayer = /*#__PURE__*/function (_Layer) {
     key: "handleBridgeClick",
     value: function () {
       var _handleBridgeClick = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3(event, bridge) {
-        var data;
+        var infoArr, phoneNumber, administration, bridgePicture, content;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                leaflet__WEBPACK_IMPORTED_MODULE_1__.popup().setLatLng(event.latlng).setContent("Laden van gegevens...").openOn(this._map);
-                data = "Geen gegevens.";
-
-                if (!(bridge.lnk.length > 4)) {
-                  _context3.next = 9;
-                  break;
-                }
-
+                leaflet__WEBPACK_IMPORTED_MODULE_1__.popup().setLatLng(event.latlng).setContent("Laad gegevens van ".concat(bridge.name, "...")).openOn(this._map);
+                infoArr = [];
+                infoArr.push("<h6>".concat(bridge.name, "</h6>"));
                 _context3.next = 5;
-                return _api_BridgeAPI__WEBPACK_IMPORTED_MODULE_2__["default"].fetchCountryCode(bridge.lat, bridge.lng);
+                return this.parsePhoneNumber(bridge)["catch"](console.error);
 
               case 5:
-                bridge.lnk = _context3.sent;
-                data = "<h6>" + bridge.name + "</h6><b>Telefoonnummer: </b>" + bridge.lnk;
-                _context3.next = 10;
-                break;
+                phoneNumber = _context3.sent;
 
-              case 9:
-                data = "<h6>" + bridge.name + "</h6>Geen bijzonderheden";
+                if (phoneNumber) {
+                  infoArr.push("<b>Telefoonnummer:</b> ".concat(phoneNumber));
+                }
+
+                if (bridge.hoogte.length !== 0) {
+                  infoArr.push("<b>Breedte:</b> ".concat(bridge.breedte, " meter"));
+                  infoArr.push("<b>Doorvaarthoogte:</b> ".concat(bridge.hoogte, " meter"));
+                } else {
+                  infoArr.push("Doorvaarthoogte en breedte onbekend.");
+                }
+
+                _context3.next = 10;
+                return _api_BridgeAPI__WEBPACK_IMPORTED_MODULE_2__["default"].fetchAdministration(bridge)["catch"](console.error);
 
               case 10:
-                if ("" !== bridge.hoogte) {
-                  data += "<br><b>Doorvaarthoogte</b>: " + bridge.hoogte + " meter <br><b>Breedte:</b> " + bridge.breedte + " meter.";
-                } else {
-                  data += "<br>Doorvaarhoogte en -breedte onbekend";
+                administration = _context3.sent;
+
+                if (administration) {
+                  infoArr.push(administration);
                 }
 
-                _context3.t0 = data;
                 _context3.next = 14;
-                return _api_BridgeAPI__WEBPACK_IMPORTED_MODULE_2__["default"].fetchAdministration(bridge);
+                return _api_BridgeAPI__WEBPACK_IMPORTED_MODULE_2__["default"].fetchBridgePicture(bridge)["catch"](console.error);
 
               case 14:
-                data = _context3.t0 += _context3.sent;
+                bridgePicture = _context3.sent;
 
-                if (!["sluit", "brug_open"].includes(bridge.icoo)) {
-                  _context3.next = 20;
-                  break;
+                if (bridgePicture) {
+                  infoArr.push(bridgePicture);
                 }
 
-                _context3.t1 = data;
-                _context3.next = 19;
-                return _api_BridgeAPI__WEBPACK_IMPORTED_MODULE_2__["default"].fetchBridgePicture(bridge);
+                content = infoArr.join("<br>");
+                leaflet__WEBPACK_IMPORTED_MODULE_1__.popup().setLatLng(event.latlng).setContent(content).openOn(this._map);
 
-              case 19:
-                data = _context3.t1 += _context3.sent;
-
-              case 20:
-                leaflet__WEBPACK_IMPORTED_MODULE_1__.popup().setLatLng(event.latlng).setContent(data).openOn(this._map);
-
-              case 21:
+              case 18:
               case "end":
                 return _context3.stop();
             }
@@ -2136,6 +2141,49 @@ var BridgeLayer = /*#__PURE__*/function (_Layer) {
       }
 
       return handleBridgeClick;
+    }()
+  }, {
+    key: "parsePhoneNumber",
+    value: function () {
+      var _parsePhoneNumber = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4(bridge) {
+        var countryCode;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                if (!(bridge.lnk.length > 4)) {
+                  _context4.next = 9;
+                  break;
+                }
+
+                if (!(bridge.lnk.charAt(0) === "0")) {
+                  _context4.next = 8;
+                  break;
+                }
+
+                _context4.next = 4;
+                return _api_BridgeAPI__WEBPACK_IMPORTED_MODULE_2__["default"].fetchCountryCode(bridge.lat, bridge.lng);
+
+              case 4:
+                countryCode = _context4.sent;
+                return _context4.abrupt("return", "+".concat(countryCode, " ").concat(bridge.lnk));
+
+              case 8:
+                return _context4.abrupt("return", bridge.lnk);
+
+              case 9:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }));
+
+      function parsePhoneNumber(_x3) {
+        return _parsePhoneNumber.apply(this, arguments);
+      }
+
+      return parsePhoneNumber;
     }()
   }, {
     key: "createBridgeMarker",
@@ -2268,6 +2316,10 @@ var CompanyLayer = /*#__PURE__*/function (_Layer) {
     value: function renderManagement(zoomLevel) {
       if (zoomLevel >= this.MIN_MANAGEMENT_ZOOM && zoomLevel < this.MIN_COMPANIES_ZOOM) {
         this._layerGroup.addLayer(this._managementLayer);
+
+        if (this._popup) {
+          this._map.closePopup(this._popup);
+        }
       } else {
         this._layerGroup.removeLayer(this._managementLayer);
       }
@@ -2282,9 +2334,13 @@ var CompanyLayer = /*#__PURE__*/function (_Layer) {
           var popup = leaflet__WEBPACK_IMPORTED_MODULE_0__.popup().setLatLng(_this2.getCenter(layer)).setContent(_this2.createCompanyPopupContent(feature));
           layer.on("mouseover", function () {
             _this2._map.openPopup(popup);
+
+            _this2._popup = popup;
           });
           layer.on("mouseout", function () {
             _this2._map.closePopup(popup);
+
+            _this2._popup = undefined;
           });
         },
         style: {
@@ -2307,7 +2363,7 @@ var CompanyLayer = /*#__PURE__*/function (_Layer) {
   }, {
     key: "createCompanyPopupContent",
     value: function createCompanyPopupContent(feature) {
-      return "<table>\n        <tr>\n            <th>Bedrijf</th>\n            <th>Haven</th>\n        </tr>\n        <tr>\n            <td>".concat(feature.properties.bedrijf, "</td>\n            <td>").concat(feature.properties.havenNummer, "</td>\n        </tr>\n        </table>");
+      return "<table>\n        <tr>\n            <th>Bedrijf</th>\n        </tr>\n        <tr>\n            <td>".concat(feature.properties.bedrijf, "</td>\n        </tr>\n        <tr>\n            <th>Haven</th>\n        </tr>\n        <tr>\n            <td>").concat(feature.properties.havenNummer, "</td>\n        </tr>\n        </table>");
     }
   }]);
 
@@ -2760,6 +2816,268 @@ var VesselLayer = /*#__PURE__*/function (_Layer) {
 
   return VesselLayer;
 }(_Layer__WEBPACK_IMPORTED_MODULE_5__["default"]);
+
+
+
+/***/ }),
+
+/***/ "./resources/ts/search/Search.ts":
+/*!***************************************!*\
+  !*** ./resources/ts/search/Search.ts ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Search)
+/* harmony export */ });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+var Search = /*#__PURE__*/function () {
+  function Search(sidebar, searchButtonId) {
+    _classCallCheck(this, Search);
+
+    this.sidebar = sidebar;
+    this.searchButton = document.getElementById(searchButtonId);
+    this.enabled = true;
+    this.addFilterListener();
+  }
+
+  _createClass(Search, [{
+    key: "update",
+    value: function update() {
+      if (!this.enabled) {
+        return;
+      }
+
+      this.executeSearch();
+    }
+  }, {
+    key: "addFilterListener",
+    value: function addFilterListener() {
+      var _this = this;
+
+      this.searchButton.addEventListener("click", function () {
+        return _this.onFilterClicked();
+      });
+    }
+  }, {
+    key: "onFilterClicked",
+    value: function onFilterClicked() {
+      this.enabled = !this.enabled;
+
+      if (this.enabled) {
+        this.searchButton.classList.remove("btn-secondary");
+        this.searchButton.classList.add("btn-primary");
+      } else {
+        this.searchButton.classList.remove("btn-primary");
+        this.searchButton.classList.add("btn-secondary");
+      }
+
+      Search.forceUpdate = true;
+    }
+  }], [{
+    key: "hasQueryChanged",
+    value: function hasQueryChanged() {
+      var searchbar = document.getElementById(Search.SEARCH_BAR_ID);
+      var query = searchbar.value;
+
+      if (Search.forceUpdate || query !== Search.lastQuery) {
+        Search.clearSearchResults();
+        Search.lastQuery = query;
+        Search.forceUpdate = false;
+        return true;
+      }
+
+      return false;
+    }
+  }, {
+    key: "clearSearchResults",
+    value: function clearSearchResults() {
+      var resultsElement = document.getElementById(Search.RESULTS_ID);
+      resultsElement.innerHTML = "";
+    }
+  }]);
+
+  return Search;
+}();
+
+
+Search.forceUpdate = false;
+Search.SEARCH_ID = "searchTab";
+Search.SEARCH_BAR_ID = "searchbar";
+Search.RESULTS_ID = "search-results";
+Search.lastQuery = "";
+
+/***/ }),
+
+/***/ "./resources/ts/search/VesselSearch.ts":
+/*!*********************************************!*\
+  !*** ./resources/ts/search/VesselSearch.ts ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ VesselSearch)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _api_VesselAPI__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../api/VesselAPI */ "./resources/ts/api/VesselAPI.ts");
+/* harmony import */ var _Search__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Search */ "./resources/ts/search/Search.ts");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } Object.defineProperty(subClass, "prototype", { value: Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }), writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+
+var VesselSearch = /*#__PURE__*/function (_Search) {
+  _inherits(VesselSearch, _Search);
+
+  var _super = _createSuper(VesselSearch);
+
+  function VesselSearch(sidebar, searchButtonId) {
+    var _this;
+
+    _classCallCheck(this, VesselSearch);
+
+    _this = _super.call(this, sidebar, searchButtonId);
+    _this.SEARCH_FILTERS = {
+      excludePorts: true
+    };
+    return _this;
+  }
+
+  _createClass(VesselSearch, [{
+    key: "executeSearch",
+    value: function () {
+      var _executeSearch = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var _this2 = this;
+
+        var searchbar, searchResultsElement, results;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (this.enabled) {
+                  _context.next = 2;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 2:
+                searchbar = document.getElementById(_Search__WEBPACK_IMPORTED_MODULE_2__["default"].SEARCH_BAR_ID);
+                searchResultsElement = document.getElementById(_Search__WEBPACK_IMPORTED_MODULE_2__["default"].RESULTS_ID);
+                _context.next = 6;
+                return _api_VesselAPI__WEBPACK_IMPORTED_MODULE_1__["default"].search(searchbar.value, this.SEARCH_FILTERS)["catch"](console.error);
+
+              case 6:
+                results = _context.sent;
+
+                if (results) {
+                  results.forEach(function (result) {
+                    return _this2.displayResult(searchResultsElement, result);
+                  });
+                }
+
+              case 8:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function executeSearch() {
+        return _executeSearch.apply(this, arguments);
+      }
+
+      return executeSearch;
+    }()
+  }, {
+    key: "displayResult",
+    value: function displayResult(searchResultsElement, searchResult) {
+      var div = document.createElement("div");
+      div.classList.add("list-group-item", "list-group-item-action", "my-2");
+      var title = this.createTitle(searchResult);
+      var info = this.createInfo(searchResult);
+      div.append(title, info);
+      div.addEventListener("click", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        var vesselDetails;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return _api_VesselAPI__WEBPACK_IMPORTED_MODULE_1__["default"].getDetails(searchResult.mmsi);
+
+              case 2:
+                vesselDetails = _context2.sent;
+                console.log(vesselDetails);
+                console.log("TODO: Show vesselDetails in sidebar.");
+                console.log("TODO: Fly to vessel?");
+
+              case 6:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      })));
+      searchResultsElement.appendChild(div);
+    }
+  }, {
+    key: "createInfo",
+    value: function createInfo(searchResult) {
+      var info = document.createElement("p");
+      info.classList.add("mb-1", "small");
+      info.innerHTML = "".concat(searchResult.typeText, " (").concat(searchResult.mmsi || searchResult.portId, ")");
+      return info;
+    }
+  }, {
+    key: "createTitle",
+    value: function createTitle(searchResult) {
+      var title = document.createElement("strong");
+      title.classList.add("mb-1");
+      title.innerText = "".concat(searchResult.name, " (").concat(searchResult.flag, ")");
+      return title;
+    }
+  }]);
+
+  return VesselSearch;
+}(_Search__WEBPACK_IMPORTED_MODULE_2__["default"]);
 
 
 

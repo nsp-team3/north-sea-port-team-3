@@ -56,34 +56,50 @@ export default class BridgeLayer extends Layer {
      * @param bridge bruginformatie
      */
     private async handleBridgeClick(event: L.LeafletMouseEvent, bridge: any): Promise<void> {
-        // Toont een bericht zodat mensen weten dat ze wel goed hebben geklikt.
-        L.popup().setLatLng(event.latlng).setContent("Laden van gegevens...").openOn(this._map);
+        // Toont een bericht zodat mensen weten dat ze goed hebben geklikt.
+        L.popup().setLatLng(event.latlng).setContent(`Laad gegevens van ${bridge.name}...`).openOn(this._map);
+        
+        const infoArr = [];
+        infoArr.push(`<h6>${bridge.name}</h6>`);
 
-        let data = "Geen gegevens.";
-
-        // telefoonnummber toevoegen wanneer beschikbaar
-        if (bridge.lnk.length > 4) {
-            bridge.lnk = await BridgeAPI.fetchCountryCode(bridge.lat, bridge.lng);
-            data = "<h6>" + bridge.name + "</h6><b>Telefoonnummer: </b>" + bridge.lnk
-        } else {
-            data = "<h6>" + bridge.name + "</h6>Geen bijzonderheden"
+        // Voeg telefoonnummer toe wanneer deze informatie beschikbaar is.
+        const phoneNumber = await this.parsePhoneNumber(bridge).catch(console.error);
+        if (phoneNumber) {
+            infoArr.push(`<b>Telefoonnummer:</b> ${phoneNumber}`);
         }
 
-        // hoogte/breedte toevoegen wanneer beschikbaar
-        if ("" !== bridge.hoogte) {
-            data += "<br><b>Doorvaarthoogte</b>: " + bridge.hoogte + " meter <br><b>Breedte:</b> " + bridge.breedte + " meter."
+        // Voet hoogte/breedte toe wanneer deze informatie beschikbaar is.
+        if (bridge.hoogte.length !== 0) {
+            infoArr.push(`<b>Breedte:</b> ${bridge.breedte} meter`);
+            infoArr.push(`<b>Doorvaarthoogte:</b> ${bridge.hoogte} meter`);
         } else {
-            data += "<br>Doorvaarhoogte en -breedte onbekend";
+            infoArr.push("Doorvaarthoogte en breedte onbekend.");
         }
 
-        data += await BridgeAPI.fetchAdministration(bridge);
+        const administration = await BridgeAPI.fetchAdministration(bridge).catch(console.error);
+        if (administration) {
+            infoArr.push(administration);
+        }
 
-        if (["sluit", "brug_open"].includes(bridge.icoo)) {
-            data += await BridgeAPI.fetchBridgePicture(bridge);
+        const bridgePicture = await BridgeAPI.fetchBridgePicture(bridge).catch(console.error);
+        if (bridgePicture) {
+            infoArr.push(bridgePicture);
         }
 
         // popup zichtbaar maken
-        L.popup().setLatLng(event.latlng).setContent(data).openOn(this._map);
+        const content = infoArr.join("<br>");
+        L.popup().setLatLng(event.latlng).setContent(content).openOn(this._map);
+    }
+
+    private async parsePhoneNumber(bridge: any): Promise<string | void> {
+        if (bridge.lnk.length > 4) {
+            if (bridge.lnk.charAt(0) === "0") {
+                const countryCode = await BridgeAPI.fetchCountryCode(bridge.lat, bridge.lng);
+                return `+${countryCode} ${bridge.lnk}`
+            } else {
+                return bridge.lnk;
+            }
+        }
     }
 
     private createBridgeMarker(bridge: any): L.Marker {

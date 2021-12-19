@@ -11,6 +11,7 @@ export default class CompanyLayer extends Layer {
     private readonly MIN_MANAGEMENT_ZOOM = 8;
     private readonly MIN_COMPANIES_ZOOM = 13;
     private _managementLayer: L.GeoJSON;
+    private _popup?: L.Popup;
 
     public constructor(map: L.Map) {
         super(map);
@@ -53,6 +54,9 @@ export default class CompanyLayer extends Layer {
     private renderManagement(zoomLevel: number): void {
         if (zoomLevel >= this.MIN_MANAGEMENT_ZOOM && zoomLevel < this.MIN_COMPANIES_ZOOM) {
             this._layerGroup.addLayer(this._managementLayer);
+            if (this._popup) {
+                this._map.closePopup(this._popup);
+            }
         } else {
             this._layerGroup.removeLayer(this._managementLayer);
         }
@@ -67,10 +71,12 @@ export default class CompanyLayer extends Layer {
 
                 layer.on("mouseover", () => {
                     this._map.openPopup(popup);
+                    this._popup = popup;
                 });
                 
                 layer.on("mouseout", () => {
                     this._map.closePopup(popup);
+                    this._popup = undefined;
                 });
             },
             style: {
@@ -93,10 +99,14 @@ export default class CompanyLayer extends Layer {
         return `<table>
         <tr>
             <th>Bedrijf</th>
-            <th>Haven</th>
         </tr>
         <tr>
             <td>${feature.properties.bedrijf}</td>
+        </tr>
+        <tr>
+            <th>Haven</th>
+        </tr>
+        <tr>
             <td>${feature.properties.havenNummer}</td>
         </tr>
         </table>`;

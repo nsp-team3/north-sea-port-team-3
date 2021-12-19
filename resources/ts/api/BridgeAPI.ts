@@ -35,29 +35,31 @@ export default class BridgeAPI {
      * @param bridge bruginformatie van de api
      * @returns img element in string: "<img>"
      */
-    public static async fetchBridgePicture(bridge: any): Promise<string> {
+    public static async fetchBridgePicture(bridge: any): Promise<string | void> {
+        const imageIndicators = ["sluit", "brug_open"];
+        if (!imageIndicators.includes(bridge.icoo)) {
+            return;
+        }
+
         // aanmaken van ?locatie=6554&name=brug....
         const params = new URLSearchParams({
             locatie: bridge.extradata,
             name: bridge.name,
             os: "web",
         });
+
         // sluis of brug als type defineren
-        if (bridge.icoo == "sluis") {
-            params.append("soort", "sluis")
-        } else {
-            params.append("soort", "brug")
-        }
+        bridge.icoo === "sluis" ? params.append("soort", "sluis") : params.append("soort", "brug");
+
         const res = await fetch(`/api/detailedbridge?${params}`).catch(console.error);
         if (res) {
             const html = await res.text();
             const doc = new DOMParser().parseFromString(html, "text/html");
             const image = doc.querySelector("img");
-            if (image !== null) {
+            if (image) {
                 return image.outerHTML;
             }
         }
-        return "";
     }
 
     /**

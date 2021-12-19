@@ -12,8 +12,11 @@ import BerthLayer from "./layers/BerthLayer";
 import BridgeLayer from "./layers/BridgeLayer";
 import VesselLayer from "./layers/VesselLayer";
 import CompanyLayer from "./layers/CompanyLayer";
+import Search from "./search/Search";
+import VesselSearch from "./search/VesselSearch";
 
 type Layers = {[index: string]: Layer};
+type Searches = {[index: string]: Search};
 
 class Application {
     private readonly INITIAL_LATITUDE = 51.2797429555907;
@@ -23,6 +26,7 @@ class Application {
     private _map: L.Map;
     private _sidebar: L.Control.Sidebar;
     private _layers: Layers;
+    private _searches: Searches;
     private _scale: L.Control.Scale;
     private _overlays: L.Control.Layers;
 
@@ -32,6 +36,7 @@ class Application {
         this._map = this.createMap();
         this._sidebar = this.createSidebar();
         this._layers = this.createLayers();
+        this._searches = this.createSearches();
         this._scale = this.createScale();
         this._overlays = this.createOverlays();
         this.addEventListeners();
@@ -102,12 +107,20 @@ class Application {
     }
 
     /**
+     * Voegt alle zoekbalken toe.
+     */
+    private createSearches(): Searches {
+        return {
+            vessels: new VesselSearch(this._sidebar, "vessels-button")
+        }
+    }
+
+    /**
      * Voegt alle event listeners toe aan de kaart.
      */
     private addEventListeners(): void {
         this._map.on("zoomstart", () => this.onZoomStart());
         this._map.on("zoomend", () => this.onZoomEnd());
-        this._map.on("dragstart", () => this.onDragStart());
         this._map.on("dragend", () => this.onDragEnd());
     }
 
@@ -122,11 +135,21 @@ class Application {
                 this._layers.vessels.update();
                 this._layers.bridges.update();
             }
+            this.searchUpdate();
         }, 1000);
+
         setInterval(() => {
             this._layers.vessels.update();
             this._layers.bridges.update();
         }, 15000);
+    }
+
+    private searchUpdate(): void {
+        if (Search.hasQueryChanged()) {
+            for (const searchMethod in this._searches) {
+                this._searches[searchMethod].update();
+            }
+        }
     }
 
     private onZoomStart(): void {
@@ -134,28 +157,18 @@ class Application {
         this._layers.bridges.hide();
         this._layers.openSeaMaps.hide();
         this._layers.vessels.hide();
-        this._layers.berths.hide();
-        this._layers.companies.hide();
     }
 
     private onZoomEnd(): void {
-        this._layers.bridges.show();
-        this._layers.openSeaMaps.show();
         this._layers.vessels.show();
+        this._layers.bridges.show();
         this._layers.berths.show();
         this._layers.companies.show();
-    }
-
-    private onDragStart(): void {
-        this._movedSinceLastUpdate = true;
+        this._layers.openSeaMaps.show();
     }
 
     private onDragEnd(): void {
-        this._layers.bridges.show();
-        this._layers.openSeaMaps.show();
-        this._layers.vessels.show();
-        this._layers.companies.show();
-        this._layers.berths.show();
+        this._movedSinceLastUpdate = true;
     }
 }
 

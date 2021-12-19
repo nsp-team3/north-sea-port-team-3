@@ -47,7 +47,10 @@ import { RawDestination } from "../types/destination-types";
         return this._rawDestination.TRV;
     }
 
-    private parseHtmlDate(rawDate: string): Date | void {
+    private parseHtmlDate(rawDate: string | void): Date | void {
+        if (!rawDate) {
+            return;
+        }
         const [date, rawTime] = rawDate.split(" ");
         if (typeof date === "string" && typeof rawTime === "string") {
             const timeMatch = rawTime.match(/<b>([0-9]{1,2}):([0-9]{1,2})<\/b>/);

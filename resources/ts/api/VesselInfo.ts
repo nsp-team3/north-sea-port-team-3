@@ -27,14 +27,14 @@ export class VesselInfo {
         return Number(this._rawVesselInfo.COG);
     }
 
-    public get destinations(): Destination[] | void {
+    public get destinations(): Destination | void {
         const rawDestinations: RawDestination[] = this._rawVesselInfo.EST;
         if (!rawDestinations || Array.isArray(rawDestinations[0])) {
             return;
         }
         return rawDestinations
             .filter((entry) => !Array.isArray(entry))
-            .map((rawDestination: RawDestination) => new Destination(rawDestination));
+            .map((rawDestination: RawDestination) => new Destination(rawDestination))[0];
     }
 
     public get draught(): number {

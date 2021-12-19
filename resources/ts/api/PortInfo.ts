@@ -48,7 +48,10 @@ import { RawVesselInfo } from "../types/vessel-types";
 
     public get arrivalTime(): Date | void {
         if (this._type === PortType.Current) {
-            return this.parseHtmlDate(this._rawVesselInfo[`${this._type}ARR`]);
+            const rawArrivalTime = this._rawVesselInfo[`${this._type}ARR`];
+            if (rawArrivalTime) {
+                return this.parseHtmlDate(rawArrivalTime);
+            }
         }
     }
 
