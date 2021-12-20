@@ -167,20 +167,12 @@ export default class VesselAPI {
      * @param searchFilters De zoekfilters.
      * @returns Gefilterde zoekresultaten.
      */
-     private static filterSearchResults = (searchResults: VesselSearchResult[], searchFilters?: VesselSearchFilters): VesselSearchResult[] => {
-        searchResults = searchResults.filter((searchResult) => searchResult.portId ? searchResult.portId < 1000000 : true);
-
+    private static filterSearchResults = (searchResults: VesselSearchResult[], searchFilters?: VesselSearchFilters): VesselSearchResult[] => {
         if (!searchFilters) {
             return searchResults;
         }
-
-        if (searchFilters.excludePorts) {
-            searchResults = searchResults.filter((searchResult) => searchResult.portId === undefined);
-        }
         
-        if (searchFilters.excludeVessels) {
-            searchResults = searchResults.filter((searchResult) => searchResult.mmsi === undefined);
-        }
+        // TODO: Apply other filters.
 
         return searchResults;
     }
@@ -198,24 +190,14 @@ export default class VesselAPI {
 
         return resultsMatch.map((e) => {
             const resultInfoMatch = e.match(/<RES><ID>([0-9]*)<\/ID><NAME>(.*?)<\/NAME><D>(.*?)<\/D><TYPE>([0-9]*)<\/TYPE><FLAG>([a-zA-Z]+)<\/FLAG><LAT>.*?<\/LAT><LNG>.*?<\/LNG><\/RES>/);
-            if (resultInfoMatch) {
-                const info = {
+            if (resultInfoMatch && resultInfoMatch[4] !== "0") {
+                return {
                     mmsi: Number(resultInfoMatch[1]),
                     name: resultInfoMatch[2],
                     typeText: resultInfoMatch[3],
                     type: Number(resultInfoMatch[4]),
                     flag: resultInfoMatch[5],
-                    portId: 0
                 }
-
-                if (info.type === 0) {
-                    info.portId = info.mmsi;
-                    delete info.mmsi;
-                } else {
-                    delete info.portId;
-                }
-
-                return info;
             }
             return undefined;
         }).filter((e) => e !== undefined);

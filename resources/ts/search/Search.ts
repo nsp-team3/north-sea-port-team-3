@@ -4,9 +4,6 @@
 export default abstract class Search {
     public static forceUpdate: boolean = false;
 
-    // De id van de leaflet zoek sidebar
-    public static readonly SEARCH_ID: string = "searchTab";
-
     // De id van de zoekbalk
     protected static readonly SEARCH_BAR_ID: string = "searchbar";
 
@@ -21,7 +18,6 @@ export default abstract class Search {
 
     // De klasse die gebruikt wordt om gedetailleerde informatie te tonen.
 
-    protected sidebar: L.Control.Sidebar;
     protected searchButton: HTMLButtonElement;
     protected enabled: boolean;
 
@@ -30,8 +26,7 @@ export default abstract class Search {
      * @param map koppeling met de kaart, bijvoorbeeld zoomen naar locatie van boot
      * @param searchButtonId Het ID van de zoek knop in html
      */
-    public constructor(sidebar: L.Control.Sidebar, searchButtonId: string) {
-        this.sidebar = sidebar;
+    public constructor(searchButtonId: string) {
         this.searchButton = document.getElementById(searchButtonId) as HTMLButtonElement;
         this.enabled = true;
         this.addFilterListener();

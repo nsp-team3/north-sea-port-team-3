@@ -49,7 +49,6 @@ export type VesselSearchResult = {
     typeText: string;
     type: number;
     flag: string;
-    portId?: number;
 }
 
 export type VesselSearchFilters = {

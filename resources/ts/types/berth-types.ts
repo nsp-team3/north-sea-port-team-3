@@ -7,7 +7,7 @@ export type BerthInfo = {
     maxDepth?: number;
     type: string;
     region: string;
-    location?: L.LatLng;
+    location: L.LatLng;
     width?: number;
     length?: number;
     dock: number;

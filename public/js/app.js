@@ -853,6 +853,169 @@ var Destination = /*#__PURE__*/function () {
 
 /***/ }),
 
+/***/ "./resources/ts/api/PortAPI.ts":
+/*!*************************************!*\
+  !*** ./resources/ts/api/PortAPI.ts ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ PortAPI)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+var PortAPI = /*#__PURE__*/function () {
+  function PortAPI() {
+    _classCallCheck(this, PortAPI);
+  }
+
+  _createClass(PortAPI, null, [{
+    key: "search",
+    value: function () {
+      var _search = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(query, searchFilters) {
+        var res, body;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return fetch("".concat(PortAPI.SEARCH_URL, "?query=").concat(query))["catch"](console.error);
+
+              case 2:
+                res = _context.sent;
+
+                if (!(!res || res.status !== 200)) {
+                  _context.next = 5;
+                  break;
+                }
+
+                return _context.abrupt("return", []);
+
+              case 5:
+                _context.next = 7;
+                return res.text();
+
+              case 7:
+                body = _context.sent;
+                return _context.abrupt("return", PortAPI.filterSearchResults(PortAPI.parseSearchXML(body), searchFilters));
+
+              case 9:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function search(_x, _x2) {
+        return _search.apply(this, arguments);
+      }
+
+      return search;
+    }()
+  }, {
+    key: "getDetails",
+    value: function () {
+      var _getDetails = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2(portId) {
+        var res;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return fetch("".concat(PortAPI.DETAILS_URL, "?id=").concat(portId));
+
+              case 2:
+                res = _context2.sent;
+
+                if (!(res.status === 200)) {
+                  _context2.next = 7;
+                  break;
+                }
+
+                _context2.next = 6;
+                return res.json();
+
+              case 6:
+                return _context2.abrupt("return", _context2.sent);
+
+              case 7:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }));
+
+      function getDetails(_x3) {
+        return _getDetails.apply(this, arguments);
+      }
+
+      return getDetails;
+    }()
+  }, {
+    key: "parseSearchXML",
+    value: function parseSearchXML(xml) {
+      var resultsMatch = xml.match(/<RES>.*?<\/RES>/g);
+
+      if (!resultsMatch) {
+        return [];
+      }
+
+      return resultsMatch.map(function (e) {
+        var resultInfoMatch = e.match(/<RES><ID>([0-9]*)<\/ID><NAME>(.*?)<\/NAME><D>(.*?)<\/D><TYPE>([0-9]*)<\/TYPE><FLAG>([a-zA-Z]+)<\/FLAG><LAT>.*?<\/LAT><LNG>.*?<\/LNG><\/RES>/);
+
+        if (resultInfoMatch && resultInfoMatch[4] === "0") {
+          return {
+            portId: Number(resultInfoMatch[1]),
+            name: resultInfoMatch[2],
+            flag: resultInfoMatch[5]
+          };
+        }
+
+        return undefined;
+      }).filter(function (e) {
+        return e !== undefined;
+      });
+    }
+  }]);
+
+  return PortAPI;
+}();
+
+
+PortAPI.SEARCH_URL = "/api/search";
+PortAPI.DETAILS_URL = "/api/ports";
+
+PortAPI.filterSearchResults = function (searchResults, searchFilters) {
+  searchResults = searchResults.filter(function (searchResult) {
+    return searchResult.portId ? searchResult.portId < 1000000 : true;
+  });
+
+  if (!searchFilters) {
+    return searchResults;
+  }
+
+  console.log("Complete TODOs of PortAPI");
+  return searchResults;
+};
+
+/***/ }),
+
 /***/ "./resources/ts/api/PortInfo.ts":
 /*!**************************************!*\
   !*** ./resources/ts/api/PortInfo.ts ***!
@@ -1193,24 +1356,14 @@ var VesselAPI = /*#__PURE__*/function () {
       return resultsMatch.map(function (e) {
         var resultInfoMatch = e.match(/<RES><ID>([0-9]*)<\/ID><NAME>(.*?)<\/NAME><D>(.*?)<\/D><TYPE>([0-9]*)<\/TYPE><FLAG>([a-zA-Z]+)<\/FLAG><LAT>.*?<\/LAT><LNG>.*?<\/LNG><\/RES>/);
 
-        if (resultInfoMatch) {
-          var info = {
+        if (resultInfoMatch && resultInfoMatch[4] !== "0") {
+          return {
             mmsi: Number(resultInfoMatch[1]),
             name: resultInfoMatch[2],
             typeText: resultInfoMatch[3],
             type: Number(resultInfoMatch[4]),
-            flag: resultInfoMatch[5],
-            portId: 0
+            flag: resultInfoMatch[5]
           };
-
-          if (info.type === 0) {
-            info.portId = info.mmsi;
-            delete info.mmsi;
-          } else {
-            delete info.portId;
-          }
-
-          return info;
         }
 
         return undefined;
@@ -1309,24 +1462,8 @@ VesselAPI.parseSimpleVesselInfo = function (shipInfo) {
 };
 
 VesselAPI.filterSearchResults = function (searchResults, searchFilters) {
-  searchResults = searchResults.filter(function (searchResult) {
-    return searchResult.portId ? searchResult.portId < 1000000 : true;
-  });
-
   if (!searchFilters) {
     return searchResults;
-  }
-
-  if (searchFilters.excludePorts) {
-    searchResults = searchResults.filter(function (searchResult) {
-      return searchResult.portId === undefined;
-    });
-  }
-
-  if (searchFilters.excludeVessels) {
-    searchResults = searchResults.filter(function (searchResult) {
-      return searchResult.mmsi === undefined;
-    });
   }
 
   return searchResults;
@@ -1522,6 +1659,9 @@ var VesselInfo = /*#__PURE__*/function () {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Application)
+/* harmony export */ });
 /* harmony import */ var leaflet__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! leaflet */ "./node_modules/leaflet/dist/leaflet-src.js");
 /* harmony import */ var leaflet__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(leaflet__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var leaflet_sidebar_v2__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! leaflet-sidebar-v2 */ "./node_modules/leaflet-sidebar-v2/js/leaflet-sidebar.js");
@@ -1540,11 +1680,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _layers_CompanyLayer__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./layers/CompanyLayer */ "./resources/ts/layers/CompanyLayer.ts");
 /* harmony import */ var _search_Search__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./search/Search */ "./resources/ts/search/Search.ts");
 /* harmony import */ var _search_VesselSearch__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./search/VesselSearch */ "./resources/ts/search/VesselSearch.ts");
+/* harmony import */ var _search_PortSearch__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./search/PortSearch */ "./resources/ts/search/PortSearch.ts");
+/* harmony import */ var _search_BerthSearch__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./search/BerthSearch */ "./resources/ts/search/BerthSearch.ts");
+/* harmony import */ var _displays_DisplayVesselInfo__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./displays/DisplayVesselInfo */ "./resources/ts/displays/DisplayVesselInfo.ts");
+/* harmony import */ var _displays_DisplayPortInfo__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./displays/DisplayPortInfo */ "./resources/ts/displays/DisplayPortInfo.ts");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+
+
+
 
 
 
@@ -1569,13 +1717,13 @@ var Application = /*#__PURE__*/function () {
     this.INITIAL_ZOOM = 8;
     this._map = this.createMap();
     this._sidebar = this.createSidebar();
-    this._layers = this.createLayers();
-    this._searches = this.createSearches();
+    Application.layers = this.createLayers();
+    Application.searches = this.createSearches();
+    Application.displays = this.createDisplays();
     this._scale = this.createScale();
     this._overlays = this.createOverlays();
     this.addEventListeners();
     this.startIntervalUpdates();
-    console.log("TODO: Add all search methods back.");
   }
 
   _createClass(Application, [{
@@ -1605,13 +1753,12 @@ var Application = /*#__PURE__*/function () {
   }, {
     key: "createOverlays",
     value: function createOverlays() {
-      console.log("TODO: Add companies layer & windspeed layer!!!");
       var overlays = {
-        "Bedrijven": this._layers.companies.main,
-        "Ligplaatsen": this._layers.berths.main,
-        "Schepen": this._layers.vessels.main,
-        "Open sea maps": this._layers.openSeaMaps.main,
-        "Bruggen": this._layers.bridges.main
+        "Bedrijven": Application.layers.companies.main,
+        "Ligplaatsen": Application.layers.berths.main,
+        "Schepen": Application.layers.vessels.main,
+        "Open sea maps": Application.layers.openSeaMaps.main,
+        "Bruggen": Application.layers.bridges.main
       };
       return leaflet__WEBPACK_IMPORTED_MODULE_0__.control.layers({}, overlays, {
         sortLayers: true
@@ -1633,7 +1780,17 @@ var Application = /*#__PURE__*/function () {
     key: "createSearches",
     value: function createSearches() {
       return {
-        vessels: new _search_VesselSearch__WEBPACK_IMPORTED_MODULE_12__["default"](this._sidebar, "vessels-button")
+        vessels: new _search_VesselSearch__WEBPACK_IMPORTED_MODULE_12__["default"]("vessels-button"),
+        ports: new _search_PortSearch__WEBPACK_IMPORTED_MODULE_13__["default"]("ports-button"),
+        berths: new _search_BerthSearch__WEBPACK_IMPORTED_MODULE_14__["default"]("berths-button")
+      };
+    }
+  }, {
+    key: "createDisplays",
+    value: function createDisplays() {
+      return {
+        vessels: new _displays_DisplayVesselInfo__WEBPACK_IMPORTED_MODULE_15__["default"](this._sidebar),
+        ports: new _displays_DisplayPortInfo__WEBPACK_IMPORTED_MODULE_16__["default"](this._sidebar)
       };
     }
   }, {
@@ -1662,26 +1819,23 @@ var Application = /*#__PURE__*/function () {
       setInterval(function () {
         if (_this2._movedSinceLastUpdate) {
           _this2._movedSinceLastUpdate = false;
-
-          _this2._layers.vessels.update();
-
-          _this2._layers.bridges.update();
+          Application.layers.vessels.update();
+          Application.layers.bridges.update();
         }
 
         _this2.searchUpdate();
       }, 1000);
       setInterval(function () {
-        _this2._layers.vessels.update();
-
-        _this2._layers.bridges.update();
+        Application.layers.vessels.update();
+        Application.layers.bridges.update();
       }, 15000);
     }
   }, {
     key: "searchUpdate",
     value: function searchUpdate() {
       if (_search_Search__WEBPACK_IMPORTED_MODULE_11__["default"].hasQueryChanged()) {
-        for (var searchMethod in this._searches) {
-          this._searches[searchMethod].update();
+        for (var searchMethod in Application.searches) {
+          Application.searches[searchMethod].update();
         }
       }
     }
@@ -1689,25 +1843,18 @@ var Application = /*#__PURE__*/function () {
     key: "onZoomStart",
     value: function onZoomStart() {
       this._movedSinceLastUpdate = true;
-
-      this._layers.bridges.hide();
-
-      this._layers.openSeaMaps.hide();
-
-      this._layers.vessels.hide();
+      Application.layers.bridges.hide();
+      Application.layers.openSeaMaps.hide();
+      Application.layers.vessels.hide();
     }
   }, {
     key: "onZoomEnd",
     value: function onZoomEnd() {
-      this._layers.vessels.show();
-
-      this._layers.bridges.show();
-
-      this._layers.berths.show();
-
-      this._layers.companies.show();
-
-      this._layers.openSeaMaps.show();
+      Application.layers.vessels.show();
+      Application.layers.bridges.show();
+      Application.layers.berths.show();
+      Application.layers.companies.show();
+      Application.layers.openSeaMaps.show();
     }
   }, {
     key: "onDragEnd",
@@ -1719,9 +1866,332 @@ var Application = /*#__PURE__*/function () {
   return Application;
 }();
 
+
 window.addEventListener("load", function () {
   var app = new Application();
 });
+
+/***/ }),
+
+/***/ "./resources/ts/displays/DisplayInfo.ts":
+/*!**********************************************!*\
+  !*** ./resources/ts/displays/DisplayInfo.ts ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ DisplayInfo)
+/* harmony export */ });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+var DisplayInfo = /*#__PURE__*/function () {
+  function DisplayInfo(sidebar) {
+    _classCallCheck(this, DisplayInfo);
+
+    this.DETAILS_TAB_ID = "detailsTab";
+    this.SEARCH_TAB_ID = "searchTab";
+    this.INFO_TABLE_ID = "details-content";
+    this.BACK_BUTTON_ID = "back-button";
+    this.TITLE_ID = "details-title";
+    this.detailsTable = document.getElementById(this.INFO_TABLE_ID);
+    this.backButton = document.getElementById(this.BACK_BUTTON_ID);
+    this.title = document.getElementById(this.TITLE_ID);
+    this.sidebar = sidebar;
+    this.enableBackButton();
+  }
+
+  _createClass(DisplayInfo, [{
+    key: "clear",
+    value: function clear() {
+      this.detailsTable.innerHTML = "";
+    }
+  }, {
+    key: "setTitle",
+    value: function setTitle(title) {
+      this.title.innerText = title;
+    }
+  }, {
+    key: "addInfoRow",
+    value: function addInfoRow(title, value) {
+      var row = this.detailsTable.insertRow();
+      var titleCell = row.insertCell(0);
+      var valueCell = row.insertCell(1);
+      titleCell.innerHTML = title;
+      valueCell.innerHTML = value;
+      return row;
+    }
+  }, {
+    key: "enableBackButton",
+    value: function enableBackButton() {
+      var _this = this;
+
+      var backButton = document.getElementById("back-button");
+      backButton.addEventListener("click", function () {
+        _this.sidebar.open(_this.SEARCH_TAB_ID);
+      });
+    }
+  }]);
+
+  return DisplayInfo;
+}();
+
+
+
+/***/ }),
+
+/***/ "./resources/ts/displays/DisplayPortInfo.ts":
+/*!**************************************************!*\
+  !*** ./resources/ts/displays/DisplayPortInfo.ts ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ DisplayPortInfo)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _api_PortAPI__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../api/PortAPI */ "./resources/ts/api/PortAPI.ts");
+/* harmony import */ var _DisplayInfo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./DisplayInfo */ "./resources/ts/displays/DisplayInfo.ts");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } Object.defineProperty(subClass, "prototype", { value: Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }), writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+
+var DisplayPortInfo = /*#__PURE__*/function (_DisplayInfo) {
+  _inherits(DisplayPortInfo, _DisplayInfo);
+
+  var _super = _createSuper(DisplayPortInfo);
+
+  function DisplayPortInfo() {
+    _classCallCheck(this, DisplayPortInfo);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(DisplayPortInfo, [{
+    key: "show",
+    value: function () {
+      var _show = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(portId) {
+        var portDetails;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                this.clear();
+                _context.next = 3;
+                return _api_PortAPI__WEBPACK_IMPORTED_MODULE_1__["default"].getDetails(portId)["catch"](console.error);
+
+              case 3:
+                portDetails = _context.sent;
+
+                if (portDetails) {
+                  this.clear();
+                  this.loadTableData(portDetails);
+                  this.sidebar.open(this.DETAILS_TAB_ID);
+                }
+
+              case 5:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function show(_x) {
+        return _show.apply(this, arguments);
+      }
+
+      return show;
+    }()
+  }, {
+    key: "loadTableData",
+    value: function loadTableData(port) {
+      var unknownText = "Onbekend";
+      this.addInfoRow("Naam", port.name ? port.name : unknownText);
+      this.addInfoRow("Id", port.id ? String(port.id) : unknownText);
+      this.addInfoRow("Land", port.country ? "".concat(port.country, " (").concat(port.countryCode, ")") : unknownText);
+      this.addInfoRow("Coördinaten", port.latitude ? "".concat(port.latitude, ", ").concat(port.longitude) : unknownText);
+    }
+  }]);
+
+  return DisplayPortInfo;
+}(_DisplayInfo__WEBPACK_IMPORTED_MODULE_2__["default"]);
+
+
+
+/***/ }),
+
+/***/ "./resources/ts/displays/DisplayVesselInfo.ts":
+/*!****************************************************!*\
+  !*** ./resources/ts/displays/DisplayVesselInfo.ts ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ DisplayVesselInfo)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _api_VesselAPI__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../api/VesselAPI */ "./resources/ts/api/VesselAPI.ts");
+/* harmony import */ var _DisplayInfo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./DisplayInfo */ "./resources/ts/displays/DisplayInfo.ts");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } Object.defineProperty(subClass, "prototype", { value: Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }), writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+
+var DisplayVesselInfo = /*#__PURE__*/function (_DisplayInfo) {
+  _inherits(DisplayVesselInfo, _DisplayInfo);
+
+  var _super = _createSuper(DisplayVesselInfo);
+
+  function DisplayVesselInfo() {
+    _classCallCheck(this, DisplayVesselInfo);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(DisplayVesselInfo, [{
+    key: "show",
+    value: function () {
+      var _show = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(mmsi) {
+        var vesselDetails;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                this.clear();
+                _context.next = 3;
+                return _api_VesselAPI__WEBPACK_IMPORTED_MODULE_1__["default"].getDetails(mmsi)["catch"](console.error);
+
+              case 3:
+                vesselDetails = _context.sent;
+
+                if (vesselDetails) {
+                  this.clear();
+                  this.loadTableData(vesselDetails);
+                  this.sidebar.open(this.DETAILS_TAB_ID);
+                }
+
+              case 5:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function show(_x) {
+        return _show.apply(this, arguments);
+      }
+
+      return show;
+    }()
+  }, {
+    key: "loadTableData",
+    value: function loadTableData(vesselDetails) {
+      var unknownText = "Onbekend";
+      this.addInfoRow("Naam", vesselDetails.name ? vesselDetails.name : unknownText);
+      this.addInfoRow("IMO", vesselDetails.imo ? String(vesselDetails.imo) : unknownText);
+      this.addInfoRow("Lengte", vesselDetails.length !== 0 ? "".concat(vesselDetails.length, " meter") : unknownText);
+      this.addInfoRow("Lengte", vesselDetails.width !== 0 ? "".concat(vesselDetails.width, " meter") : unknownText);
+      this.addInfoRow("Diepte", vesselDetails.draught ? "".concat(vesselDetails.draught, " meter") : unknownText);
+      this.addInfoRow("Koers", "".concat(vesselDetails.course, "\xB0"));
+      this.addInfoRow("Snelheid", "".concat(vesselDetails.speed, " knopen"));
+      this.addInfoRow("Status", vesselDetails.statusText !== "Default" ? vesselDetails.statusText : unknownText);
+      this.addInfoRow("ETA", vesselDetails.ETA ? vesselDetails.ETA.toLocaleString() : unknownText);
+      this.addInfoRow("Type", vesselDetails.typeText);
+      this.addInfoRow("Land van herkomst", "".concat(vesselDetails.country, " [").concat(vesselDetails.flag, "]"));
+      this.addInfoRow("MMSI", String(vesselDetails.mmsi));
+      this.addVesselImage(vesselDetails.mmsi);
+    }
+  }, {
+    key: "addPortRow",
+    value: function addPortRow(title, port, vesselDetails) {
+      var portRow = this.addInfoRow(title, port.name || "Onbekend");
+    }
+  }, {
+    key: "addVesselImage",
+    value: function addVesselImage(mmsi) {
+      var row = this.detailsTable.insertRow();
+      var td = row.insertCell(0);
+      td.colSpan = 2;
+      var img = document.createElement("img");
+      img.id = "vessel-image";
+      img.style.maxWidth = "100%";
+      img.style.height = "auto";
+      img.src = "https://www.myshiptracking.com/requests/getimage-normal/".concat(mmsi, ".jpg");
+      img.alt = "Voor dit schip kon geen afbeelding gevonden worden.";
+      td.appendChild(img);
+    }
+  }]);
+
+  return DisplayVesselInfo;
+}(_DisplayInfo__WEBPACK_IMPORTED_MODULE_2__["default"]);
+
+
 
 /***/ }),
 
@@ -1782,6 +2252,7 @@ var BerthLayer = /*#__PURE__*/function (_Layer) {
 
     _this = _super.call(this, map);
     _this.MIN_ZOOM_LEVEL = 12;
+    _this._berthInfoArray = [];
     _this._nestedLayer = _this.createBerthsJSON();
     _this._scaffoldingLayer = _this.createScaffoldingJSON();
 
@@ -1815,6 +2286,29 @@ var BerthLayer = /*#__PURE__*/function (_Layer) {
       if (this._layerGroup.hasLayer(this._scaffoldingLayer)) {
         this._layerGroup.removeLayer(this._scaffoldingLayer);
       }
+    }
+  }, {
+    key: "getBerthInfoArray",
+    value: function getBerthInfoArray() {
+      return this._berthInfoArray;
+    }
+  }, {
+    key: "focus",
+    value: function focus(berthInfo) {
+      var _this2 = this;
+
+      this._map.flyTo(berthInfo.location, 18, {
+        duration: 1
+      });
+
+      var content = this.createBerthPopupContent(berthInfo);
+      var popup = leaflet__WEBPACK_IMPORTED_MODULE_0__.popup().setLatLng(berthInfo.location).setContent(content);
+
+      this._map.closePopup();
+
+      setTimeout(function () {
+        _this2._map.openPopup(popup);
+      }, 1100);
     }
   }, {
     key: "convertFeatureToBerth",
@@ -1863,21 +2357,23 @@ var BerthLayer = /*#__PURE__*/function (_Layer) {
   }, {
     key: "createBerthsJSON",
     value: function createBerthsJSON() {
-      var _this2 = this;
+      var _this3 = this;
 
       return leaflet__WEBPACK_IMPORTED_MODULE_0__.geoJSON(arcgis.berths, {
         filter: function filter(feature) {
           return feature.properties.ligplaatsNr || feature.properties.enigmaNaam;
         },
         onEachFeature: function onEachFeature(feature, layer) {
-          var berthInfo = _this2.convertFeatureToBerth(feature, layer);
+          var berthInfo = _this3.convertFeatureToBerth(feature, layer);
 
-          var content = _this2.createBerthPopupContent(berthInfo);
+          var content = _this3.createBerthPopupContent(berthInfo);
 
           if (berthInfo.location) {
+            _this3._berthInfoArray.push(berthInfo);
+
             var popup = leaflet__WEBPACK_IMPORTED_MODULE_0__.popup().setLatLng(berthInfo.location).setContent(content);
             layer.on("click", function () {
-              _this2._map.openPopup(popup);
+              _this3._map.openPopup(popup);
             });
           }
         }
@@ -2607,6 +3103,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _api_VesselAPI__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../api/VesselAPI */ "./resources/ts/api/VesselAPI.ts");
 /* harmony import */ var _types_vessel_types__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../types/vessel-types */ "./resources/ts/types/vessel-types.ts");
 /* harmony import */ var _Layer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Layer */ "./resources/ts/layers/Layer.ts");
+/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../app */ "./resources/ts/app.ts");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 
@@ -2634,6 +3131,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 
 
 
@@ -2724,6 +3222,22 @@ var VesselLayer = /*#__PURE__*/function (_Layer) {
       }
     }
   }, {
+    key: "focus",
+    value: function focus(simpleVesselInfo) {
+      if (simpleVesselInfo.latitude && simpleVesselInfo.longitude) {
+        this.flyTo(simpleVesselInfo.latitude, simpleVesselInfo.longitude);
+        this.renderVessel(simpleVesselInfo);
+        this.renderCircle(simpleVesselInfo);
+      }
+    }
+  }, {
+    key: "flyTo",
+    value: function flyTo(latitude, longitude, duration) {
+      this._map.flyTo(new leaflet__WEBPACK_IMPORTED_MODULE_1__.LatLng(latitude, longitude), 16, {
+        duration: typeof duration === "number" ? duration : 1
+      });
+    }
+  }, {
     key: "renderVessel",
     value: function renderVessel(vesselInfo) {
       var _this3 = this;
@@ -2776,6 +3290,8 @@ var VesselLayer = /*#__PURE__*/function (_Layer) {
     key: "handleVesselClick",
     value: function handleVesselClick(vesselInfo) {
       this.renderCircle(vesselInfo);
+      var vesselDisplay = _app__WEBPACK_IMPORTED_MODULE_6__["default"].displays.vessels;
+      vesselDisplay.show(vesselInfo.mmsi);
       console.log("TODO: Show details of the selected vessel in the sidebar.");
     }
   }, {
@@ -2821,6 +3337,388 @@ var VesselLayer = /*#__PURE__*/function (_Layer) {
 
 /***/ }),
 
+/***/ "./resources/ts/search/BerthSearch.ts":
+/*!********************************************!*\
+  !*** ./resources/ts/search/BerthSearch.ts ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ BerthSearch)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var leaflet__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! leaflet */ "./node_modules/leaflet/dist/leaflet-src.js");
+/* harmony import */ var leaflet__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(leaflet__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../app */ "./resources/ts/app.ts");
+/* harmony import */ var _Search__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Search */ "./resources/ts/search/Search.ts");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } Object.defineProperty(subClass, "prototype", { value: Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }), writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+
+
+var berthsData = __webpack_require__(/*! ../../northSeaPortGeoJson/ligplaatsen_northsp.json */ "./resources/northSeaPortGeoJson/ligplaatsen_northsp.json");
+
+var BerthSearch = /*#__PURE__*/function (_Search) {
+  _inherits(BerthSearch, _Search);
+
+  var _super = _createSuper(BerthSearch);
+
+  function BerthSearch(searchBarId) {
+    _classCallCheck(this, BerthSearch);
+
+    return _super.call(this, searchBarId);
+  }
+
+  _createClass(BerthSearch, [{
+    key: "convertFeaturesToBerths",
+    value: function convertFeaturesToBerths(features) {
+      var _this = this;
+
+      return features.map(function (feature) {
+        return _this.convertFeatureToBerth(feature);
+      }).filter(function (berth) {
+        return berth !== undefined;
+      });
+    }
+  }, {
+    key: "convertFeatureToBerth",
+    value: function convertFeatureToBerth(feature) {
+      var properties = feature.properties;
+
+      if (!properties.lat || !properties["long"]) {
+        return;
+      }
+
+      return {
+        id: properties.ligplaatsNr ? Number(properties.ligplaatsNr.substring(2)) : undefined,
+        name: properties.enigmaNaam,
+        owner: properties.eigenaar,
+        enigmaCode: properties.enigmaCode,
+        externalCode: properties.externeCode,
+        maxDepth: properties.maxDiepgang_m ? parseFloat(properties.maxDiepgang_m) : undefined,
+        type: properties.type,
+        region: properties.zone,
+        location: this.getCenter(properties),
+        width: properties.breedte ? Number(properties.breedte) : undefined,
+        length: properties.lengte ? Number(properties.lengte) : undefined,
+        dock: properties.dok
+      };
+    }
+  }, {
+    key: "getSearchResults",
+    value: function () {
+      var _getSearchResults = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(query) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!(query.length < 2)) {
+                  _context.next = 2;
+                  break;
+                }
+
+                return _context.abrupt("return", []);
+
+              case 2:
+                return _context.abrupt("return", this.convertFeaturesToBerths(berthsData.features).filter(function (berth) {
+                  return berth.name ? berth.name.includes(query) || String(berth.id).startsWith(query) : false;
+                }));
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function getSearchResults(_x) {
+        return _getSearchResults.apply(this, arguments);
+      }
+
+      return getSearchResults;
+    }()
+  }, {
+    key: "executeSearch",
+    value: function () {
+      var _executeSearch = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        var _this2 = this;
+
+        var searchbar, searchResultsElement, results;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                searchbar = document.getElementById(_Search__WEBPACK_IMPORTED_MODULE_3__["default"].SEARCH_BAR_ID);
+                searchResultsElement = document.getElementById(_Search__WEBPACK_IMPORTED_MODULE_3__["default"].RESULTS_ID);
+                _context2.next = 4;
+                return this.getSearchResults(searchbar.value)["catch"](console.error);
+
+              case 4:
+                results = _context2.sent;
+
+                if (results) {
+                  results.forEach(function (result) {
+                    return _this2.displayResult(searchResultsElement, result);
+                  });
+                }
+
+              case 6:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function executeSearch() {
+        return _executeSearch.apply(this, arguments);
+      }
+
+      return executeSearch;
+    }()
+  }, {
+    key: "displayResult",
+    value: function displayResult(searchResultsElement, berthResult) {
+      var _this3 = this;
+
+      var div = document.createElement("div");
+      div.classList.add("list-group-item", "list-group-item-action", "my-2");
+      var title = this.createTitle(berthResult);
+      var info = this.createInfo(berthResult);
+      div.append(title, info);
+      div.addEventListener("click", function () {
+        return _this3.onResultClicked(berthResult);
+      });
+      searchResultsElement.appendChild(div);
+    }
+  }, {
+    key: "getCenter",
+    value: function getCenter(properties) {
+      var filteredLat = Number(properties.lat.replace(",", "."));
+      var filteredLng = Number(properties["long"].replace(",", "."));
+      return new leaflet__WEBPACK_IMPORTED_MODULE_1__.LatLng(filteredLat, filteredLng);
+    }
+  }, {
+    key: "createInfo",
+    value: function createInfo(berthResult) {
+      var info = document.createElement("p");
+      info.classList.add("mb-1", "small");
+      info.innerHTML = "".concat(berthResult.region, " - ").concat(berthResult.type);
+      return info;
+    }
+  }, {
+    key: "createTitle",
+    value: function createTitle(berthResult) {
+      var title = document.createElement("strong");
+      title.classList.add("mb-1");
+      title.innerText = "".concat(berthResult.name, " (").concat(berthResult.id, ")");
+      return title;
+    }
+  }, {
+    key: "onResultClicked",
+    value: function onResultClicked(berthInfo) {
+      var berthLayer = _app__WEBPACK_IMPORTED_MODULE_2__["default"].layers.berths;
+      berthLayer.focus(berthInfo);
+    }
+  }]);
+
+  return BerthSearch;
+}(_Search__WEBPACK_IMPORTED_MODULE_3__["default"]);
+
+
+
+/***/ }),
+
+/***/ "./resources/ts/search/PortSearch.ts":
+/*!*******************************************!*\
+  !*** ./resources/ts/search/PortSearch.ts ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ PortSearch)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _api_PortAPI__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../api/PortAPI */ "./resources/ts/api/PortAPI.ts");
+/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../app */ "./resources/ts/app.ts");
+/* harmony import */ var _Search__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Search */ "./resources/ts/search/Search.ts");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } Object.defineProperty(subClass, "prototype", { value: Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }), writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+
+
+var PortSearch = /*#__PURE__*/function (_Search) {
+  _inherits(PortSearch, _Search);
+
+  var _super = _createSuper(PortSearch);
+
+  function PortSearch(searchButtonId) {
+    _classCallCheck(this, PortSearch);
+
+    return _super.call(this, searchButtonId);
+  }
+
+  _createClass(PortSearch, [{
+    key: "executeSearch",
+    value: function () {
+      var _executeSearch = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var _this = this;
+
+        var searchbar, searchResultsElement, results;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                searchbar = document.getElementById(_Search__WEBPACK_IMPORTED_MODULE_3__["default"].SEARCH_BAR_ID);
+                searchResultsElement = document.getElementById(_Search__WEBPACK_IMPORTED_MODULE_3__["default"].RESULTS_ID);
+                _context.next = 4;
+                return _api_PortAPI__WEBPACK_IMPORTED_MODULE_1__["default"].search(searchbar.value)["catch"](console.error);
+
+              case 4:
+                results = _context.sent;
+
+                if (results) {
+                  results.forEach(function (result) {
+                    return _this.displayResult(searchResultsElement, result);
+                  });
+                }
+
+              case 6:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }));
+
+      function executeSearch() {
+        return _executeSearch.apply(this, arguments);
+      }
+
+      return executeSearch;
+    }()
+  }, {
+    key: "displayResult",
+    value: function displayResult(searchResultsElement, searchResult) {
+      var div = document.createElement("div");
+      div.classList.add("list-group-item", "list-group-item-action", "my-2");
+      var title = this.createTitle(searchResult);
+      var info = this.createInfo(searchResult);
+      div.append(title, info);
+      var vesselLayer = _app__WEBPACK_IMPORTED_MODULE_2__["default"].layers.vessels;
+      var portsDisplay = _app__WEBPACK_IMPORTED_MODULE_2__["default"].displays.ports;
+      div.addEventListener("click", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        var portDetails;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return _api_PortAPI__WEBPACK_IMPORTED_MODULE_1__["default"].getDetails(searchResult.portId);
+
+              case 2:
+                portDetails = _context2.sent;
+
+                if (portDetails) {
+                  vesselLayer.flyTo(portDetails.latitude, portDetails.longitude);
+                  portsDisplay.show(searchResult.portId);
+                }
+
+              case 4:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      })));
+      searchResultsElement.appendChild(div);
+    }
+  }, {
+    key: "createInfo",
+    value: function createInfo(searchResult) {
+      var info = document.createElement("p");
+      info.classList.add("mb-1", "small");
+      info.innerHTML = "Port (".concat(searchResult.portId, ")");
+      return info;
+    }
+  }, {
+    key: "createTitle",
+    value: function createTitle(searchResult) {
+      var title = document.createElement("strong");
+      title.classList.add("mb-1");
+      title.innerText = "".concat(searchResult.name, " (").concat(searchResult.flag, ")");
+      return title;
+    }
+  }]);
+
+  return PortSearch;
+}(_Search__WEBPACK_IMPORTED_MODULE_3__["default"]);
+
+
+
+/***/ }),
+
 /***/ "./resources/ts/search/Search.ts":
 /*!***************************************!*\
   !*** ./resources/ts/search/Search.ts ***!
@@ -2839,10 +3737,9 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
 var Search = /*#__PURE__*/function () {
-  function Search(sidebar, searchButtonId) {
+  function Search(searchButtonId) {
     _classCallCheck(this, Search);
 
-    this.sidebar = sidebar;
     this.searchButton = document.getElementById(searchButtonId);
     this.enabled = true;
     this.addFilterListener();
@@ -2909,7 +3806,6 @@ var Search = /*#__PURE__*/function () {
 
 
 Search.forceUpdate = false;
-Search.SEARCH_ID = "searchTab";
 Search.SEARCH_BAR_ID = "searchbar";
 Search.RESULTS_ID = "search-results";
 Search.lastQuery = "";
@@ -2930,7 +3826,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _api_VesselAPI__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../api/VesselAPI */ "./resources/ts/api/VesselAPI.ts");
-/* harmony import */ var _Search__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Search */ "./resources/ts/search/Search.ts");
+/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../app */ "./resources/ts/app.ts");
+/* harmony import */ var _Search__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Search */ "./resources/ts/search/Search.ts");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 
@@ -2962,17 +3859,18 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
 var VesselSearch = /*#__PURE__*/function (_Search) {
   _inherits(VesselSearch, _Search);
 
   var _super = _createSuper(VesselSearch);
 
-  function VesselSearch(sidebar, searchButtonId) {
+  function VesselSearch(searchButtonId) {
     var _this;
 
     _classCallCheck(this, VesselSearch);
 
-    _this = _super.call(this, sidebar, searchButtonId);
+    _this = _super.call(this, searchButtonId);
     _this.SEARCH_FILTERS = {
       excludePorts: true
     };
@@ -2998,8 +3896,8 @@ var VesselSearch = /*#__PURE__*/function (_Search) {
                 return _context.abrupt("return");
 
               case 2:
-                searchbar = document.getElementById(_Search__WEBPACK_IMPORTED_MODULE_2__["default"].SEARCH_BAR_ID);
-                searchResultsElement = document.getElementById(_Search__WEBPACK_IMPORTED_MODULE_2__["default"].RESULTS_ID);
+                searchbar = document.getElementById(_Search__WEBPACK_IMPORTED_MODULE_3__["default"].SEARCH_BAR_ID);
+                searchResultsElement = document.getElementById(_Search__WEBPACK_IMPORTED_MODULE_3__["default"].RESULTS_ID);
                 _context.next = 6;
                 return _api_VesselAPI__WEBPACK_IMPORTED_MODULE_1__["default"].search(searchbar.value, this.SEARCH_FILTERS)["catch"](console.error);
 
@@ -3035,19 +3933,23 @@ var VesselSearch = /*#__PURE__*/function (_Search) {
       var info = this.createInfo(searchResult);
       div.append(title, info);
       div.addEventListener("click", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-        var vesselDetails;
+        var simpleVesselInfo, vesselLayer, vesselDisplay;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return _api_VesselAPI__WEBPACK_IMPORTED_MODULE_1__["default"].getDetails(searchResult.mmsi);
+                return _api_VesselAPI__WEBPACK_IMPORTED_MODULE_1__["default"].getLocationInfo(searchResult.mmsi)["catch"](console.error);
 
               case 2:
-                vesselDetails = _context2.sent;
-                console.log(vesselDetails);
-                console.log("TODO: Show vesselDetails in sidebar.");
-                console.log("TODO: Fly to vessel?");
+                simpleVesselInfo = _context2.sent;
+                vesselLayer = _app__WEBPACK_IMPORTED_MODULE_2__["default"].layers.vessels;
+                vesselDisplay = _app__WEBPACK_IMPORTED_MODULE_2__["default"].displays.vessels;
+
+                if (simpleVesselInfo) {
+                  vesselLayer.focus(simpleVesselInfo);
+                  vesselDisplay.show(simpleVesselInfo.mmsi);
+                }
 
               case 6:
               case "end":
@@ -3063,7 +3965,7 @@ var VesselSearch = /*#__PURE__*/function (_Search) {
     value: function createInfo(searchResult) {
       var info = document.createElement("p");
       info.classList.add("mb-1", "small");
-      info.innerHTML = "".concat(searchResult.typeText, " (").concat(searchResult.mmsi || searchResult.portId, ")");
+      info.innerHTML = "".concat(searchResult.typeText, " (").concat(searchResult.mmsi, ")");
       return info;
     }
   }, {
@@ -3077,7 +3979,7 @@ var VesselSearch = /*#__PURE__*/function (_Search) {
   }]);
 
   return VesselSearch;
-}(_Search__WEBPACK_IMPORTED_MODULE_2__["default"]);
+}(_Search__WEBPACK_IMPORTED_MODULE_3__["default"]);
 
 
 

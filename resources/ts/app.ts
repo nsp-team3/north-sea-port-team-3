@@ -14,19 +14,27 @@ import VesselLayer from "./layers/VesselLayer";
 import CompanyLayer from "./layers/CompanyLayer";
 import Search from "./search/Search";
 import VesselSearch from "./search/VesselSearch";
+import PortSearch from "./search/PortSearch";
+import BerthSearch from "./search/BerthSearch";
+import DisplayInfo from "./displays/DisplayInfo";
+import DisplayVesselInfo from "./displays/DisplayVesselInfo";
+import DisplayPortInfo from "./displays/DisplayPortInfo";
 
 type Layers = {[index: string]: Layer};
 type Searches = {[index: string]: Search};
+type Displays = {[index: string]: DisplayInfo};
 
-class Application {
+export default class Application {
+    public static layers: Layers;
+    public static searches: Searches;
+    public static displays: Displays;
+
     private readonly INITIAL_LATITUDE = 51.2797429555907;
     private readonly INITIAL_LONGITUDE = 3.7477111816406254;
     private readonly INITIAL_ZOOM = 8;
 
     private _map: L.Map;
     private _sidebar: L.Control.Sidebar;
-    private _layers: Layers;
-    private _searches: Searches;
     private _scale: L.Control.Scale;
     private _overlays: L.Control.Layers;
 
@@ -35,13 +43,13 @@ class Application {
     public constructor() {
         this._map = this.createMap();
         this._sidebar = this.createSidebar();
-        this._layers = this.createLayers();
-        this._searches = this.createSearches();
+        Application.layers = this.createLayers();
+        Application.searches = this.createSearches();
+        Application.displays = this.createDisplays();
         this._scale = this.createScale();
         this._overlays = this.createOverlays();
         this.addEventListeners();
         this.startIntervalUpdates();
-        console.log("TODO: Add all search methods back.");
     }
 
     /**
@@ -77,14 +85,13 @@ class Application {
     }
 
     private createOverlays(): L.Control.Layers {
-        console.log("TODO: Add companies layer & windspeed layer!!!");
         const overlays = {
-            "Bedrijven": this._layers.companies.main,
-            "Ligplaatsen": this._layers.berths.main,
+            "Bedrijven": Application.layers.companies.main,
+            "Ligplaatsen": Application.layers.berths.main,
             // "Windsnelheid": this._layers.windspeed.main,
-            "Schepen": this._layers.vessels.main,
-            "Open sea maps": this._layers.openSeaMaps.main,
-            "Bruggen": this._layers.bridges.main,
+            "Schepen": Application.layers.vessels.main,
+            "Open sea maps": Application.layers.openSeaMaps.main,
+            "Bruggen": Application.layers.bridges.main,
         };
         
         return L.control.layers({}, overlays, {
@@ -111,7 +118,19 @@ class Application {
      */
     private createSearches(): Searches {
         return {
-            vessels: new VesselSearch(this._sidebar, "vessels-button")
+            vessels: new VesselSearch("vessels-button"),
+            ports: new PortSearch("ports-button"),
+            berths: new BerthSearch("berths-button")
+        }
+    }
+
+    /**
+     * Voegt alle sidebar displays toe.
+     */
+    private createDisplays(): Displays {
+        return {
+            vessels: new DisplayVesselInfo(this._sidebar),
+            ports: new DisplayPortInfo(this._sidebar)
         }
     }
 
@@ -132,39 +151,39 @@ class Application {
         setInterval(() => {
             if (this._movedSinceLastUpdate) {
                 this._movedSinceLastUpdate = false;
-                this._layers.vessels.update();
-                this._layers.bridges.update();
+                Application.layers.vessels.update();
+                Application.layers.bridges.update();
             }
             this.searchUpdate();
         }, 1000);
 
         setInterval(() => {
-            this._layers.vessels.update();
-            this._layers.bridges.update();
+            Application.layers.vessels.update();
+            Application.layers.bridges.update();
         }, 15000);
     }
 
     private searchUpdate(): void {
         if (Search.hasQueryChanged()) {
-            for (const searchMethod in this._searches) {
-                this._searches[searchMethod].update();
+            for (const searchMethod in Application.searches) {
+                Application.searches[searchMethod].update();
             }
         }
     }
 
     private onZoomStart(): void {
         this._movedSinceLastUpdate = true;
-        this._layers.bridges.hide();
-        this._layers.openSeaMaps.hide();
-        this._layers.vessels.hide();
+        Application.layers.bridges.hide();
+        Application.layers.openSeaMaps.hide();
+        Application.layers.vessels.hide();
     }
 
     private onZoomEnd(): void {
-        this._layers.vessels.show();
-        this._layers.bridges.show();
-        this._layers.berths.show();
-        this._layers.companies.show();
-        this._layers.openSeaMaps.show();
+        Application.layers.vessels.show();
+        Application.layers.bridges.show();
+        Application.layers.berths.show();
+        Application.layers.companies.show();
+        Application.layers.openSeaMaps.show();
     }
 
     private onDragEnd(): void {

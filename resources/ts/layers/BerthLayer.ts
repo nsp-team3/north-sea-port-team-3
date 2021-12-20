@@ -10,10 +10,12 @@ const arcgis = {
 
 export default class BerthLayer extends Layer {
     private readonly MIN_ZOOM_LEVEL = 12;
+    private _berthInfoArray: BerthInfo[];
     private _scaffoldingLayer: L.GeoJSON;
 
     public constructor(map: L.Map) {
         super(map);
+        this._berthInfoArray = [];
         this._nestedLayer = this.createBerthsJSON();
         this._scaffoldingLayer = this.createScaffoldingJSON();
         this.update();
@@ -40,6 +42,29 @@ export default class BerthLayer extends Layer {
         if (this._layerGroup.hasLayer(this._scaffoldingLayer)) {
             this._layerGroup.removeLayer(this._scaffoldingLayer);
         }
+    }
+
+    public getBerthInfoArray(): BerthInfo[] {
+        return this._berthInfoArray;
+    }
+
+    public focus(berthInfo: BerthInfo): void {
+        this._map.flyTo(
+            berthInfo.location,
+            18,
+            {
+                duration: 1
+            }
+        );
+        const content = this.createBerthPopupContent(berthInfo);
+        const popup = L.popup()
+            .setLatLng(berthInfo.location)
+            .setContent(content);
+
+        this._map.closePopup();
+        setTimeout(() => {
+            this._map.openPopup(popup);
+        }, 1100);
     }
 
     /**
@@ -105,6 +130,7 @@ export default class BerthLayer extends Layer {
                 const content = this.createBerthPopupContent(berthInfo);
 
                 if (berthInfo.location) {
+                    this._berthInfoArray.push(berthInfo);
                     const popup = L.popup()
                         .setLatLng(berthInfo.location)
                         .setContent(content);

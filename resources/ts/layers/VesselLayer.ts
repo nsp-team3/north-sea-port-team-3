@@ -3,6 +3,9 @@ import "../libs/tracksymbol";
 import VesselAPI from "../api/VesselAPI";
 import { SimpleVesselInfo, VesselFilters, VesselType } from "../types/vessel-types";
 import Layer from "./Layer";
+import { VesselInfo } from "../api/VesselInfo";
+import Application from "../app";
+import DisplayVesselInfo from "../displays/DisplayVesselInfo";
 
 export default class VesselLayer extends Layer {
     private _circleLayer: L.LayerGroup;
@@ -43,12 +46,30 @@ export default class VesselLayer extends Layer {
         }
     }
 
+    public focus(simpleVesselInfo: SimpleVesselInfo): void {
+        if (simpleVesselInfo.latitude && simpleVesselInfo.longitude) {
+            this.flyTo(simpleVesselInfo.latitude, simpleVesselInfo.longitude);
+            this.renderVessel(simpleVesselInfo);
+            this.renderCircle(simpleVesselInfo);
+        }
+    }
+
+    public flyTo(latitude: number, longitude: number, duration?: number): void {
+        this._map.flyTo(
+            new L.LatLng(latitude, longitude),
+            16,
+            {
+                duration: typeof(duration) === "number" ? duration : 1
+            }
+        );
+    }
+
     /**
      * de scheepsinformatie koppelen aan het schip dat getekend word
      * @param vesselInfo scheepsinformatie
      * @returns scheepitem die gekoppeld kan worden aan de scheepslaag
      */
-    private renderVessel(vesselInfo: SimpleVesselInfo): void {
+    public renderVessel(vesselInfo: SimpleVesselInfo): void {
         if (!this._shownVesselTypes.includes(vesselInfo.vesselType)) {
             return;
         }
@@ -103,6 +124,8 @@ export default class VesselLayer extends Layer {
 
     private handleVesselClick(vesselInfo: SimpleVesselInfo): void {
         this.renderCircle(vesselInfo);
+        const vesselDisplay = Application.displays.vessels as DisplayVesselInfo;
+        vesselDisplay.show(vesselInfo.mmsi);
         console.log("TODO: Show details of the selected vessel in the sidebar.");
     }
 
