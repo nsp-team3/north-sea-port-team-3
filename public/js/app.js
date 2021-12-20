@@ -3277,7 +3277,7 @@ var VesselLayer = /*#__PURE__*/function (_Layer) {
     key: "createVesselSymbol",
     value: function createVesselSymbol(vesselInfo) {
       var location = new leaflet__WEBPACK_IMPORTED_MODULE_1__.LatLng(vesselInfo.latitude, vesselInfo.longitude);
-      return leaflet__WEBPACK_IMPORTED_MODULE_1__.trackSymbol(location, {
+      var symbolOptions = {
         trackId: vesselInfo.mmsi,
         fill: true,
         fillColor: this.getVesselColor(vesselInfo),
@@ -3290,7 +3290,13 @@ var VesselLayer = /*#__PURE__*/function (_Layer) {
         course: vesselInfo.direction * Math.PI / 180,
         heading: vesselInfo.direction * Math.PI / 180,
         updateTimestamp: vesselInfo.requestTime
-      });
+      };
+
+      if (vesselInfo.speed <= 0.5) {
+        symbolOptions.heading = undefined;
+      }
+
+      return leaflet__WEBPACK_IMPORTED_MODULE_1__.trackSymbol(location, symbolOptions);
     }
   }, {
     key: "handleVesselClick",
