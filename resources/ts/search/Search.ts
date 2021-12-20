@@ -1,14 +1,8 @@
-import DisplayInfo from "../display-info/DisplayInfo";
-import Layer from "../layers/Layer";
-
 /**
  * Abstracte class die de zoekfunctionaliteit in de zoekbalk regeld
  */
 export default abstract class Search {
     public static forceUpdate: boolean = false;
-
-    // De id van de leaflet zoek sidebar
-    public static readonly SEARCH_ID: string = "searchTab";
 
     // De id van de zoekbalk
     protected static readonly SEARCH_BAR_ID: string = "searchbar";
@@ -23,11 +17,7 @@ export default abstract class Search {
     protected abstract executeSearch(): void;
 
     // De klasse die gebruikt wordt om gedetailleerde informatie te tonen.
-    
-    protected layer: Layer;
-    protected map: L.Map;
-    protected sidebar: L.Control.Sidebar;
-    protected displayInfo: DisplayInfo;
+
     protected searchButton: HTMLButtonElement;
     protected enabled: boolean;
 
@@ -36,10 +26,7 @@ export default abstract class Search {
      * @param map koppeling met de kaart, bijvoorbeeld zoomen naar locatie van boot
      * @param searchButtonId Het ID van de zoek knop in html
      */
-    public constructor(layer: Layer, sidebar: L.Control.Sidebar, searchButtonId: string) {
-        this.layer = layer;
-        this.map = layer.map;
-        this.sidebar = sidebar;
+    public constructor(searchButtonId: string) {
         this.searchButton = document.getElementById(searchButtonId) as HTMLButtonElement;
         this.enabled = true;
         this.addFilterListener();
@@ -59,7 +46,7 @@ export default abstract class Search {
 
     private static clearSearchResults(): void {
         const resultsElement = document.getElementById(Search.RESULTS_ID);
-        resultsElement.innerHTML = ""; 
+        resultsElement.innerHTML = "";
     }
 
     public update(): void {
@@ -70,9 +57,7 @@ export default abstract class Search {
     }
 
     private addFilterListener(): void {
-        this.searchButton.addEventListener("click", () => {
-            this.onFilterClicked();
-        });
+        this.searchButton.addEventListener("click", () => this.onFilterClicked());
     }
 
     private onFilterClicked(): void {

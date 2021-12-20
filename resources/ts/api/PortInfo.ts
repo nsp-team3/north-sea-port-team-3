@@ -1,14 +1,11 @@
-/// <reference path="Util.ts" />
-
-import PortType from "../types/enums/PortType";
-import RawVesselInfo from "../types/RawVesselInfo";
-import { parseHtmlDate } from "./Util";
+import { PortType } from "../types/port-types";
+import { RawVesselInfo } from "../types/vessel-types";
 
 /**
  * Een klasse die het makkelijker maakt om specifieke informatie op te halen over een haven.
  * Want de onbewerkte data is erg onduidelijk.
  */
-export class Port {
+ export default class PortInfo {
     private _type: PortType;
     private _rawVesselInfo: RawVesselInfo;
 
@@ -39,19 +36,32 @@ export class Port {
 
     public get ETA(): Date | void {
         if (this._type == PortType.Next) {
-            return parseHtmlDate(this._rawVesselInfo[`${this._type}ETA`]);
+            return this.parseHtmlDate(this._rawVesselInfo[`${this._type}ETA`]);
         }
     }
 
     public get departTime(): Date | void {
         if (this._type === PortType.Last) {
-            return parseHtmlDate(this._rawVesselInfo[`${this._type}DEP`]);
+            return this.parseHtmlDate(this._rawVesselInfo[`${this._type}DEP`]);
         }
     }
 
     public get arrivalTime(): Date | void {
         if (this._type === PortType.Current) {
-            return parseHtmlDate(this._rawVesselInfo[`${this._type}ARR`]);
+            const rawArrivalTime = this._rawVesselInfo[`${this._type}ARR`];
+            if (rawArrivalTime) {
+                return this.parseHtmlDate(rawArrivalTime);
+            }
+        }
+    }
+
+    private parseHtmlDate(rawDate: string): Date | void {
+        const [date, rawTime] = rawDate.split(" ");
+        if (typeof date === "string" && typeof rawTime === "string") {
+            const timeMatch = rawTime.match(/<b>([0-9]{1,2}):([0-9]{1,2})<\/b>/);
+            if (timeMatch) {
+                return new Date(`${date} ${timeMatch[1]}:${timeMatch[2]}`);
+            }
         }
     }
 }

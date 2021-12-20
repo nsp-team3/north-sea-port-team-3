@@ -1,7 +1,8 @@
-import AIS from "../api/AIS";
-import DisplayVesselInfo from "../display-info/DisplayVesselInfo";
+import VesselAPI from "../api/VesselAPI";
+import Application from "../app";
+import DisplayVesselInfo from "../displays/DisplayVesselInfo";
 import VesselLayer from "../layers/VesselLayer";
-import { SearchResult } from "../types/SearchTypes";
+import { VesselSearchResult } from "../types/vessel-types";
 import Search from "./Search";
 
 /**
@@ -10,9 +11,8 @@ import Search from "./Search";
 export default class VesselSearch extends Search {
     private SEARCH_FILTERS = { excludePorts: true };
 
-    public constructor(vesselLayer: VesselLayer, sidebar: L.Control.Sidebar, searchButtonId: string) {
-        super(vesselLayer, sidebar, searchButtonId);
-        this.displayInfo = new DisplayVesselInfo(vesselLayer, sidebar);
+    public constructor(searchButtonId: string) {
+        super(searchButtonId);
     }
 
     protected async executeSearch(): Promise<void> {
@@ -22,13 +22,13 @@ export default class VesselSearch extends Search {
 
         const searchbar = document.getElementById(Search.SEARCH_BAR_ID) as HTMLInputElement;
         const searchResultsElement = document.getElementById(Search.RESULTS_ID) as HTMLTableElement;
-        const results = await AIS.search(searchbar.value, this.SEARCH_FILTERS).catch(console.error);
+        const results = await VesselAPI.search(searchbar.value, this.SEARCH_FILTERS).catch(console.error);
         if (results) {
             results.forEach((result) => this.displayResult(searchResultsElement, result));
         }
     }
 
-    protected displayResult(searchResultsElement: HTMLTableElement, searchResult: SearchResult): void {
+    protected displayResult(searchResultsElement: HTMLTableElement, searchResult: VesselSearchResult): void {
         const div = document.createElement("div");
         div.classList.add("list-group-item", "list-group-item-action", "my-2");
 
@@ -37,11 +37,13 @@ export default class VesselSearch extends Search {
 
         div.append(title, info);
         div.addEventListener("click", async () => {
-            this.displayInfo.show(searchResult);
-            const vessel = await AIS.getVessel(searchResult.mmsi);
-            const layer = this.layer as VesselLayer;
-            const simpleVesselInfo = await vessel.getLocationInfo();
-            layer.focusVessel(simpleVesselInfo, true);
+            const simpleVesselInfo = await VesselAPI.getLocationInfo(searchResult.mmsi).catch(console.error);
+            const vesselLayer = Application.layers.vessels as VesselLayer;
+            const vesselDisplay = Application.displays.vessels as DisplayVesselInfo;
+            if (simpleVesselInfo) {
+                vesselLayer.focus(simpleVesselInfo);
+                vesselDisplay.show(simpleVesselInfo.mmsi);
+            }
         });
 
         searchResultsElement.appendChild(div);
@@ -52,10 +54,10 @@ export default class VesselSearch extends Search {
      * @param searchResult 1 zoekresultaat van het zoeken
      * @returns HTML item voor de descriptie van het zoekresultaat
      */
-    private createInfo(searchResult: SearchResult): HTMLParagraphElement {
+    private createInfo(searchResult: VesselSearchResult): HTMLParagraphElement {
         const info = document.createElement("p");
         info.classList.add("mb-1", "small");
-        info.innerHTML = `${searchResult.typeText} (${searchResult.mmsi || searchResult.portId})`;
+        info.innerHTML = `${searchResult.typeText} (${searchResult.mmsi})`;
 
         return info;
     }
@@ -65,7 +67,7 @@ export default class VesselSearch extends Search {
      * @param searchResult 1 zoekresultaat van het zoeken
      * @returns HTML item voor de titel van het zoekresultaat
      */
-    private createTitle(searchResult: SearchResult): HTMLElement {
+    private createTitle(searchResult: VesselSearchResult): HTMLElement {
         const title = document.createElement("strong");
         title.classList.add("mb-1");
         title.innerText = `${searchResult.name} (${searchResult.flag})`;

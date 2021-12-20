@@ -1,6 +1,7 @@
-import DisplayBerthInfo from "../display-info/DisplayBerthInfo";
-import Layer from "../layers/Layer";
-import { BerthSearchResult, SearchResult } from "../types/SearchTypes";
+import * as L from "leaflet";
+import Application from "../app";
+import BerthLayer from "../layers/BerthLayer";
+import { BerthInfo } from "../types/berth-types";
 import Search from "./Search";
 
 const berthsData = require("../../northSeaPortGeoJson/ligplaatsen_northsp.json");
@@ -10,11 +11,10 @@ const berthsData = require("../../northSeaPortGeoJson/ligplaatsen_northsp.json")
  */
 export default class BerthSearch extends Search {
     /**
-     * @param map koppeling met de kaart, bijvoorbeeld zoomen naar locatie van boot
      * @param searchBarId ID van de zoekbalk binnen html
      */
-    public constructor(layer: Layer, sidebar: L.Control.Sidebar, searchBarId: string) {
-        super(layer, sidebar, searchBarId);
+    public constructor(searchBarId: string) {
+        super(searchBarId);
     }
 
     /**
@@ -22,8 +22,8 @@ export default class BerthSearch extends Search {
      * @param features geojson data
      * @returns array van dictionaries met ligplaatsinformatie
      */
-    public static convertFeaturesToBerths(features: any): BerthSearchResult[] {
-        return features.map((feature: any) => this.convertFeatureToBerth(feature));
+    public convertFeaturesToBerths(features: any): BerthInfo[] {
+        return features.map((feature: any) => this.convertFeatureToBerth(feature)).filter((berth: BerthInfo) => berth !== undefined);
     }
 
     /**
@@ -32,8 +32,11 @@ export default class BerthSearch extends Search {
      * @param feature huidige ligplaats binnen geojson
      * @returns makkelijk leesbare dictionary
      */
-    public static convertFeatureToBerth(feature: any): BerthSearchResult {
+    public convertFeatureToBerth(feature: any): BerthInfo | void {
         const properties = feature.properties;
+        if (!properties.lat || !properties.long) {
+            return;
+        }
         return {
             id: properties.ligplaatsNr ? Number(properties.ligplaatsNr.substring(2)) : undefined,
             name: properties.enigmaNaam,
@@ -43,33 +46,19 @@ export default class BerthSearch extends Search {
             maxDepth: properties.maxDiepgang_m ? parseFloat(properties.maxDiepgang_m) : undefined,
             type: properties.type,
             region: properties.zone,
-            center: properties.center,
+            location: this.getCenter(properties),
             width: properties.breedte ? Number(properties.breedte) : undefined,
             length: properties.lengte ? Number(properties.lengte) : undefined,
             dock: properties.dok
         }
     }
 
-    protected async getSearchResults(query: string): Promise<BerthSearchResult[]> {
-        if (query.length < 3) {
+    protected async getSearchResults(query: string): Promise<BerthInfo[]> {
+        if (query.length < 2) {
             return [];
         }
 
-        const berths = BerthSearch.convertFeaturesToBerths(berthsData.features).filter((berth: BerthSearchResult) => (berth.name) ? berth.name.includes(query) || String(berth.id).startsWith(query) : false);
-
-        if (!isNaN(Number(query))) {
-            return berths.sort((a: BerthSearchResult, b: BerthSearchResult) => {
-                if (a.id < b.id) {
-                    return -1;
-                }
-                if (a.id > b.id) {
-                    return 1;
-                }
-                return 0;
-            });
-        }
-
-        return berths;
+        return this.convertFeaturesToBerths(berthsData.features).filter((berth: BerthInfo) => (berth.name) ? berth.name.includes(query) || String(berth.id).startsWith(query) : false);
     }
 
     protected async executeSearch(): Promise<void> {
@@ -81,7 +70,7 @@ export default class BerthSearch extends Search {
         }
     }
 
-    protected displayResult(searchResultsElement: HTMLTableElement, berthResult: any): void {
+    protected displayResult(searchResultsElement: HTMLTableElement, berthResult: BerthInfo): void {
         const div = document.createElement("div");
         div.classList.add("list-group-item", "list-group-item-action", "my-2");
 
@@ -89,11 +78,15 @@ export default class BerthSearch extends Search {
         const info = this.createInfo(berthResult);
 
         div.append(title, info);
-        div.addEventListener("click", () => {
-            console.log("TODO: SHOW BERTH DETAILS");
-        });
+        div.addEventListener("click", () => this.onResultClicked(berthResult));
 
         searchResultsElement.appendChild(div);
+    }
+
+    private getCenter(properties: any): L.LatLng {
+        const filteredLat = Number(properties.lat.replace(",", "."));
+        const filteredLng = Number(properties.long.replace(",", "."));
+        return new L.LatLng(filteredLat, filteredLng)
     }
 
     /**
@@ -101,7 +94,7 @@ export default class BerthSearch extends Search {
      * @param berthResult 1 zoekresultaat van het zoeken
      * @returns HTML item voor de descriptie van het zoekresultaat
      */
-    private createInfo(berthResult: BerthSearchResult): HTMLParagraphElement {
+    private createInfo(berthResult: BerthInfo): HTMLParagraphElement {
         const info = document.createElement("p");
         info.classList.add("mb-1", "small");
         info.innerHTML = `${berthResult.region} - ${berthResult.type}`;
@@ -114,7 +107,7 @@ export default class BerthSearch extends Search {
      * @param berthResult 1 zoekresultaat van het zoeken
      * @returns HTML item voor de titel van het zoekresultaat
      */
-    private createTitle(berthResult: BerthSearchResult): HTMLElement {
+    private createTitle(berthResult: BerthInfo): HTMLElement {
         const title = document.createElement("strong");
         title.classList.add("mb-1");
         title.innerText = `${berthResult.name} (${berthResult.id})`;
@@ -122,8 +115,8 @@ export default class BerthSearch extends Search {
         return title;
     }
 
-    protected onResultClicked(berthResult: any): void {
-        // this.displayInfo.show(berthResult);
-        this.map.flyTo(berthResult.center, 16);
+    protected onResultClicked(berthInfo: BerthInfo): void {
+        const berthLayer = Application.layers.berths as BerthLayer;
+        berthLayer.focus(berthInfo);
     }
 }
