@@ -2648,26 +2648,32 @@ var BridgeLayer = /*#__PURE__*/function (_Layer) {
             switch (_context4.prev = _context4.next) {
               case 0:
                 if (!(bridge.lnk.length > 4)) {
-                  _context4.next = 9;
-                  break;
-                }
-
-                if (!(bridge.lnk.charAt(0) === "0")) {
                   _context4.next = 8;
                   break;
                 }
 
+                if (!(bridge.lnk.charAt(0) === "0")) {
+                  _context4.next = 7;
+                  break;
+                }
+
                 _context4.next = 4;
-                return _api_BridgeAPI__WEBPACK_IMPORTED_MODULE_2__["default"].fetchCountryCode(bridge.lat, bridge.lng);
+                return _api_BridgeAPI__WEBPACK_IMPORTED_MODULE_2__["default"].fetchCountryCode(bridge.lat, bridge.lng)["catch"](console.error);
 
               case 4:
                 countryCode = _context4.sent;
+
+                if (!countryCode) {
+                  _context4.next = 7;
+                  break;
+                }
+
                 return _context4.abrupt("return", "+".concat(countryCode, " ").concat(bridge.lnk));
 
-              case 8:
+              case 7:
                 return _context4.abrupt("return", bridge.lnk);
 
-              case 9:
+              case 8:
               case "end":
                 return _context4.stop();
             }

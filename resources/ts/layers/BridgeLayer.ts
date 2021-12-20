@@ -94,11 +94,12 @@ export default class BridgeLayer extends Layer {
     private async parsePhoneNumber(bridge: any): Promise<string | void> {
         if (bridge.lnk.length > 4) {
             if (bridge.lnk.charAt(0) === "0") {
-                const countryCode = await BridgeAPI.fetchCountryCode(bridge.lat, bridge.lng);
-                return `+${countryCode} ${bridge.lnk}`
-            } else {
-                return bridge.lnk;
+                const countryCode = await BridgeAPI.fetchCountryCode(bridge.lat, bridge.lng).catch(console.error);
+                if (countryCode) {
+                    return `+${countryCode} ${bridge.lnk}`;
+                }
             }
+            return bridge.lnk;
         }
     }
 
