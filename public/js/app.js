@@ -3292,7 +3292,6 @@ var VesselLayer = /*#__PURE__*/function (_Layer) {
       this.renderCircle(vesselInfo);
       var vesselDisplay = _app__WEBPACK_IMPORTED_MODULE_6__["default"].displays.vessels;
       vesselDisplay.show(vesselInfo.mmsi);
-      console.log("TODO: Show details of the selected vessel in the sidebar.");
     }
   }, {
     key: "getDefaultVesselFilters",

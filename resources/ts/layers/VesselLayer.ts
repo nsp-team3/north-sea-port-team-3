@@ -126,7 +126,6 @@ export default class VesselLayer extends Layer {
         this.renderCircle(vesselInfo);
         const vesselDisplay = Application.displays.vessels as DisplayVesselInfo;
         vesselDisplay.show(vesselInfo.mmsi);
-        console.log("TODO: Show details of the selected vessel in the sidebar.");
     }
 
     private getDefaultVesselFilters(): VesselFilters {

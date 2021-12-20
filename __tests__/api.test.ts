@@ -1,14 +1,17 @@
 import "isomorphic-fetch";
 
-import AIS from "../resources/ts/api/AIS";
+import VesselAPI from "../resources/ts/api/VesselAPI";
+import { VesselInfo } from "../resources/ts/api/VesselInfo";
 
 describe("#getVessel() using valid mmsi", () => {
     it("should return vessel information", () => {
-        return AIS.getVessel(244169000).then(data => {
-            expect(data).toBeDefined()
-            expect(data.name).toEqual("PR MAXIMA")
-            expect(data.country).toEqual("Netherlands")
-            expect(data.mmsi).toEqual(244169000);
+        return VesselAPI.getDetails(244169000).then((vesselDetails: VesselInfo | void) => {
+            expect(vesselDetails).toBeDefined();
+            if (vesselDetails) {
+                expect(vesselDetails.name).toEqual("PR MAXIMA");
+                expect(vesselDetails.country).toEqual("Netherlands");
+                expect(vesselDetails.mmsi).toEqual(244169000);
+            }
         });
     });
 });
