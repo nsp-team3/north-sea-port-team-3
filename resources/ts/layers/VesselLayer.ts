@@ -104,9 +104,9 @@ export default class VesselLayer extends Layer {
      * @param vesselInfo Informatie over een schip
      * @returns Een symbool van het schip voor op de kaart.
      */
-    private createVesselSymbol(vesselInfo: SimpleVesselInfo): L.LayerGroup {
+    private createVesselSymbol(vesselInfo: SimpleVesselInfo): L.LayerGroup | L.Marker {
         const location = new L.LatLng(vesselInfo.latitude, vesselInfo.longitude);
-        return L.trackSymbol(location, {
+        const symbolOptions = {
             trackId: vesselInfo.mmsi,
             fill: true,
             fillColor: this.getVesselColor(vesselInfo),
@@ -118,8 +118,13 @@ export default class VesselLayer extends Layer {
             speed: vesselInfo.speed,
             course: vesselInfo.direction * Math.PI / 180,
             heading: vesselInfo.direction * Math.PI / 180,
-            updateTimestamp: vesselInfo.requestTime
-        });
+            updateTimestamp: vesselInfo.requestTime,
+        }
+        if (vesselInfo.speed <= 0.5) {
+            symbolOptions.heading = undefined;
+        }
+
+        return L.trackSymbol(location, symbolOptions);
     }
 
     private handleVesselClick(vesselInfo: SimpleVesselInfo): void {
