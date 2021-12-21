@@ -69,6 +69,8 @@ jobs:
       uses: actions/setup-node@v2-beta
       with:
         node-version: '16'
+    - name: Install npm modules
+      run: npm install
     - name: Build JavaScript
       run: npm run prod
     - name: Deploy to Heroku
