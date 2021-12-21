@@ -37,7 +37,7 @@ export default class BridgeLayer extends Layer {
         const bounds = this._map.getBounds();
         const sw = bounds.getSouthWest();
         const ne = bounds.getNorthEast();
-        return await BridgeAPI.fetchBridges(sw, ne);
+        return await BridgeAPI.fetchBridges(sw.lat, sw.lng, ne.lat, ne.lng);
     }
 
     /**
@@ -58,7 +58,7 @@ export default class BridgeLayer extends Layer {
     private async handleBridgeClick(event: L.LeafletMouseEvent, bridge: any): Promise<void> {
         // Toont een bericht zodat mensen weten dat ze goed hebben geklikt.
         L.popup().setLatLng(event.latlng).setContent(`Laad gegevens van ${bridge.name}...`).openOn(this._map);
-        
+
         const infoArr = [];
         infoArr.push(`<h6>${bridge.name}</h6>`);
 
