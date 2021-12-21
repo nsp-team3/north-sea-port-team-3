@@ -65,7 +65,12 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-
+    - name: Setup Node.JS
+      uses: actions/setup-node@v2-beta
+      with:
+        node-version: '16'
+    - name: Build JavaScript
+      run: npm run prod
     - name: Deploy to Heroku
       uses: AkhileshNS/heroku-deploy@v3.12.12
       with:
