@@ -4,10 +4,13 @@ export default class BridgeAPI {
         "BE": 32
     }
 
-    public static async fetchBridges(southWest: L.LatLng, northEast: L.LatLng): Promise<object[] | void> {
+    private static readonly BRIDGES_URL: string = "https://nsp-ons.herokuapp.com/api/bridges";
+
+    public static async fetchBridges(southWestLat: number, southWestLng: number, northEastLat: number, northEastLng: number): Promise<object[] | void> {
         // gebaseerd op de coordinaten, alle bruggen hierbinnen opvragen.
-        const res = await fetch("/api/bridges", {
-            "body": `a=${southWest.lat}&b=${northEast.lng}&c=${northEast.lat}&d=${southWest.lng}&e=0&f=0&g=0&h=0&i=0&j=0&k=0&l=0&m=0&n=0&o=0&p=0&q=0&r=0&s=0&t=0&u=0&v=1&w=0&x=0&y=0&z=0`,
+
+        const res = await fetch(BridgeAPI.BRIDGES_URL, {
+            "body": `a=${southWestLat}&b=${northEastLng}&c=${northEastLat}&d=${southWestLng}&e=0&f=0&g=0&h=0&i=0&j=0&k=0&l=0&m=0&n=0&o=0&p=0&q=0&r=0&s=0&t=0&u=0&v=1&w=0&x=0&y=0&z=0`,
             "method": "POST"
         }).catch(console.error);
         if (res) {

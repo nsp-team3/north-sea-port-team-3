@@ -477,15 +477,15 @@ var BridgeAPI = /*#__PURE__*/function () {
   _createClass(BridgeAPI, null, [{
     key: "fetchBridges",
     value: function () {
-      var _fetchBridges = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(southWest, northEast) {
+      var _fetchBridges = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(southWestLat, southWestLng, northEastLat, northEastLng) {
         var res;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return fetch("/api/bridges", {
-                  "body": "a=".concat(southWest.lat, "&b=").concat(northEast.lng, "&c=").concat(northEast.lat, "&d=").concat(southWest.lng, "&e=0&f=0&g=0&h=0&i=0&j=0&k=0&l=0&m=0&n=0&o=0&p=0&q=0&r=0&s=0&t=0&u=0&v=1&w=0&x=0&y=0&z=0"),
+                return fetch(BridgeAPI.BRIDGES_URL, {
+                  "body": "a=".concat(southWestLat, "&b=").concat(northEastLng, "&c=").concat(northEastLat, "&d=").concat(southWestLng, "&e=0&f=0&g=0&h=0&i=0&j=0&k=0&l=0&m=0&n=0&o=0&p=0&q=0&r=0&s=0&t=0&u=0&v=1&w=0&x=0&y=0&z=0"),
                   "method": "POST"
                 })["catch"](console.error);
 
@@ -511,7 +511,7 @@ var BridgeAPI = /*#__PURE__*/function () {
         }, _callee);
       }));
 
-      function fetchBridges(_x, _x2) {
+      function fetchBridges(_x, _x2, _x3, _x4) {
         return _fetchBridges.apply(this, arguments);
       }
 
@@ -553,7 +553,7 @@ var BridgeAPI = /*#__PURE__*/function () {
         }, _callee2);
       }));
 
-      function fetchAdministration(_x3) {
+      function fetchAdministration(_x5) {
         return _fetchAdministration.apply(this, arguments);
       }
 
@@ -618,7 +618,7 @@ var BridgeAPI = /*#__PURE__*/function () {
         }, _callee3);
       }));
 
-      function fetchBridgePicture(_x4) {
+      function fetchBridgePicture(_x6) {
         return _fetchBridgePicture.apply(this, arguments);
       }
 
@@ -654,7 +654,7 @@ var BridgeAPI = /*#__PURE__*/function () {
         }, _callee4);
       }));
 
-      function fetchCountryCode(_x5, _x6) {
+      function fetchCountryCode(_x7, _x8) {
         return _fetchCountryCode.apply(this, arguments);
       }
 
@@ -726,7 +726,7 @@ var BridgeAPI = /*#__PURE__*/function () {
         }, _callee5);
       }));
 
-      function parseCountryCode(_x7) {
+      function parseCountryCode(_x9) {
         return _parseCountryCode.apply(this, arguments);
       }
 
@@ -742,6 +742,7 @@ BridgeAPI.COUNTRY_CODES = {
   "NL": 31,
   "BE": 32
 };
+BridgeAPI.BRIDGES_URL = "https://nsp-ons.herokuapp.com/api/bridges";
 
 /***/ }),
 
@@ -2542,7 +2543,7 @@ var BridgeLayer = /*#__PURE__*/function (_Layer) {
                 sw = bounds.getSouthWest();
                 ne = bounds.getNorthEast();
                 _context2.next = 5;
-                return _api_BridgeAPI__WEBPACK_IMPORTED_MODULE_2__["default"].fetchBridges(sw, ne);
+                return _api_BridgeAPI__WEBPACK_IMPORTED_MODULE_2__["default"].fetchBridges(sw.lat, sw.lng, ne.lat, ne.lng);
 
               case 5:
                 return _context2.abrupt("return", _context2.sent);
