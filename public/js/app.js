@@ -2157,7 +2157,7 @@ var DisplayVesselInfo = /*#__PURE__*/function (_DisplayInfo) {
       this.addInfoRow("Naam", vesselDetails.name ? vesselDetails.name : unknownText);
       this.addInfoRow("IMO", vesselDetails.imo ? String(vesselDetails.imo) : unknownText);
       this.addInfoRow("Lengte", vesselDetails.length !== 0 ? "".concat(vesselDetails.length, " meter") : unknownText);
-      this.addInfoRow("Lengte", vesselDetails.width !== 0 ? "".concat(vesselDetails.width, " meter") : unknownText);
+      this.addInfoRow("Breedte", vesselDetails.width !== 0 ? "".concat(vesselDetails.width, " meter") : unknownText);
       this.addInfoRow("Diepte", vesselDetails.draught ? "".concat(vesselDetails.draught, " meter") : unknownText);
       this.addInfoRow("Koers", "".concat(vesselDetails.course, "\xB0"));
       this.addInfoRow("Snelheid", "".concat(vesselDetails.speed, " knopen"));
