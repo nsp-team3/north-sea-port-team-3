@@ -7,7 +7,6 @@ import { VesselInfo } from "../resources/ts/api/VesselInfo";
 describe("Fake test", () => {
     it("should do nothing", () => {
         expect(Number("1")).toStrictEqual(1);
-        return true;
     });
 })
 
