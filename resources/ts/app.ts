@@ -77,7 +77,7 @@ export default class Application {
             closeButton: true,    // Moeten de tabs een close button hebben?
             container: "sidebar", // De html id van de sidebar container. 
             position: "right"     // Of de sidebar rechts of links moet staan.
-        }).addTo(this._map);
+        }).addTo(this._map).open("searchTab");
     }
 
     private createScale(): L.Control.Scale {
