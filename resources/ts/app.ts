@@ -86,12 +86,12 @@ export default class Application {
 
     private createOverlays(): L.Control.Layers {
         const overlays = {
+            "Open sea maps": Application.layers.openSeaMaps.main,
             "Bedrijven": Application.layers.companies.main,
             "Ligplaatsen": Application.layers.berths.main,
             // "Windsnelheid": this._layers.windspeed.main,
-            "Schepen": Application.layers.vessels.main,
-            "Open sea maps": Application.layers.openSeaMaps.main,
             "Bruggen": Application.layers.bridges.main,
+            "Schepen": Application.layers.vessels.main,
         };
         
         return L.control.layers({}, overlays, {

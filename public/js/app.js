@@ -1743,7 +1743,7 @@ var Application = /*#__PURE__*/function () {
         closeButton: true,
         container: "sidebar",
         position: "right"
-      }).addTo(this._map);
+      }).addTo(this._map).open("searchTab");
     }
   }, {
     key: "createScale",
@@ -1754,11 +1754,11 @@ var Application = /*#__PURE__*/function () {
     key: "createOverlays",
     value: function createOverlays() {
       var overlays = {
+        "Open sea maps": Application.layers.openSeaMaps.main,
         "Bedrijven": Application.layers.companies.main,
         "Ligplaatsen": Application.layers.berths.main,
-        "Schepen": Application.layers.vessels.main,
-        "Open sea maps": Application.layers.openSeaMaps.main,
-        "Bruggen": Application.layers.bridges.main
+        "Bruggen": Application.layers.bridges.main,
+        "Schepen": Application.layers.vessels.main
       };
       return leaflet__WEBPACK_IMPORTED_MODULE_0__.control.layers({}, overlays, {
         sortLayers: true

@@ -19,7 +19,7 @@ export default class DisplayVesselInfo extends DisplayInfo {
         this.addInfoRow("Naam", vesselDetails.name ? vesselDetails.name : unknownText);
         this.addInfoRow("IMO", vesselDetails.imo ? String(vesselDetails.imo) : unknownText);
         this.addInfoRow("Lengte", vesselDetails.length !== 0 ? `${vesselDetails.length} meter` : unknownText);
-        this.addInfoRow("Lengte", vesselDetails.width !== 0 ? `${vesselDetails.width} meter` : unknownText);
+        this.addInfoRow("Breedte", vesselDetails.width !== 0 ? `${vesselDetails.width} meter` : unknownText);
         this.addInfoRow("Diepte", vesselDetails.draught ? `${vesselDetails.draught} meter` : unknownText);
         this.addInfoRow("Koers", `${vesselDetails.course}°`);
         this.addInfoRow("Snelheid", `${vesselDetails.speed} knopen`);
