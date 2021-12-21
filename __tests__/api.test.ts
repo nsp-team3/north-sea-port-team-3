@@ -4,6 +4,10 @@ import VesselAPI from "../resources/ts/api/VesselAPI";
 import BridgeAPI from "../resources/ts/api/BridgeAPI";
 import { VesselInfo } from "../resources/ts/api/VesselInfo";
 
+describe("Fake test", () => {
+    return true;
+})
+
 // describe("#getVessel() using valid mmsi", () => {
 //     it("should return vessel information", () => {
 //         return VesselAPI.getDetails(244169000).then((vesselDetails: VesselInfo | void) => {
