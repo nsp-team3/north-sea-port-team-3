@@ -5,7 +5,10 @@ import BridgeAPI from "../resources/ts/api/BridgeAPI";
 import { VesselInfo } from "../resources/ts/api/VesselInfo";
 
 describe("Fake test", () => {
-    return true;
+    it("should do nothing", () => {
+        expect(Number("1")).toStrictEqual(1);
+        return true;
+    });
 })
 
 // describe("#getVessel() using valid mmsi", () => {
