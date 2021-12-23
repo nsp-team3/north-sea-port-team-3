@@ -1,16 +1,14 @@
-/// <reference path="Port.ts" />
-
+import { RawDestination } from "../types/destination-types";
+import { PortType } from "../types/port-types";
+import { RawVesselInfo } from "../types/vessel-types";
 import { Destination } from "./Destination";
-import PortType from "../types/enums/PortType";
-import RawDestination from "../types/RawDestination";
-import RawVesselInfo from "../types/RawVesselInfo";
-import { Port } from "./Port";
+import PortInfo from "./PortInfo";
 
 /**
  * Een klasse die het makkelijker maakt om specifieke informatie op te halen over een schip.
  * Want de onbewerkte data is erg onduidelijk.
  */
-export class Vessel {
+export class VesselInfo {
     private _rawVesselInfo: RawVesselInfo;
 
     public constructor (rawVesselInfo: RawVesselInfo) {
@@ -29,14 +27,14 @@ export class Vessel {
         return Number(this._rawVesselInfo.COG);
     }
 
-    public get destinations(): Destination[] | void {
+    public get destinations(): Destination | void {
         const rawDestinations: RawDestination[] = this._rawVesselInfo.EST;
         if (!rawDestinations || Array.isArray(rawDestinations[0])) {
             return;
         }
         return rawDestinations
             .filter((entry) => !Array.isArray(entry))
-            .map((rawDestination: RawDestination) => new Destination(rawDestination));
+            .map((rawDestination: RawDestination) => new Destination(rawDestination))[0];
     }
 
     public get draught(): number {
@@ -73,8 +71,8 @@ export class Vessel {
         }
     }
 
-    public get lastPort(): Port {
-        return new Port(this._rawVesselInfo, PortType.Last);
+    public get lastPort(): PortInfo {
+        return new PortInfo(this._rawVesselInfo, PortType.Last);
     }
 
     public get minDepth(): number {
@@ -93,8 +91,8 @@ export class Vessel {
         return this._rawVesselInfo.VNAME;
     }
 
-    public get nextPort(): Port {
-        return new Port(this._rawVesselInfo, PortType.Next);
+    public get nextPort(): PortInfo {
+        return new PortInfo(this._rawVesselInfo, PortType.Next);
     }
 
     public get route(): string | void {
@@ -103,8 +101,8 @@ export class Vessel {
         }
     }
 
-    public get port(): Port {
-        return new Port(this._rawVesselInfo, PortType.Current);
+    public get port(): PortInfo {
+        return new PortInfo(this._rawVesselInfo, PortType.Current);
     }
 
     public get speed(): number {
@@ -129,42 +127,5 @@ export class Vessel {
 
     public get width(): number {
         return this._rawVesselInfo.W;
-    }
-
-    // Van de dingen hieronder weet ik nog niet wat ze betekenen.
-
-    public get PD(): string {
-        console.log("I need to figure out what this means.");
-        return this._rawVesselInfo.PD;
-    }
-
-    public get SN(): number {
-        console.log("I need to figure out what this means.");
-        return this._rawVesselInfo.SN;
-    }
-
-    public get ROT(): number {
-        console.log("I need to figure out what this means.");
-        return this._rawVesselInfo.ROT;
-    }
-
-    public get TRV_SRC(): number {
-        console.log("I need to figure out what this means.");
-        return this._rawVesselInfo.TRV_SRC;
-    }
-
-    public get TRV(): number {
-        console.log("I need to figure out what this means.");
-        return this._rawVesselInfo.TRV;
-    }
-
-    public get INP(): number {
-        console.log("I need to figure out what this means.");
-        return this._rawVesselInfo.INP;
-    }
-
-    public get SEP(): number {
-        console.log("I need to figure out what this means.");
-        return this._rawVesselInfo.SEC;
     }
 }

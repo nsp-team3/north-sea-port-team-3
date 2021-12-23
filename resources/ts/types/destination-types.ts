@@ -1,4 +1,4 @@
-export default interface RawDestination {
+export type RawDestination = {
     ARR: string;
     C: string;
     C1: string;
