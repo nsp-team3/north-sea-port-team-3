@@ -1,0 +1,6 @@
+node_modules
+public
+__test__
+api.test.ts
+vendor
+webpack.mix.js

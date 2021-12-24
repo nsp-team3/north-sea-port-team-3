@@ -6,6 +6,24 @@ import Search from "./Search";
 
 const berthsData = require("../../northSeaPortGeoJson/ligplaatsen_northsp.json");
 
+type feature = {
+	properties: {
+		lat: string,
+		long: string,
+		ligplaatsNr: string,
+		enigmaNaam: string,
+		eigenaar: string,
+		enigmaCode: string,
+		externeCode: string,
+		maxDiepgang_m: string,
+		type: string,
+		zone: string,
+		breedte: string,
+		lengte: string,
+		dok: number
+	}
+}
+
 /**
  * Voegt zoekfunctionaliteit toe voor ligplaatsen
  */
@@ -23,7 +41,7 @@ export default class BerthSearch extends Search {
      * @returns array van dictionaries met ligplaatsinformatie
      */
     public convertFeaturesToBerths(features: any): BerthInfo[] {
-        return features.map((feature: any) => this.convertFeatureToBerth(feature)).filter((berth: BerthInfo) => berth !== undefined);
+        return features.map((feature: feature) => this.convertFeatureToBerth(feature)).filter((berth: BerthInfo) => berth !== undefined);
     }
 
     /**
@@ -32,7 +50,7 @@ export default class BerthSearch extends Search {
      * @param feature huidige ligplaats binnen geojson
      * @returns makkelijk leesbare dictionary
      */
-    public convertFeatureToBerth(feature: any): BerthInfo | void {
+    public convertFeatureToBerth(feature: feature): BerthInfo | void {
         const properties = feature.properties;
         if (!properties.lat || !properties.long) {
             return;
@@ -83,7 +101,7 @@ export default class BerthSearch extends Search {
         searchResultsElement.appendChild(div);
     }
 
-    private getCenter(properties: any): L.LatLng {
+    private getCenter(properties: {lat: string, long: string}): L.LatLng {
         const filteredLat = Number(properties.lat.replace(",", "."));
         const filteredLng = Number(properties.long.replace(",", "."));
         return new L.LatLng(filteredLat, filteredLng)

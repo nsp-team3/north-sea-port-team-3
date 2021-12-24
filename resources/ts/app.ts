@@ -69,13 +69,13 @@ export default class Application {
 
     /**
      * Maakt de zijbalk aan en laadt deze in.
-     * @returns 
+     * @returns
      */
     private createSidebar(): L.Control.Sidebar {
         return L.control.sidebar({
             autopan: false,       // Moet de map dezelfde plek tonen wanneer de zijbalk wordt geopend?
             closeButton: true,    // Moeten de tabs een close button hebben?
-            container: "sidebar", // De html id van de sidebar container. 
+            container: "sidebar", // De html id van de sidebar container.
             position: "right"     // Of de sidebar rechts of links moet staan.
         }).addTo(this._map).open("searchTab");
     }
@@ -93,7 +93,7 @@ export default class Application {
             "Bruggen": Application.layers.bridges.main,
             "Schepen": Application.layers.vessels.main,
         };
-        
+
         return L.control.layers({}, overlays, {
             sortLayers: true
         }).addTo(this._map);

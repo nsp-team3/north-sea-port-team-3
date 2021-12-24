@@ -3,7 +3,6 @@ import "../libs/tracksymbol";
 import VesselAPI from "../api/VesselAPI";
 import { SimpleVesselInfo, VesselFilters, VesselType } from "../types/vessel-types";
 import Layer from "./Layer";
-import { VesselInfo } from "../api/VesselInfo";
 import Application from "../app";
 import DisplayVesselInfo from "../displays/DisplayVesselInfo";
 

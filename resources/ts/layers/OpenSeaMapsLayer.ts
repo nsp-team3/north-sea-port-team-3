@@ -11,5 +11,7 @@ export default class OpenStreetMapLayer extends Layer {
         }).addTo(this._nestedLayer);
     }
 
-    public update(): void {}
+    public update(): void {
+		return
+	}
 }

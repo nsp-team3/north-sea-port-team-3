@@ -2,7 +2,7 @@
  * Abstracte class die de zoekfunctionaliteit in de zoekbalk regeld
  */
 export default abstract class Search {
-    public static forceUpdate: boolean = false;
+    public static forceUpdate = false;
 
     // De id van de zoekbalk
     protected static readonly SEARCH_BAR_ID: string = "searchbar";
@@ -11,7 +11,7 @@ export default abstract class Search {
     protected static readonly RESULTS_ID: string = "search-results";
 
     // Laatste zoekopdracht
-    private static lastQuery: string = "";
+    private static lastQuery = "";
 
     // Voert de zoekopdracht uit.
     protected abstract executeSearch(): void;

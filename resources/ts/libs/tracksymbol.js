@@ -1,3 +1,5 @@
+import L from "leaflet";
+
 L.TrackSymbol = L.Path.extend({
 
     initialize: function (latlng, options) {
@@ -27,6 +29,7 @@ L.TrackSymbol = L.Path.extend({
      * @method _project
      */
     _project: function () {
+		return
     },
 
     /**
