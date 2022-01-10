@@ -58,6 +58,9 @@ jobs:
 
     - name: Execute unit tests
       run: npm run test
+      
+    - name: Execute linter
+      run: npm run lint
 
   deploy:
     runs-on: ubuntu-latest
