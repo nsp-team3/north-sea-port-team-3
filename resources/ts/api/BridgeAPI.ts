@@ -4,7 +4,7 @@ export default class BridgeAPI {
         "BE": 32
     }
 
-    private static readonly BRIDGES_URL: string = "https://nsp-ons.herokuapp.com/api/bridges";
+    private static readonly BRIDGES_URL: string = "/api/bridges";
 
     public static async fetchBridges(southWestLat: number, southWestLng: number, northEastLat: number, northEastLng: number): Promise<object[] | void> {
         // gebaseerd op de coordinaten, alle bruggen hierbinnen opvragen.

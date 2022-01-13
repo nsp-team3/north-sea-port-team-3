@@ -742,7 +742,7 @@ BridgeAPI.COUNTRY_CODES = {
   "NL": 31,
   "BE": 32
 };
-BridgeAPI.BRIDGES_URL = "https://nsp-ons.herokuapp.com/api/bridges";
+BridgeAPI.BRIDGES_URL = "/api/bridges";
 
 /***/ }),
 
